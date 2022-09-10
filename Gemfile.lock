@@ -552,7 +552,7 @@ DEPENDENCIES
   simplecov-small-badge
   spring
   spring-watcher-listen (~> 2.0.0)
-  sprockets (>= 3.0.0)
+  sprockets (>= 2.3.3)
   sprockets-es6
   tinymce-rails
   turnout

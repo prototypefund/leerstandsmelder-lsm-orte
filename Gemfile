@@ -44,7 +44,7 @@ gem 'secure_headers'
 gem 'select2-rails'
 gem 'settingslogic'
 gem 'simple_form'
-gem 'sprockets', '>= 3.0.0'
+gem 'sprockets', '>= 2.3.3'
 gem 'sprockets-es6'
 
 gem 'image_processing', '~> 1.12'
