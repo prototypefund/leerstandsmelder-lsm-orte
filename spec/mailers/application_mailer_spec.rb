@@ -44,14 +44,14 @@ RSpec.describe ApplicationMailer, type: :mailer do
     end
 
     it 'renders the headers' do
-      expect(mail.subject).to eq("[ORTE Admin -- #{Rails.env}] profile created")
+      expect(mail.subject).to eq("[LSM23 Admin -- #{Rails.env}] profile created")
       expect(mail.to).to eq([@admin_admin_user.email])
-      expect(mail.from).to eq(['technik@3plusx.de'])
+      expect(mail.from).to eq(['tech@leerstandsmelder.de'])
     end
 
     it 'renders the headers (in production env)' do
       allow(Rails).to receive(:env) { 'production'.inquiry }
-      expect(mail.subject).to eq('[ORTE Admin] profile created')
+      expect(mail.subject).to eq('[LSM23 Admin] profile created')
     end
 
     it 'renders the body' do

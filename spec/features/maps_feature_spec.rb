@@ -30,7 +30,7 @@ RSpec.feature 'User may create a map ' do
     expect(page).to have_current_path '/maps'
     @my_first_map = FactoryBot.create(:map, group_id: @group.id)
     visit '/maps'
-    expect(page).to have_content 'Select a map...'
+    expect(page).to have_content 'Add a map'
     click_link 'new_map_button'
     expect(page).to have_current_path '/maps/new'
     fill_in 'map_title', with: 'My second map'
