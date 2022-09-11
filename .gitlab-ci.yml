@@ -1,0 +1,84 @@
+image: registry.gitlab.com/leerstandsmelder/lsm-orte:latest
+
+services:
+  - mysql:latest
+
+variables:
+  BUNDLE_CACHE: "vendor/bundle/"
+  RAILS_ENV: "test"
+  DB_HOST: mysql
+  DB_USERNAME: mysql
+  DB_PASSWORD: ""
+
+# cache gems and node_modules for next usage
+.default-cache: &default-cache
+  cache:
+    untracked: true
+    key: "$CI_BUILD_NAME"
+    paths:
+      - node_modules/
+      - vendor/
+      - public/
+
+stages:
+  - static
+  - test
+  - build-docker-image
+  - push-image-to-gitlab-registry
+
+before_script:
+  - gem install bundler --no-document
+  - cp config/database.yml.ci config/database.yml
+  - bundle check || bundle install --jobs $(nproc)
+  - yarn install
+  - bundle exec rake db:create
+  - bundle exec rake db:migrate
+
+rubocop:
+  <<: *default-cache
+  stage: static
+  script:
+    - bundle exec rubocop
+
+brakeman:
+  <<: *default-cache
+  stage: static
+  script:
+    - brakeman -w3
+
+test:
+  <<: *default-cache
+  stage: test
+  coverage: '/LOC\s\(\d+\.\d+%\)\scovered/'
+  variables:
+    COVERAGE: "true"
+  script:
+    - bundle exec rspec
+  artifacts:
+    when: on_failure
+    expire_in: 1 week
+    paths:
+      - tmp/screenshots/
+      - log/
+
+bundler:audit:
+  only:
+    - schedules
+  script:
+    - gem install bundler-audit --no-document
+    - bundle install
+    - bundle-audit update
+    - bundle-audit check
+
+build-docker-image:
+  stage: build-docker-image
+  script:
+    - docker info
+    - docker build -t registry.gitlab.com/leerstandsmelder/lsm-orte .
+
+push-image-to-gitlab-registry:
+  before_script:
+    - docker login registry.gitlab.com -u "$CI_REGISTRY_USER" -p "$CI_GITLAB_TOKEN"
+  script:
+    - docker info
+    - docker push registry.gitlab.com/leerstandsmelder/lsm-orte
