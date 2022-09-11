@@ -30,7 +30,6 @@ before_script:
   - gem install bundler --no-document
   - cp config/database.yml.ci config/database.yml
   - bundle check || bundle install --jobs $(nproc)
-  - yarn install
   - bundle exec rake db:create
   - bundle exec rake db:migrate
 
@@ -77,6 +76,7 @@ build-docker-image:
     - docker build -t registry.gitlab.com/leerstandsmelder/lsm-orte .
 
 push-image-to-gitlab-registry:
+  stage: build-docker-image
   before_script:
     - docker login registry.gitlab.com -u "$CI_REGISTRY_USER" -p "$CI_GITLAB_TOKEN"
   script:
