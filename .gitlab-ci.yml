@@ -33,6 +33,7 @@ stages:
 
 before_script:
   - gem install bundler --no-document
+  - bundle check || bundle install --jobs $(nproc)
 
 rubocop:
   <<: *default-cache
@@ -54,7 +55,6 @@ test:
     COVERAGE: "true"
   script:
     - cp config/database.yml.ci config/database.yml
-    - bundle check || bundle install --jobs $(nproc)
     - bundle exec rake db:create
     - bundle exec rails db:setup
     - bundle exec rake db:migrate
