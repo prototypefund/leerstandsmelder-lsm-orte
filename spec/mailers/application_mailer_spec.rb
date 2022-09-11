@@ -12,7 +12,7 @@ RSpec.describe ApplicationMailer, type: :mailer do
     it 'renders the headers' do
       expect(mail.subject).to eq('Your profile for ORTE has been created')
       expect(mail.to).to eq([user.email])
-      expect(mail.from).to eq(['technik@3plusx.de'])
+      expect(mail.from).to eq(['technik@leerstandsmelder.de'])
     end
 
     it 'renders the headers (in production env)' do
@@ -46,7 +46,7 @@ RSpec.describe ApplicationMailer, type: :mailer do
     it 'renders the headers' do
       expect(mail.subject).to eq("[LSM23 Admin -- #{Rails.env}] profile created")
       expect(mail.to).to eq([@admin_admin_user.email])
-      expect(mail.from).to eq(['tech@leerstandsmelder.de'])
+      expect(mail.from).to eq(['technik@leerstandsmelder.de'])
     end
 
     it 'renders the headers (in production env)' do
