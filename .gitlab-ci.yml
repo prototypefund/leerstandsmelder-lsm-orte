@@ -1,4 +1,4 @@
-image: ruby:2.7
+image: registry.gitlab.com/leerstandsmelder/lsm-orte:latest
 
 services:
   - mysql:latest
@@ -33,7 +33,7 @@ stages:
 
 before_script:
   - gem install bundler --no-document
-  - bundle check || bundle install --jobs $(nproc)
+  - bundle check || bundle install --jobs $(nproc) --path=vendor
 
 rubocop:
   <<: *default-cache

@@ -5,7 +5,7 @@ ARG NODE_ENV=development
 ARG RAILS_ENV=development
 ARG RAILS_ROOT=/app
 ARG BUILD_PACKAGES="build-base curl-dev git"
-ARG DEV_PACKAGES="mysql-dev mariadb-connector-c-dev yaml-dev zlib-dev nodejs yarn"
+ARG DEV_PACKAGES="mysql-dev mariadb-connector-c-dev yaml-dev zlib-dev nodejs yarn chromium-chromedriver imagemagick"
 ARG RUBY_PACKAGES="tzdata"
 
 ENV RAILS_ENV=${RAILS_ENV:-development} \
