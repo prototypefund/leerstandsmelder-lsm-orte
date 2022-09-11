@@ -1,11 +1,13 @@
-FROM ruby:2.7.6
+FROM ruby:2.7.6-alpine
 
 ENV GEM_HOME="/usr/local/bundle"
 ENV PATH $GEM_HOME/bin:$GEM_HOME/gems/bin:$PATH
 # Install yarn
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg -o /root/yarn-pubkey.gpg && apt-key add /root/yarn-pubkey.gpg
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
-RUN apt-get update && apt-get install -y --no-install-recommends nodejs yarn
+RUN apk update \
+  && apk upgrade \
+  && apk add --update --no-cache \
+  build-base curl-dev git yaml-dev \
+  zlib-dev mysql-dev nodejs yarn
 
 # Default directory
 ENV INSTALL_PATH /opt/app
