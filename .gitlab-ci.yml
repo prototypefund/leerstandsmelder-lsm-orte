@@ -9,6 +9,7 @@ variables:
   DB_HOST: mysql
   DB_USERNAME: mysql
   DB_PASSWORD: ""
+  MYSQL_ROOT_PASSWORD: "test"
 
 # cache gems and node_modules for next usage
 .default-cache: &default-cache
