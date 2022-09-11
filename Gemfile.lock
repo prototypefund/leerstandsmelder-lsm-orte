@@ -452,6 +452,8 @@ GEM
       tilt (>= 1.4, < 3)
     tzinfo (1.2.10)
       thread_safe (~> 0.1)
+    tzinfo-data (1.2022.3)
+      tzinfo (>= 1.0.0)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
     unicode-display_width (2.2.0)
@@ -556,6 +558,7 @@ DEPENDENCIES
   sprockets-es6
   tinymce-rails
   turnout
+  tzinfo-data
   uglifier
   web-console (~> 3)
   webdrivers (~> 5)
