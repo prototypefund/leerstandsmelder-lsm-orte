@@ -7,8 +7,7 @@ class MapsController < ApplicationController
 
   # GET /maps
   # GET /maps.json
-  def index
-  end
+  def index; end
 
   # GET /maps/1
   # GET /maps/1.json
