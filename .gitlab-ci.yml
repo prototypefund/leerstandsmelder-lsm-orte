@@ -7,13 +7,13 @@ variables:
   BUNDLE_CACHE: "vendor/bundle/"
   RAILS_ENV: "test"
   DB_HOST: mysql
-  DB_USERNAME: mysql
-  DB_PASSWORD: ""
-  MYSQL_HOST: 127.0.0.1
-  MYSQL_DATABASE: orte_test
-  MYSQL_USER: root
-  MYSQL_PASSWORD: root
-  MYSQL_ROOT_PASSWORD: root
+  DB_USERNAME: "orte"
+  DB_PASSWORD: "orte00"
+  MYSQL_HOST: mysql
+  MYSQL_DATABASE: "orte_test"
+  MYSQL_USER: "orte"
+  MYSQL_PASSWORD: "orte00"
+  MYSQL_ROOT_PASSWORD: "orte00"
 
 # cache gems and node_modules for next usage
 .default-cache: &default-cache
