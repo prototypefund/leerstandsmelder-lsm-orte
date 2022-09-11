@@ -1,4 +1,4 @@
-image: registry.gitlab.com/leerstandsmelder/lsm-orte:latest
+image: ruby:2.7
 
 services:
   - mysql:latest
@@ -33,11 +33,6 @@ stages:
 
 before_script:
   - gem install bundler --no-document
-  - cp config/database.yml.ci config/database.yml
-  - bundle check || bundle install --jobs $(nproc)
-  - bundle exec rake db:create
-  - bundle exec rails db:setup
-  - bundle exec rake db:migrate
 
 rubocop:
   <<: *default-cache
@@ -58,6 +53,11 @@ test:
   variables:
     COVERAGE: "true"
   script:
+    - cp config/database.yml.ci config/database.yml
+    - bundle check || bundle install --jobs $(nproc)
+    - bundle exec rake db:create
+    - bundle exec rails db:setup
+    - bundle exec rake db:migrate
     - bundle exec rspec
   artifacts:
     when: on_failure
