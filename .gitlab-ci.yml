@@ -27,7 +27,7 @@ variables:
 
 stages:
   - static
-  - test
+  #- test
   - build-docker-image
   - push-image-to-gitlab-registry
 
