@@ -10,7 +10,7 @@ end
 gem 'dotenv-rails', groups: %i[development test]
 
 gem 'puma', '~> 5'
-gem 'rails', '~> 5.2'
+gem 'rails', '~> 6.0'
 gem 'sassc', '~> 2.4'
 gem 'sassc-rails'
 gem 'uglifier'
