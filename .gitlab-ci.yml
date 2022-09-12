@@ -1,4 +1,4 @@
-image: registry.gitlab.com/leerstandsmelder/lsm-orte:1.1.2
+image: registry.gitlab.com/leerstandsmelder/lsm-orte:1.2.1
 
 services:
   - mysql:latest
@@ -27,7 +27,6 @@ variables:
 
 stages:
   - static
-  #- test
   - build-docker-image
   - push-image-to-gitlab-registry
 
@@ -46,25 +45,6 @@ brakeman:
   stage: static
   script:
     - brakeman -w3
-
-test:
-  <<: *default-cache
-  stage: test
-  coverage: '/LOC\s\(\d+\.\d+%\)\scovered/'
-  variables:
-    COVERAGE: "true"
-  script:
-    - cp config/database.yml.ci config/database.yml
-    - bundle exec rake db:create
-    - bundle exec rails db:setup
-    - bundle exec rake db:migrate
-    - bundle exec rspec
-  artifacts:
-    when: on_failure
-    expire_in: 1 week
-    paths:
-      - tmp/screenshots/
-      - log/
 
 bundler:audit:
   only:
