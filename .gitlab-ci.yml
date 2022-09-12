@@ -1,4 +1,4 @@
-image: registry.gitlab.com/leerstandsmelder/lsm-orte:1.0.1
+image: registry.gitlab.com/leerstandsmelder/lsm-orte:1.1.2
 
 services:
   - mysql:latest
