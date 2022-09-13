@@ -46,15 +46,6 @@ brakeman:
   script:
     - brakeman -w3
 
-bundler:audit:
-  only:
-    - schedules
-  script:
-    - gem install bundler-audit --no-document
-    - bundle install
-    - bundle-audit update
-    - bundle-audit check
-
 build-docker-image:
   stage: build-docker-image
   script:
