@@ -3,7 +3,27 @@ Rails.application.routes.draw do
   resources :build_logs
   resources :annotations
   resources :submission_configs
-  devise_for :users
+  devise_for :users,
+              controllers: {
+                sessions: 'users/sessions',
+                registrations: 'users/registrations'
+              }
+
+  # devise_for :api, path: 'api', controllers: {
+  #   sessions: 'api/sessions',
+  #   registrations: 'api/registrations'
+  # }
+  
+    # scope module: 'users',path: 'api', defaults: {format: :json} do
+    #   devise_for :users,
+    #   devise_scope :user do
+    #     get 'users/current', to: 'sessions#show'
+    #   end
+    #   get 'me', controller: 'users/informations', action: :me
+    # end
+            
+
+  get 'me', controller: 'users/informations', action: :me            
 
   root 'start#index'
 
@@ -83,6 +103,8 @@ Rails.application.routes.draw do
     resources :maps, only: [:show, :index], :defaults => { :format => :json } do
       resources :layers, only: [:show], :defaults => { :format => :json }
     end
+    get 'regions', to: 'maps#index', as: :regions, :defaults => { :format => :json }  
+    get 'region/:id', to: 'maps#show_defaults', as: :region, :defaults => { :format => :json }  
   end
 
 end
