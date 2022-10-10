@@ -1,0 +1,73 @@
+image: registry.gitlab.com/leerstandsmelder/lsm-orte:latest
+
+services:
+  - mysql:latest
+
+variables:
+  BUNDLE_CACHE: "vendor/bundle/"
+  RAILS_ENV: "test"
+  DB_HOST: mysql
+  DB_USERNAME: "orte"
+  DB_PASSWORD: "orte00"
+  MYSQL_HOST: mysql
+  MYSQL_DATABASE: "orte_test"
+  MYSQL_USER: "orte"
+  MYSQL_PASSWORD: "orte00"
+  MYSQL_ROOT_PASSWORD: "orte00"
+
+# cache gems and node_modules for next usage
+.default-cache: &default-cache
+  cache:
+    untracked: true
+    key: "$CI_BUILD_NAME"
+    paths:
+      - node_modules/
+      - vendor/
+      - public/
+
+stages:
+  - static
+  - test
+
+before_script:
+  - gem install bundler --no-document
+  - bundle check || bundle install --jobs $(nproc) --path=vendor
+
+rubocop:
+  <<: *default-cache
+  stage: static
+  script:
+    - bundle exec rubocop
+
+brakeman:
+  <<: *default-cache
+  stage: static
+  script:
+    - brakeman -w3
+
+test:
+  <<: *default-cache
+  stage: test
+  coverage: '/LOC\s\(\d+\.\d+%\)\scovered/'
+  variables:
+    COVERAGE: "true"
+  script:
+    - cp config/database.yml.ci config/database.yml
+    - bundle exec rails db:setup
+    - bundle exec rake db:migrate
+    - bundle exec rspec
+  artifacts:
+    when: on_failure
+    expire_in: 1 week
+    paths:
+      - tmp/screenshots/
+      - log/
+
+bundler:audit:
+  only:
+    - schedules
+  script:
+    - gem install bundler-audit --no-document
+    - bundle install
+    - bundle-audit update
+    - bundle-audit check

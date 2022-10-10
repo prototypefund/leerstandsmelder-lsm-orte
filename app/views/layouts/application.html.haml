@@ -41,9 +41,12 @@
     - klass = klass + " #{params[:action]}"
 
   %body{:id=>"#{id}", :class=>"#{klass}", "data-app-shortname"=>"#{Settings.app_shortname}"}
+    
+    
+
     %header
       = render 'layouts/navigation'
-
+    = render 'layouts/offcanvas'
     #map
       &nbsp;
     %main{role: "main"}

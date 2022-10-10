@@ -1,20 +1,17 @@
 # frozen_string_literal: true
 
 class MapsController < ApplicationController
-  before_action :set_map, only: %i[show edit update destroy]
+  before_action :set_map, only: %i[show edit new update destroy]
 
   before_action :redirect_to_friendly_id, only: %i[show]
 
   # GET /maps
   # GET /maps.json
-  def index
-    @maps = Map.sorted.by_user(current_user)
-  end
+  def index; end
 
   # GET /maps/1
   # GET /maps/1.json
   def show
-    @maps = Map.sorted.by_user(current_user)
     if @map
       @map_layers = @map.layers
       respond_to do |format|
@@ -88,6 +85,7 @@ class MapsController < ApplicationController
   end
 
   def set_map
+    @maps = Map.sorted.by_user(current_user)
     # flexible query: Find slugged resource, if not, find a non-slugged resoure. All that to avoid an exception if a resource is unknown or not accessible (which would happen with friendly.find)
     @map = Map.by_user(current_user).find_by_slug(params[:id]) || Map.by_user(current_user).find_by_id(params[:id])
   end

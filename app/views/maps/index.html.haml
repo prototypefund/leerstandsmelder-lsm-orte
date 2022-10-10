@@ -1,6 +1,6 @@
 #selection
   .grid-x
-    - if @maps.count > 0
+    - if @maps && @maps.count > 0
       .cell.medium-12
         = simple_form_for :navselector, url: '' do |f|
           .input-group

@@ -233,3 +233,67 @@ a.edit_link:hover .fi {
     opacity: 0;
   }
 }
+
+.off-canvas {
+  background-color: #ffffff;
+  h1,
+  h2,
+  h3 {
+    margin: 1rem 1.5rem;
+  }
+  ul.menu {
+    border-left: 0px;
+    margin-left: 0;
+    li {
+      margin-left: 0rem;
+      font-size: 12px;
+    }
+    li:before {
+      content: none;
+      padding-right: 4px;
+    }
+    li a.is-active {
+      background-color: #f7e4e9;
+    }
+    li a:focus {
+      color: #333;
+      border-bottom: 1px solid #333;
+    }
+    a {
+      color: #333;
+    }
+    a.header {
+      font-weight: bold;
+      color: #333;
+      font-size: 1.1rem;
+    }
+  }
+  .accordion-menu .nested.is-accordion-submenu li {
+    padding-left: 1rem;
+    font-weight: normal;
+  }
+  .accordion-menu .nested.is-accordion-submenu {
+    margin-right: 0;
+    margin-left: 0rem;
+    li {
+      padding-left: 0rem;
+      border-bottom: 1px solid #999999;
+      a {
+        .badge {
+          color: #333;
+          font-size: 0.8rem;
+        }
+        line-height: inherit;
+        padding-left: 2rem;
+        border-bottom: 0px solid #999999;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+
+
+.off-canvas.is-transition-overlap {
+  z-index: 1111 !important;
+}

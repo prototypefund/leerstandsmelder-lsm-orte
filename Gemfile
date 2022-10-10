@@ -7,6 +7,8 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+gem 'dotenv-rails', groups: %i[development test]
+
 gem 'puma', '~> 5'
 gem 'rails', '~> 6'
 gem 'sassc', '~> 2.4'
@@ -42,8 +44,9 @@ gem 'select2-rails'
 # NOTE: settingslogic != rails 3
 gem 'settingslogic'
 gem 'simple_form'
-gem 'sprockets', '>= 3.0.0'
+gem 'sprockets', '>= 2.3.3'
 gem 'sprockets-es6'
+gem 'tzinfo-data'
 
 gem 'image_processing'
 gem 'mini_racer', '0.4', platforms: :ruby

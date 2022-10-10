@@ -144,6 +144,10 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.5.0)
     docile (1.4.0)
+    dotenv (2.8.1)
+    dotenv-rails (2.8.1)
+      dotenv (= 2.8.1)
+      railties (>= 3.2)
     equalizer (0.0.11)
     erubi (1.11.0)
     exception_notification (4.5.0)
@@ -514,6 +518,7 @@ DEPENDENCIES
   database_cleaner
   deep_cloneable (~> 3)
   devise
+  dotenv-rails
   exception_notification
   factory_bot_rails
   foundation-icons-sass-rails
@@ -563,6 +568,7 @@ DEPENDENCIES
   sprockets-es6
   tinymce-rails (~> 5)
   turnout
+  tzinfo-data
   uglifier
   web-console (~> 4)
   webdrivers (~> 5)
