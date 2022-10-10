@@ -5,7 +5,7 @@ Rails.application.configure do
   # test suite. You never need to work with it otherwise. Remember that
   # your test database is "scratch space" for the test suite and is wiped
   # and recreated between test runs. Don't rely on the data there!
-  config.cache_classes = true
+  config.cache_classes = false
 
   # Do not eager load code on boot. This avoids loading your whole application
   # just for the purpose of running a single test. If you are using a tool that
@@ -52,5 +52,9 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { :host => "test.domain.com" }
 
   routes.default_url_options[:host] = '127.0.0.1:3000'
+
+  # config.assets.compile = true
+  # config.action_controller.asset_host = "127.0.0.1:3000"
+  # config.assets.prefix = 'assets_test'
 
 end
