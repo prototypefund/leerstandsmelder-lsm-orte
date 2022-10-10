@@ -1,12 +1,13 @@
 require 'rails_helper'
 require "json"
 
-RSpec.describe 'POST /users/sign_in', type: :request do
+RSpec.describe 'POST /api/v1/users/sign_in', type: :request do
   let(:user) { FactoryBot.create(:user) }
-  let(:url) { '/users/sign_in' }
+  let(:url) { '/api/v1/users/sign_in' }
   let(:params) do
     {
-      user: {
+      :format => 'json',
+      api_user: {
         email: user.email,
         password: user.password
       }
@@ -36,17 +37,22 @@ RSpec.describe 'POST /users/sign_in', type: :request do
   context 'when login params are incorrect' do
     before { post url }
     
-    it 'returns unathorized status' do
+    it 'returns unauthorized status' do
       expect(response.status).to eq 401
     end
   end
 end
 
-RSpec.describe 'DELETE /users/sign_out', type: :request do
-  let(:url) { '/users/sign_out' }
+RSpec.describe 'DELETE /api/v1/users/sign_out', type: :request do
+  let(:url) { '/api/v1/users/sign_out' }
+  let(:params) do
+    {
+      :format => 'json'
+    }
+  end
 
-  it 'returns 401, unauthorizted' do
-    delete url
-    expect(response).to have_http_status(401)
+  it 'returns 204, no content' do
+    delete url, params: params
+    expect(response).to have_http_status(204)
   end
 end
