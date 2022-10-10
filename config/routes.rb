@@ -3,27 +3,25 @@ Rails.application.routes.draw do
   resources :build_logs
   resources :annotations
   resources :submission_configs
-  devise_for :users,
-              controllers: {
-                sessions: 'users/sessions',
-                registrations: 'users/registrations'
-              }
+  devise_for :users
 
-  # devise_for :api, path: 'api', controllers: {
-  #   sessions: 'api/sessions',
-  #   registrations: 'api/registrations'
-  # }
-  
-    # scope module: 'users',path: 'api', defaults: {format: :json} do
-    #   devise_for :users,
-    #   devise_scope :user do
-    #     get 'users/current', to: 'sessions#show'
-    #   end
-    #   get 'me', controller: 'users/informations', action: :me
-    # end
-            
+  # For API 
+#namespace :api do
+ # namespace :v1 do
+ # # Namespace not working: https://github.com/waiting-for-dev/devise-jwt/issues/47
+    devise_for :users,
+    at: 'api/v1/users',
+    path: 'api/v1/users',
+    defaults: { format: :json },
+    as: :api,
+    controllers: {
+      sessions: 'api/v1/users/sessions',
+      registrations: 'api/v1/users/registrations'
+    }
+  #end
+#end
 
-  get 'me', controller: 'users/informations', action: :me            
+  get 'me', controller: 'api/v1/users/informations', action: :me
 
   root 'start#index'
 
