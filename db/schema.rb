@@ -119,6 +119,12 @@ ActiveRecord::Schema.define(version: 2022_10_05_141341) do
     t.index ["place_id"], name: "index_images_on_place_id"
   end
 
+  create_table "jwt_denylist", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
+    t.string "jti", null: false
+    t.datetime "exp", null: false
+    t.index ["jti"], name: "index_jwt_denylist_on_jti"
+  end
+
   create_table "layers", charset: "utf8mb3", force: :cascade do |t|
     t.string "title"
     t.string "subtitle"
@@ -330,8 +336,10 @@ ActiveRecord::Schema.define(version: 2022_10_05_141341) do
     t.bigint "group_id"
     t.datetime "created_at", default: "2021-11-06 17:42:00", null: false
     t.datetime "updated_at", default: "2021-11-06 17:42:00", null: false
+    t.string "jti", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["group_id"], name: "index_users_on_group_id"
+    t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
@@ -351,10 +359,13 @@ ActiveRecord::Schema.define(version: 2022_10_05_141341) do
   end
 
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "annotations", "people"
   add_foreign_key "annotations", "places"
   add_foreign_key "build_logs", "layers"
   add_foreign_key "build_logs", "maps"
+  add_foreign_key "icons", "iconsets"
+  add_foreign_key "images", "places"
+  add_foreign_key "layers", "maps"
+  add_foreign_key "maps", "groups"
   add_foreign_key "people", "maps"
   add_foreign_key "places", "layers"
   add_foreign_key "submission_configs", "layers"
