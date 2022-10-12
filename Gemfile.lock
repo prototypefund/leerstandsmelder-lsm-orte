@@ -568,7 +568,6 @@ DEPENDENCIES
   sprockets-es6
   tinymce-rails (~> 5)
   turnout
-  tzinfo-data
   uglifier
   web-console (~> 4)
   webdrivers (~> 5)

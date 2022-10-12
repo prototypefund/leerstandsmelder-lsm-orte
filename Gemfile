@@ -46,7 +46,6 @@ gem 'settingslogic'
 gem 'simple_form'
 gem 'sprockets', '~> 4'
 gem 'sprockets-es6'
-gem 'tzinfo-data'
 
 gem 'image_processing'
 gem 'mini_racer', '0.4', platforms: :ruby
