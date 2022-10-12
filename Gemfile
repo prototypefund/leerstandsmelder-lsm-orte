@@ -15,7 +15,7 @@ gem 'sassc', '~> 2.4'
 gem 'sassc-rails'
 gem 'uglifier'
 
-gem 'friendly_id', '~> 5.4.0'
+gem 'friendly_id', '~> 5.4'
 
 gem 'jbuilder'
 # Use Redis adapter to run Action Cable in production
@@ -44,7 +44,7 @@ gem 'select2-rails'
 # NOTE: settingslogic != rails 3
 gem 'settingslogic'
 gem 'simple_form'
-gem 'sprockets', '>= 2.3.3'
+gem 'sprockets', '~> 4'
 gem 'sprockets-es6'
 gem 'tzinfo-data'
 
@@ -101,13 +101,13 @@ group :development do
   gem 'capistrano', '~> 3', require: false
   gem 'capistrano-bundler'
   gem 'capistrano-passenger'
-  gem 'capistrano-rails', '~> 1.3', require: false
+  gem 'capistrano-rails', '~> 1.6', require: false
   gem 'capistrano-rvm'
 
   gem 'letter_opener'
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring', '~> 3'
+  gem 'spring', '~> 4'
 
   gem 'brakeman', require: false
   gem 'rubycritic', require: false
