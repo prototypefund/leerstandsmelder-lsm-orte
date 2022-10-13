@@ -27,6 +27,7 @@ gem 'deep_cloneable', '~> 3'
 # custom
 gem 'cancancan'
 gem 'devise'
+gem 'simple_token_authentication', '~> 1.0'
 gem 'exception_notification'
 gem 'foundation-icons-sass-rails'
 gem 'foundation-rails', '~> 6'

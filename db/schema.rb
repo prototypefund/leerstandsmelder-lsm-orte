@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_05_141341) do
+ActiveRecord::Schema.define(version: 2022_10_13_095101) do
 
   create_table "active_storage_attachments", charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
@@ -330,8 +330,12 @@ ActiveRecord::Schema.define(version: 2022_10_05_141341) do
     t.bigint "group_id"
     t.datetime "created_at", default: "2021-11-06 17:42:00", null: false
     t.datetime "updated_at", default: "2021-11-06 17:42:00", null: false
+    t.string "jti", null: false
+    t.string "authentication_token", limit: 30
+    t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["group_id"], name: "index_users_on_group_id"
+    t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
