@@ -48,6 +48,8 @@ gem 'simple_form'
 gem 'sprockets', '~> 4'
 gem 'sprockets-es6'
 gem 'tzinfo-data'
+gem 'devise-jwt'
+gem 'fast_jsonapi'
 
 gem 'image_processing'
 gem 'mini_racer', '0.4', platforms: :ruby
@@ -92,6 +94,7 @@ group :development, :test do
   gem 'webdrivers', '~> 5'
 
   gem 'webmock'
+  gem 'thin'
 end
 
 group :development do

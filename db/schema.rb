@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_13_095101) do
+ActiveRecord::Schema.define(version: 2022_10_13_121800) do
 
   create_table "active_storage_attachments", charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
@@ -117,6 +117,12 @@ ActiveRecord::Schema.define(version: 2022_10_13_095101) do
     t.datetime "updated_at", null: false
     t.string "itype", default: "image"
     t.index ["place_id"], name: "index_images_on_place_id"
+  end
+
+  create_table "jwt_denylist", charset: "utf8mb3", force: :cascade do |t|
+    t.string "jti", null: false
+    t.datetime "exp", null: false
+    t.index ["jti"], name: "index_jwt_denylist_on_jti"
   end
 
   create_table "layers", charset: "utf8mb3", force: :cascade do |t|
@@ -355,10 +361,13 @@ ActiveRecord::Schema.define(version: 2022_10_13_095101) do
   end
 
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "annotations", "people"
   add_foreign_key "annotations", "places"
   add_foreign_key "build_logs", "layers"
   add_foreign_key "build_logs", "maps"
+  add_foreign_key "icons", "iconsets"
+  add_foreign_key "images", "places"
+  add_foreign_key "layers", "maps"
+  add_foreign_key "maps", "groups"
   add_foreign_key "people", "maps"
   add_foreign_key "places", "layers"
   add_foreign_key "submission_configs", "layers"

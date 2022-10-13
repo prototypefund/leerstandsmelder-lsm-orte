@@ -5,6 +5,24 @@ Rails.application.routes.draw do
   resources :submission_configs
   devise_for :users
 
+  # For API 
+#namespace :api do
+ # namespace :v1 do
+ # # Namespace not working: https://github.com/waiting-for-dev/devise-jwt/issues/47
+    devise_for :users,
+    at: 'api/v1/users',
+    path: 'api/v1/users',
+    defaults: { format: :json },
+    as: :api,
+    controllers: {
+      sessions: 'api/v1/users/sessions',
+      registrations: 'api/v1/users/registrations'
+    }
+  #end
+#end
+
+  get 'me', controller: 'api/v1/users/informations', action: :me
+
   root 'start#index'
 
   get 'info',      to: 'start#info'
@@ -83,6 +101,8 @@ Rails.application.routes.draw do
     resources :maps, only: [:show, :index], :defaults => { :format => :json } do
       resources :layers, only: [:show], :defaults => { :format => :json }
     end
+    get 'regions', to: 'maps#index', as: :regions, :defaults => { :format => :json }  
+    get 'region/:id', to: 'maps#show_defaults', as: :region, :defaults => { :format => :json }  
   end
 
 end

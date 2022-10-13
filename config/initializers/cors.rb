@@ -24,11 +24,12 @@
 # Read more: https://github.com/cyu/rack-cors
 
 
-Rails.application.config.middleware.insert_before 0, Rack::Cors do
+Rails.application.config.middleware.insert_before 0, Rack::Cors, debug: false do
   allow do
-    origins '*'
-    resource '*',
+    origins 'http://localhost:8080', '127.0.0.1:8080', 'localhost:8080', 'http://127.0.0.1:8080'
+    resource '*', 
       headers: :any,
-      methods: [:get, :post, :put, :patch, :delete, :options, :head]
+      methods: :any,
+      credentials: true
   end
 end

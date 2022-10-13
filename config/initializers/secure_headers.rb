@@ -23,10 +23,10 @@ SecureHeaders::Configuration.default do |config|
 
     # directive values: these values will directly translate into source directives
     default_src: %w(https: 'self' https://server.arcgisonline.com),
-    base_uri: %w('self' https://staging.orte.link https://orte.link),
+    base_uri: %w('self' https://staging.orte.link https://orte.link http://localhost:8080),
     block_all_mixed_content: true, # see http://www.w3.org/TR/mixed-content/
     child_src: %w('self' 'unsafe-inline' https://player.vimeo.com https://www.youtube.com https://www.facebook.com), # if child-src isn't supported, the value for frame-src will be set.
-    connect_src: %w('self' https://nominatim.openstreetmap.org/search https://nominatim.openstreetmap.org/reverse https://staging.orte.link ws://staging.orte.link wss://staging.orte.link https://orte.link ws://orte.link wss://orte.link),
+    connect_src: %w('self'  http://localhost:8080 https://nominatim.openstreetmap.org/search https://nominatim.openstreetmap.org/reverse https://staging.orte.link ws://staging.orte.link wss://staging.orte.link https://orte.link ws://orte.link wss://orte.link),
     font_src: %w('self' 'unsafe-inline' https://staging.orte.link https://orte.link),
     form_action: %w('self'),
     frame_ancestors: %w('none'),
@@ -36,7 +36,7 @@ SecureHeaders::Configuration.default do |config|
     object_src: %w('self' 'unsafe-eval'),
     sandbox: true, # true and [] will set a maximally restrictive setting
     plugin_types: %w(),
-    script_src: %w('self' 'unsafe-inline' https://staging.orte.link https://orte.link),
+    script_src: %w('self' 'unsafe-inline'  http://localhost:8080 https://staging.orte.link https://orte.link),
     style_src: %w('self' 'unsafe-inline' https://staging.orte.link https://orte.link),
     worker_src: %w('self'),
     upgrade_insecure_requests: true, # see https://www.w3.org/TR/upgrade-insecure-requests/
@@ -45,9 +45,9 @@ SecureHeaders::Configuration.default do |config|
 
   if Rails.env.development? || Rails.env.test? || Rails.env.staging?  || Rails.env.production?
     config.csp = default_csp_config.merge({
-        default_src: %w('self' https://staging.orte.link https://orte.link),
+        default_src: %w('self'  http://localhost:8080 https://staging.orte.link https://orte.link),
         font_src: %w('self' 'unsafe-inline' https://staging.orte.link https://orte.link),
-        script_src: %w('self' 'unsafe-inline' https://staging.orte.link https://orte.link),
+        script_src: %w('self' 'unsafe-inline'  http://localhost:8080 https://staging.orte.link https://orte.link),
         block_all_mixed_content: false,
         upgrade_insecure_requests: false,
         sandbox: false
