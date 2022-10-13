@@ -48,7 +48,6 @@ gem 'simple_form'
 gem 'sprockets', '~> 4'
 gem 'sprockets-es6'
 gem 'tzinfo-data'
-gem 'devise-jwt'
 gem 'fast_jsonapi'
 
 gem 'image_processing'

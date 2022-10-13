@@ -6,6 +6,13 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!
 
   protect_from_forgery with: :exception
+  protect_from_forgery with: :null_session, if: :json_request?
+
+  protected
+
+  def json_request?
+    request.format.json?
+  end
 
   def report_csp
     # do nothing right now...

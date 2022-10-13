@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  include Devise::JWT::RevocationStrategies::JTIMatcher
+
+  acts_as_token_authenticatable
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   # :registerable
   devise :database_authenticatable,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :jwt_authenticatable, jwt_revocation_strategy: self
+         :recoverable, :rememberable, :trackable, :validatable
 
   include ModelAuthorization
 
@@ -26,11 +27,6 @@ class User < ApplicationRecord
   scope :by_group, lambda { |user|
     where(group_id: user.group.id) unless user.group.title == 'Admins'
   }
-
-  #def jwt_payload
-  #  super.merge('foo' => 'bar')
-  #end
-  
 
   def admin?
     role == 'admin'
