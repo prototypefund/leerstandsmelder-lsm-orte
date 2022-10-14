@@ -27,7 +27,6 @@ gem 'deep_cloneable', '~> 3'
 # custom
 gem 'cancancan'
 gem 'devise'
-gem 'simple_token_authentication', '~> 1.0'
 gem 'exception_notification'
 gem 'foundation-icons-sass-rails'
 gem 'foundation-rails', '~> 6'
@@ -42,13 +41,14 @@ gem 'rack-attack'
 gem 'rack-cors'
 gem 'secure_headers'
 gem 'select2-rails'
+gem 'simple_token_authentication', '~> 1.0'
 # NOTE: settingslogic != rails 3
+gem 'fast_jsonapi'
 gem 'settingslogic'
 gem 'simple_form'
 gem 'sprockets', '~> 4'
 gem 'sprockets-es6'
 gem 'tzinfo-data'
-gem 'fast_jsonapi'
 
 gem 'image_processing'
 gem 'mini_racer', '0.4', platforms: :ruby
@@ -61,6 +61,7 @@ gem 'rubyzip'
 gem 'tinymce-rails', '~> 5'
 gem 'turnout'
 
+gem 'net-http'
 gem 'net-smtp'
 
 group :staging, :production do
@@ -92,8 +93,8 @@ group :development, :test do
   gem 'simplecov-small-badge', require: false
   gem 'webdrivers', '~> 5'
 
-  gem 'webmock'
   gem 'thin'
+  gem 'webmock'
 end
 
 group :development do
