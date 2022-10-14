@@ -119,12 +119,6 @@ ActiveRecord::Schema.define(version: 2022_10_13_121800) do
     t.index ["place_id"], name: "index_images_on_place_id"
   end
 
-  create_table "jwt_denylist", charset: "utf8mb3", force: :cascade do |t|
-    t.string "jti", null: false
-    t.datetime "exp", null: false
-    t.index ["jti"], name: "index_jwt_denylist_on_jti"
-  end
-
   create_table "layers", charset: "utf8mb3", force: :cascade do |t|
     t.string "title"
     t.string "subtitle"
@@ -336,12 +330,10 @@ ActiveRecord::Schema.define(version: 2022_10_13_121800) do
     t.bigint "group_id"
     t.datetime "created_at", default: "2021-11-06 17:42:00", null: false
     t.datetime "updated_at", default: "2021-11-06 17:42:00", null: false
-    t.string "jti", null: false
     t.string "authentication_token", limit: 30
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["group_id"], name: "index_users_on_group_id"
-    t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
