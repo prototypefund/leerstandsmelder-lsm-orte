@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 class Api::V1::Users::RegistrationsController < Devise::RegistrationsController
-  respond_to :json  
-  
-  private  
-  
+  respond_to :json
+
+  private
+
   def respond_with(resource, _opts = {})
     resource.persisted? ? register_success : register_failed
-  end  
-  
+  end
+
   def register_success
     render json: { message: 'Signed up.' }
-  end  
-  
+  end
+
   def register_failed
-    render json: { message: "Signed up failure." }
+    render json: { message: 'Signed up failure.' }
   end
 end

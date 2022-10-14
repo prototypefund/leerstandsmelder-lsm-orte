@@ -26,7 +26,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors, debug: false do
   allow do
-    origins 'http://localhost:8080', '127.0.0.1:8080', 'localhost:8080', 'http://127.0.0.1:8080'
+    origins 'localhost:8080', '127.0.0.1:8080'
     resource '*', 
       headers: :any,
       methods: :any,
