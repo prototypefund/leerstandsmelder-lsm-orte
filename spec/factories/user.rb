@@ -9,6 +9,7 @@ FactoryBot.define do
     email
     password { 'password12345' }
     password_confirmation { 'password12345' }
+    authentication_token { 'token12345' }
     group
   end
 
@@ -17,6 +18,7 @@ FactoryBot.define do
     email
     password { 'password12345' }
     password_confirmation { 'password12345' }
+    authentication_token { 'token12345' }
     group
     role { 'admin' }
   end

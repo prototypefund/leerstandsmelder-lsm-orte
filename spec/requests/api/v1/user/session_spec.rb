@@ -23,14 +23,18 @@ RSpec.describe 'POST /api/v1/users/sign_in', type: :request do
       expect(response).to have_http_status(200)
     end
 
-    it 'returns JTW token in authorization header' do
-      expect(response.headers['Authorization']).to be_present
+    it 'returns token in response body' do
+      hash_body = nil
+      expect { hash_body = JSON.parse(response.body).with_indifferent_access }.not_to raise_exception
+      expect(hash_body['success']).to eq true
+
     end
 
-    it 'returns valid JWT token' do
-      
-      decoded_token = JWT.decode(response.headers['Authorization'].split(' ').last, Rails.application.credentials.devise_jwt_secret_key, true)
-      expect(decoded_token.first['sub']).to be_present
+    it 'returns valid token' do
+      hash_body = nil
+      expect { hash_body = JSON.parse(response.body).with_indifferent_access }.not_to raise_exception
+      expect(hash_body['auth_token']).to eq user.authentication_token
+
     end
   end
 
