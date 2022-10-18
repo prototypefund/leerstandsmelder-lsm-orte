@@ -5,6 +5,15 @@ Rails.application.routes.draw do
   resources :submission_configs
   devise_for :users
 
+  namespace :api do
+    scope :v1 do
+      mount_devise_token_auth_for 'User', at: 'auth'
+    end
+    namespace :v1 do
+      get 'me', controller: 'users/informations', action: :me
+    end
+  end
+
   root 'start#index'
 
   get 'info',      to: 'start#info'
