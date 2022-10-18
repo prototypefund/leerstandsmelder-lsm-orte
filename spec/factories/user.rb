@@ -9,7 +9,7 @@ FactoryBot.define do
     email
     password { 'password12345' }
     password_confirmation { 'password12345' }
-    authentication_token { 'token12345' }
+    authentication_token { SecureRandom.urlsafe_base64(10) }
     group
   end
 
@@ -18,7 +18,7 @@ FactoryBot.define do
     email
     password { 'password12345' }
     password_confirmation { 'password12345' }
-    authentication_token { 'token12345' }
+    authentication_token { SecureRandom.urlsafe_base64(10) }
     group
     role { 'admin' }
   end
