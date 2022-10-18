@@ -345,6 +345,10 @@ ActiveRecord::Schema.define(version: 2022_09_02_144525) do
     t.index ["place_id"], name: "index_videos_on_place_id"
   end
 
+  add_foreign_key "annotations", "people"
+  add_foreign_key "annotations", "places"
+  add_foreign_key "build_logs", "layers"
+  add_foreign_key "build_logs", "maps"
   add_foreign_key "people", "maps"
   add_foreign_key "submission_configs", "layers"
   add_foreign_key "submissions", "places"

@@ -8,6 +8,10 @@ RSpec.describe Place, type: :model do
     expect(build(:place)).to be_valid
   end
 
+  it 'has a valid factory (with sensitive on)' do
+    expect(build(:place, sensitive: true)).to be_valid
+  end
+
   describe 'Audio attachment' do
     it 'is attached' do
       subject.audio.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.mp3')), filename: 'test.mp3', content_type: 'audio/mpeg')
@@ -53,6 +57,27 @@ RSpec.describe Place, type: :model do
     end
   end
 
+  it 'layer_color' do
+    m = FactoryBot.create(:map)
+    l = FactoryBot.create(:layer, map: m)
+    p = FactoryBot.create(:place, layer: l)
+    expect(p.layer_color).to eq(l.color)
+  end
+
+  it 'title_and_location' do
+    m = FactoryBot.create(:map)
+    l = FactoryBot.create(:layer, map: m)
+    p = FactoryBot.create(:place, layer: l)
+    expect(p.title_and_location).to eq("#{p.title} (#{p.location})")
+  end
+
+  it 'title_and_location (while no location is defined)' do
+    m = FactoryBot.create(:map)
+    l = FactoryBot.create(:layer, map: m)
+    p = FactoryBot.create(:place, layer: l, location: NIL)
+    expect(p.title_and_location).to eq(p.title)
+  end
+
   it 'show_link' do
     m = FactoryBot.create(:map)
     l = FactoryBot.create(:layer, map: m)
@@ -72,6 +97,22 @@ RSpec.describe Place, type: :model do
     l = FactoryBot.create(:layer, map: m)
     p = FactoryBot.create(:place, layer: l)
     expect(p.imagelink2).to eq(p.imagelink)
+  end
+
+  it 'audiolink' do
+    m = FactoryBot.create(:map)
+    l = FactoryBot.create(:layer, map: m)
+    p = FactoryBot.create(:place, layer: l)
+    p.audio.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.mp3')), filename: 'test.mp3', content_type: 'audio/mpeg')
+    expect(p.audiolink).to eq("<audio controls=\"controls\" src=\"#{Rails.application.routes.url_helpers.url_for(p.audio)}\"></audio>")
+  end
+
+  it 'random_loc' do
+    m = FactoryBot.create(:map)
+    l = FactoryBot.create(:layer, map: m)
+    p = FactoryBot.create(:place, layer: l)
+    allow(SecureRandom).to receive(:random_number).with(anything).and_return(2)
+    expect(p.random_loc(long: 10, lat: 50, radius_meters: 200)).to eq([10.002541264263025, 50.0])
   end
 
   describe 'Scope, (implicit) sorted by id ' do
@@ -135,6 +176,14 @@ RSpec.describe Place, type: :model do
       l = FactoryBot.create(:layer, map: m)
       p = FactoryBot.create(:place, layer: l, address: 'An address', location: 'A location', zip: '12345', city: 'City')
       expect(p.full_address_with_city).to eq('A location An address, 12345 City')
+    end
+  end
+
+  describe 'Tags' do
+    it 'returns list of tags' do
+      tag_list = %w[aaa bbb ccc]
+      p = FactoryBot.create(:place, tag_list: tag_list)
+      expect(p.tag_list).to eq(tag_list)
     end
   end
 
