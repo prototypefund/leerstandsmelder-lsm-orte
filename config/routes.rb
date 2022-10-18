@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   resources :build_logs
   resources :annotations
   resources :submission_configs
-  devise_for :users
+  devise_for :users, controllers: {
+    sessions: 'sessions'
+  }
 
   # For API 
 namespace :api do
