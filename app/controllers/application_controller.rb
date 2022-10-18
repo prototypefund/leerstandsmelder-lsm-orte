@@ -1,18 +1,16 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  acts_as_token_authentication_handler_for User
-
   before_action :authenticate_user!
 
   protect_from_forgery with: :exception
-  protect_from_forgery with: :null_session, if: :json_request?
+
+  def after_sign_out_path_for(resource_or_scope)
+    # logic here
+    puts 'logged out'
+  end
 
   protected
-
-  def json_request?
-    request.format.json?
-  end
 
   def report_csp
     # do nothing right now...
@@ -23,6 +21,16 @@ class ApplicationController < ActionController::Base
       true
     else
       false
+    end
+  end
+
+  def authenticate_user!
+    if user_signed_in?
+      super
+    else
+      redirect_to new_user_session_path
+      ## if you want render 404 page
+      ## render :file => File.join(Rails.root, 'public/404'), :formats => [:html], :status => 404, :layout => false
     end
   end
 end

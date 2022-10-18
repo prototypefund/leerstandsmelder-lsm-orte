@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::V1::LayersController < ActionController::Base
+class Api::V1::LayersController < Api::V1::ApplicationController
   # GET /maps/1/layers/1.json
   def show
     @layer = Layer.published.find_by_slug(params[:id]) || Layer.published.find_by_id(params[:id])

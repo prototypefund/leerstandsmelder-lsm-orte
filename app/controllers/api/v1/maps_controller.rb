@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::V1::MapsController < ActionController::Base
+class Api::V1::MapsController < Api::V1::ApplicationController
   # GET /maps.json
   def index
     @maps = Map.published
