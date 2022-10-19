@@ -4,7 +4,7 @@ services:
   - mysql:latest
 
 variables:
-  BUNDLE_CACHE: "vendor/bundle/"
+  # BUNDLE_CACHE: "vendor/bundle/"
   RAILS_ENV: "test"
   DB_HOST: mysql
   DB_USERNAME: "orte"
