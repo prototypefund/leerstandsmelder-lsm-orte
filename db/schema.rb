@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_05_141341) do
+ActiveRecord::Schema.define(version: 2022_10_18_135055) do
 
   create_table "active_storage_attachments", charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
@@ -330,9 +330,16 @@ ActiveRecord::Schema.define(version: 2022_10_05_141341) do
     t.bigint "group_id"
     t.datetime "created_at", default: "2021-11-06 17:42:00", null: false
     t.datetime "updated_at", default: "2021-11-06 17:42:00", null: false
+    t.string "authentication_token", limit: 30
+    t.string "provider", default: "email", null: false
+    t.string "uid", default: "", null: false
+    t.text "tokens"
+    t.boolean "allow_password_change", default: false
+    t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["group_id"], name: "index_users_on_group_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
   create_table "videos", charset: "utf8mb3", force: :cascade do |t|
@@ -351,10 +358,13 @@ ActiveRecord::Schema.define(version: 2022_10_05_141341) do
   end
 
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "annotations", "people"
   add_foreign_key "annotations", "places"
   add_foreign_key "build_logs", "layers"
   add_foreign_key "build_logs", "maps"
+  add_foreign_key "icons", "iconsets"
+  add_foreign_key "images", "places"
+  add_foreign_key "layers", "maps"
+  add_foreign_key "maps", "groups"
   add_foreign_key "people", "maps"
   add_foreign_key "places", "layers"
   add_foreign_key "submission_configs", "layers"
