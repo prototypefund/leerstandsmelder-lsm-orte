@@ -62,6 +62,7 @@ gem 'rubyzip'
 gem 'tinymce-rails', '~> 5'
 gem 'turnout'
 
+gem 'net-http'
 gem 'net-smtp'
 
 group :staging, :production do
@@ -93,6 +94,7 @@ group :development, :test do
   gem 'simplecov-small-badge', require: false
   gem 'webdrivers', '~> 5'
 
+  gem 'brakeman', require: false
   gem 'webmock'
 end
 
@@ -112,6 +114,5 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring', '~> 4'
 
-  gem 'brakeman', require: false
   gem 'rubycritic', require: false
 end
