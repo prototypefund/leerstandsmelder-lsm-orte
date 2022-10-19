@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Public::MapsController < ActionController::Base
+class Api::V1::MapsController < Api::V1::ApplicationController
   before_action :cors_set_access_control_headers
 
   # For all responses in this controller, return the CORS access control headers.
