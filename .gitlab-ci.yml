@@ -52,6 +52,7 @@ test:
   variables:
     COVERAGE: "true"
   script:
+    - bundle install
     - cp config/database.yml.ci config/database.yml
     - bundle exec rails db:setup
     - bundle exec rake db:migrate
