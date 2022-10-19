@@ -3,7 +3,7 @@
 json.map do
   next unless @map.published
 
-  json.call(@map, :id, :title, :subtitle, :text, :credits, :image_link, :created_at, :updated_at, :published)
+  json.call(@map, :id, :title, :subtitle, :text, :credits, :image_link, :created_at, :updated_at, :published, :mapcenter_lat, :mapcenter_lon)
   json.owner @map.group.title
   json.iconset @map.iconset, :title, :icon_anchor, :icon_size, :popup_anchor, :class_name if @map.iconset
   json.layer do
