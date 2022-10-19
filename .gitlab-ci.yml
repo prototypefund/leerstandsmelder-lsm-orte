@@ -15,7 +15,6 @@ variables:
   MYSQL_USER: "orte"
   MYSQL_PASSWORD: "orte00"
   MYSQL_ROOT_PASSWORD: "orte00"
-  CHROMEDRIVER_DIR: "/chromedriver"
 
 # cache gems and node_modules for next usage
 .default-cache: &default-cache
@@ -61,7 +60,7 @@ test:
     # Update aptitude's package sources
     - apt-get -qq update -y
     # Install latest Chrome stable, Xvfb packages
-    - apt-get -qq install -y google-chrome-stable xvfb gtk2-engines-pixbuf xfonts-cyrillic xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable imagemagick x11-apps default-jre
+    - apt-get -qq install -y npm google-chrome-stable xvfb gtk2-engines-pixbuf xfonts-cyrillic xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable imagemagick x11-apps default-jre
     # Launch Xvfb
     - Xvfb :0 -ac -screen 0 1024x768x24 &
     # Export display for Chrome
