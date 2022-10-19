@@ -92,7 +92,7 @@ test:dawnscanner:
     paths:
       - dawnscanner
   only:
-    - master
+    - main
   script:
     - mkdir dawnscanner
     - bundle exec dawn --html -zF dawnscanner/index.html .
@@ -106,7 +106,8 @@ test:erd:
     paths:
       - erd.pdf
   only:
-    - master
+    - main
+    - lsm
   script:
     - apt-get -o dir::cache::archives="$APT_CACHE_DIR" install -y -qq graphviz
     - bundle exec rake erd
@@ -138,7 +139,8 @@ pages:
       - public/dawnscanner
       - public/erd.pdf
   only:
-    - master
+    - main
+    - lsm
   script:
     - mv brakeman public/ || true
     - mv coverage public/ || true
