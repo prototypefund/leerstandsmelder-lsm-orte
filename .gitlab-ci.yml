@@ -26,24 +26,24 @@ variables:
       - public/
 
 stages:
-  # - static
+  #  - static
   - test
 
 before_script:
   - gem install bundler --no-document
   - bundle check || bundle install --jobs $(nproc)
 
-rubocop:
-  <<: *default-cache
-  stage: static
-  script:
-    - bundle exec rubocop
+# rubocop:
+#   <<: *default-cache
+#   stage: static
+#   script:
+#     - bundle exec rubocop
 
-brakeman:
-  <<: *default-cache
-  stage: static
-  script:
-    - brakeman -w3
+# brakeman:
+#   <<: *default-cache
+#   stage: static
+#   script:
+#     - brakeman -w3
 
 test:
   <<: *default-cache
