@@ -1,7 +1,8 @@
 image: ruby:2.7.2
 
 services:
-  - mysql:latest
+  - name: mysql:latest
+    command: ["--default-authentication-plugin=mysql_native_password"]
 
 variables:
   # BUNDLE_CACHE: "vendor/bundle/"
