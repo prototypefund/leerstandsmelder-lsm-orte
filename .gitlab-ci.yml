@@ -27,24 +27,47 @@ variables:
       - public/
 
 stages:
-  #  - static
+  - static
   - test
 
 before_script:
   - gem install bundler --no-document
   - bundle check || bundle install --jobs $(nproc)
 
-# rubocop:
-#   <<: *default-cache
-#   stage: static
-#   script:
-#     - bundle exec rubocop
+rubocop:
+  <<: *default-cache
+  stage: static
+  script:
+    - bundle exec rubocop
 
-# brakeman:
+brakeman:
+  <<: *default-cache
+  stage: static
+  allow_failure: true
+  artifacts:
+    name: brakeman_report
+    when: always
+    paths:
+      - brakeman/
+  only:
+    - master
+  script:
+    - bundle exec brakeman --format html -o brakeman/index.html
+
+# dawnscanner:
 #   <<: *default-cache
 #   stage: static
+#   allow_failure: true
+#   artifacts:
+#     name: dawnscanner_report
+#     when: always
+#     paths:
+#       - dawnscanner
+#   only:
+#     - master
 #   script:
-#     - brakeman -w3
+#     - mkdir dawnscanner
+#     - bundle exec dawn --html -zF dawnscanner/index.html .
 
 test:
   <<: *default-cache
@@ -66,10 +89,12 @@ test:
       - log/
 
 bundler:audit:
+  <<: *default-cache
+  stage: static
+  allow_failure: true
   only:
     - schedules
   script:
     - gem install bundler-audit --no-document
-    - bundle install
     - bundle-audit update
     - bundle-audit check
