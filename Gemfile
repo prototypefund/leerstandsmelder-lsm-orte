@@ -62,7 +62,6 @@ gem 'rubyzip'
 gem 'tinymce-rails', '~> 5'
 gem 'turnout'
 
-gem 'net-http'
 gem 'net-smtp'
 
 group :staging, :production do
