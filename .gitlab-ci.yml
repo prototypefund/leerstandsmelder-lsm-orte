@@ -49,8 +49,6 @@ brakeman:
     when: always
     paths:
       - brakeman/
-  only:
-    - master
   script:
     - bundle exec brakeman --format html -o brakeman/index.html
 
