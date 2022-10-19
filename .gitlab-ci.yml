@@ -1,98 +1,166 @@
-image: registry.gitlab.com/leerstandsmelder/lsm-orte:ruby276
+stages:
+  - build
+  - test
+  - report
+  - deploy
 
-services:
-  - name: mysql:latest
-    command: ["--default-authentication-plugin=mysql_native_password"]
-
-variables:
-  # BUNDLE_CACHE: "vendor/bundle/"
-  RAILS_ENV: "test"
-  DB_HOST: mysql
-  DB_USERNAME: "orte"
-  DB_PASSWORD: "orte00"
-  MYSQL_HOST: mysql
-  MYSQL_DATABASE: "orte_test"
-  MYSQL_USER: "orte"
-  MYSQL_PASSWORD: "orte00"
-  MYSQL_ROOT_PASSWORD: "orte00"
-
-# cache gems and node_modules for next usage
-.default-cache: &default-cache
+.base:
+  image: registry.gitlab.com/leerstandsmelder/lsm-orte:ruby276
   cache:
-    untracked: true
-    key: "$CI_BUILD_NAME"
+    key: gems_and_packages
     paths:
+      - apt-cache/
+      - vendor/ruby
       - node_modules/
       - vendor/
       - public/
+    policy: pull
+  before_script:
+    - gem install bundler --no-document
+    - bundle install --jobs $(nproc) "${FLAGS[@]}" --path=vendor
 
-stages:
-  - static
-  - test
+.base_db:
+  extends: .base
+  services:
+    - name: mysql:latest
+      command: ["--default-authentication-plugin=mysql_native_password"]
+  variables:
+    # BUNDLE_CACHE: "vendor/bundle/"
+    RAILS_ENV: "test"
+    DB_HOST: mysql
+    DB_USERNAME: "orte"
+    DB_PASSWORD: "orte00"
+    MYSQL_HOST: mysql
+    MYSQL_DATABASE: "orte_test"
+    MYSQL_USER: "orte"
+    MYSQL_PASSWORD: "orte00"
+    MYSQL_ROOT_PASSWORD: "orte00"
+  before_script:
+    - export APT_CACHE_DIR=`pwd`/apt-cache && mkdir -pv $APT_CACHE_DIR
+    - apt-get update -qq && apt-get -o dir::cache::archives="$APT_CACHE_DIR" install -yqq nodejs
+    - gem install bundler --no-document
+    - bundle install --jobs $(nproc) "${FLAGS[@]}" --path=vendor
+    - cp config/database.yml.ci config/database.yml
+    - bundle exec rails db:setup
+    - bundle exec rake db:migrate
 
-before_script:
-  - gem install bundler --no-document
-  - bundle check || bundle install --jobs $(nproc)
+.base_minimal:
+  image: alpine:latest
+  cache: {}
 
-rubocop:
-  <<: *default-cache
-  stage: static
+build:assets_precompile:
+  extends: .base_db
+  stage: build
+  script:
+    - bundle exec rake assets:precompile
+
+build:rubocop:
+  extends: .base
+  stage: build
+  cache:
+    policy: pull-push
   script:
     - bundle exec rubocop
 
-brakeman:
-  <<: *default-cache
-  stage: static
+test:brakeman:
+  extends: .base
+  stage: test
   allow_failure: true
   artifacts:
     name: brakeman_report
     when: always
     paths:
       - brakeman/
+  only:
+    - main
   script:
     - bundle exec brakeman --format html -o brakeman/index.html
 
-# dawnscanner:
-#   <<: *default-cache
-#   stage: static
-#   allow_failure: true
-#   artifacts:
-#     name: dawnscanner_report
-#     when: always
-#     paths:
-#       - dawnscanner
-#   only:
-#     - master
-#   script:
-#     - mkdir dawnscanner
-#     - bundle exec dawn --html -zF dawnscanner/index.html .
-
-test:
-  <<: *default-cache
-  stage: test
-  coverage: '/LOC\s\(\d+\.\d+%\)\scovered/'
-  variables:
-    COVERAGE: "true"
-  script:
-    - bundle install
-    - cp config/database.yml.ci config/database.yml
-    - bundle exec rails db:setup
-    - bundle exec rake db:migrate
-    - bundle exec rspec
-  artifacts:
-    when: on_failure
-    expire_in: 1 week
-    paths:
-      - tmp/screenshots/
-      - log/
-
-bundler:audit:
-  <<: *default-cache
-  stage: static
+test:bundle_audit:
+  extends: .base
   allow_failure: true
-  only:
-    - schedules
   script:
-    - gem install bundler-audit --no-document
-    - bundle-audit update
-    - bundle-audit check
+    - bundle exec bundle audit check --update
+
+test:dawnscanner:
+  extends: .base
+  stage: test
+  allow_failure: true
+  artifacts:
+    name: dawnscanner_report
+    when: always
+    paths:
+      - dawnscanner
+  only:
+    - master
+  script:
+    - mkdir dawnscanner
+    - bundle exec dawn --html -zF dawnscanner/index.html .
+
+test:erd:
+  extends: .base_db
+  stage: test
+  allow_failure: true
+  artifacts:
+    name: erd
+    paths:
+      - erd.pdf
+  only:
+    - master
+  script:
+    - apt-get -o dir::cache::archives="$APT_CACHE_DIR" install -y -qq graphviz
+    - bundle exec rake erd
+
+test:rspec:
+  extends: .base_db
+  stage: test
+  artifacts:
+    name: coverage_report
+    paths:
+      - coverage/
+  script:
+    - bundle exec rspec
+
+pages:
+  extends: .base_minimal
+  stage: report
+  allow_failure: true
+  dependencies:
+    - test:brakeman
+    - test:dawnscanner
+    - test:erd
+    - test:rspec
+  artifacts:
+    name: time_tracking_artifacts
+    paths:
+      - public/brakeman
+      - public/coverage
+      - public/dawnscanner
+      - public/erd.pdf
+  only:
+    - master
+  script:
+    - mv brakeman public/ || true
+    - mv coverage public/ || true
+    - mv dawnscanner public/ || true
+    - mv erd.pdf public/ || true
+
+deploy:staging:
+  extends: .base
+  stage: deploy
+  only:
+    - staging
+  script:
+    - echo "Deploying to Staging..."
+
+deploy:production:
+  extends: .base
+  stage: deploy
+  when: manual
+  environment:
+    name: production
+    url: https://example.com
+  only:
+    - production
+  script:
+    - echo "Deploying to Production..."
