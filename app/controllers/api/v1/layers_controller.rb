@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Api::V1::LayersController <  Api::V1::ApplicationController
+class Api::V1::LayersController < Api::V1::ApplicationController
   before_action :cors_set_access_control_headers
 
   # For all responses in this controller, return the CORS access control headers.
