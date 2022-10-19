@@ -11,6 +11,11 @@ Rails.application.routes.draw do
     end
     namespace :v1 do
       get 'me', controller: 'users/informations', action: :me
+      resources :maps, only: [:show, :index], :defaults => { :format => :json } do
+        resources :layers, only: [:show], :defaults => { :format => :json }
+      end
+      get 'regions', to: 'maps#index', as: :regions, :defaults => { :format => :json }
+      get 'region/:id', to: 'maps#show_defaults', as: :region, :defaults => { :format => :json }
     end
   end
 
