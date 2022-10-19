@@ -22,19 +22,12 @@ stages:
 .base_db:
   extends: .base
   services:
-    - name: mysql:latest
-      command: ["--default-authentication-plugin=mysql_native_password"]
+    - name: postgres:latest
   variables:
     # BUNDLE_CACHE: "vendor/bundle/"
     RAILS_ENV: "test"
-    DB_HOST: mysql
     DB_USERNAME: "orte"
     DB_PASSWORD: "orte00"
-    MYSQL_HOST: mysql
-    MYSQL_DATABASE: "orte_test"
-    MYSQL_USER: "orte"
-    MYSQL_PASSWORD: "orte00"
-    MYSQL_ROOT_PASSWORD: "orte00"
   before_script:
     - export APT_CACHE_DIR=`pwd`/apt-cache && mkdir -pv $APT_CACHE_DIR
     - apt-get update -qq && apt-get -o dir::cache::archives="$APT_CACHE_DIR" install -yqq nodejs
