@@ -12,7 +12,10 @@
 
 ActiveRecord::Schema.define(version: 2022_10_18_135055) do
 
-  create_table "active_storage_attachments", charset: "utf8mb3", force: :cascade do |t|
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
     t.bigint "record_id", null: false
@@ -22,7 +25,7 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", charset: "utf8mb3", force: :cascade do |t|
+  create_table "active_storage_blobs", force: :cascade do |t|
     t.string "key", null: false
     t.string "filename", null: false
     t.string "content_type"
@@ -34,13 +37,13 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "active_storage_variant_records", charset: "utf8mb3", force: :cascade do |t|
+  create_table "active_storage_variant_records", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "annotations", charset: "utf8mb3", force: :cascade do |t|
+  create_table "annotations", force: :cascade do |t|
     t.string "title"
     t.text "text"
     t.bigint "place_id"
@@ -53,7 +56,7 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["place_id"], name: "index_annotations_on_place_id"
   end
 
-  create_table "build_logs", charset: "utf8mb3", force: :cascade do |t|
+  create_table "build_logs", force: :cascade do |t|
     t.bigint "map_id"
     t.bigint "layer_id"
     t.string "output"
@@ -65,18 +68,18 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["map_id"], name: "index_build_logs_on_map_id"
   end
 
-  create_table "friendly_id_slugs", charset: "utf8mb3", force: :cascade do |t|
+  create_table "friendly_id_slugs", force: :cascade do |t|
     t.string "slug", null: false
     t.integer "sluggable_id", null: false
     t.string "sluggable_type", limit: 50
     t.string "scope"
     t.datetime "created_at"
-    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true, length: { slug: 70, scope: 70 }
-    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type", length: { slug: 140 }
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
-  create_table "groups", charset: "utf8mb3", force: :cascade do |t|
+  create_table "groups", force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -84,7 +87,7 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.text "message"
   end
 
-  create_table "icons", charset: "utf8mb3", force: :cascade do |t|
+  create_table "icons", force: :cascade do |t|
     t.string "title"
     t.bigint "iconset_id"
     t.datetime "created_at", null: false
@@ -92,7 +95,7 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["iconset_id"], name: "index_icons_on_iconset_id"
   end
 
-  create_table "iconsets", charset: "utf8mb3", force: :cascade do |t|
+  create_table "iconsets", force: :cascade do |t|
     t.string "title"
     t.text "text"
     t.datetime "created_at", null: false
@@ -103,7 +106,7 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.string "class_name"
   end
 
-  create_table "images", charset: "utf8mb3", force: :cascade do |t|
+  create_table "images", force: :cascade do |t|
     t.string "title"
     t.string "licence"
     t.text "source"
@@ -119,7 +122,7 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["place_id"], name: "index_images_on_place_id"
   end
 
-  create_table "layers", charset: "utf8mb3", force: :cascade do |t|
+  create_table "layers", force: :cascade do |t|
     t.string "title"
     t.string "subtitle"
     t.boolean "published"
@@ -156,7 +159,7 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["slug"], name: "index_layers_on_slug", unique: true
   end
 
-  create_table "maps", charset: "utf8mb3", force: :cascade do |t|
+  create_table "maps", force: :cascade do |t|
     t.string "title"
     t.string "subtitle"
     t.boolean "published"
@@ -190,7 +193,7 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["slug"], name: "index_maps_on_slug", unique: true
   end
 
-  create_table "mobility_string_translations", charset: "utf8mb3", force: :cascade do |t|
+  create_table "mobility_string_translations", force: :cascade do |t|
     t.string "locale", null: false
     t.string "key", null: false
     t.string "value"
@@ -203,7 +206,7 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["translatable_type", "key", "value", "locale"], name: "index_mobility_string_translations_on_query_keys"
   end
 
-  create_table "mobility_text_translations", charset: "utf8mb3", force: :cascade do |t|
+  create_table "mobility_text_translations", force: :cascade do |t|
     t.string "locale", null: false
     t.string "key", null: false
     t.text "value"
@@ -215,7 +218,7 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["translatable_id", "translatable_type", "locale", "key"], name: "index_mobility_text_translations_on_keys", unique: true
   end
 
-  create_table "people", charset: "utf8mb3", force: :cascade do |t|
+  create_table "people", force: :cascade do |t|
     t.string "name"
     t.text "info"
     t.datetime "created_at", null: false
@@ -224,7 +227,7 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["map_id"], name: "index_people_on_map_id"
   end
 
-  create_table "places", charset: "utf8mb3", force: :cascade do |t|
+  create_table "places", force: :cascade do |t|
     t.string "title"
     t.text "teaser"
     t.text "text"
@@ -251,7 +254,7 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["layer_id"], name: "index_places_on_layer_id"
   end
 
-  create_table "relations", charset: "utf8mb3", force: :cascade do |t|
+  create_table "relations", force: :cascade do |t|
     t.integer "relation_from_id"
     t.integer "relation_to_id"
     t.string "rtype"
@@ -259,7 +262,7 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "submission_configs", charset: "utf8mb3", force: :cascade do |t|
+  create_table "submission_configs", force: :cascade do |t|
     t.string "title_intro"
     t.string "subtitle_intro"
     t.text "intro"
@@ -275,7 +278,7 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["layer_id"], name: "index_submission_configs_on_layer_id"
   end
 
-  create_table "submissions", charset: "utf8mb3", force: :cascade do |t|
+  create_table "submissions", force: :cascade do |t|
     t.string "name"
     t.string "email"
     t.boolean "rights"
@@ -288,7 +291,7 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["place_id"], name: "index_submissions_on_place_id"
   end
 
-  create_table "taggings", id: :integer, charset: "utf8mb3", force: :cascade do |t|
+  create_table "taggings", id: :serial, force: :cascade do |t|
     t.integer "tag_id"
     t.string "taggable_type"
     t.integer "taggable_id"
@@ -307,15 +310,15 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["tagger_id"], name: "index_taggings_on_tagger_id"
   end
 
-  create_table "tags", id: :integer, charset: "utf8mb3", force: :cascade do |t|
-    t.string "name", collation: "utf8mb3_bin"
+  create_table "tags", id: :serial, force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "taggings_count", default: 0
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
-  create_table "users", charset: "utf8mb3", force: :cascade do |t|
+  create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -342,7 +345,7 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
-  create_table "videos", charset: "utf8mb3", force: :cascade do |t|
+  create_table "videos", force: :cascade do |t|
     t.string "title"
     t.string "licence"
     t.text "source"

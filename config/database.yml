@@ -1,27 +1,28 @@
 default: &default
-  adapter: mysql2
-  pool: 5
-  timeout: 5000
-  encoding: utf8
-  host: <%= ENV['DB_HOST'] %>
-  database: <%= ENV['DB_NAME'] %>
-  port: <%= ENV['DB_PORT'] %>
-  username: <%= ENV['DB_USERNAME'] %>
-  password: <%= ENV['DB_PASSWORD'] %>
+  adapter: postgresql
+  host: localhost
+  encoding: unicode
+  username: lsm_orte
+  password: lsm_orte00
+  min_messages: WARNING
+  pool: 80
 
 development:
   <<: *default
-
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
+  database: lsm_orte_development
 
 test:
   <<: *default
-  database: orte_test
+  database: lsm_orte_test
 
 staging:
   <<: *default
+  database: lsm_orte_staging
+  username: lsm_orte
+  password: <%%= ENV["LSM_ORTE_DATABASE_PASSWORD"] %>
 
 production:
   <<: *default
+  database: lsm_orte_production
+  username: lsm_orte
+  password: <%%= ENV["LSM_ORTE_DATABASE_PASSWORD"] %>
