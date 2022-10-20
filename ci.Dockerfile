@@ -12,7 +12,7 @@ RUN \
     nodejs \
     software-properties-common \
     unzip \
-    mariadb-client
+    postgresql-client
 
 # Install yarn
 RUN \
