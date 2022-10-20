@@ -24,10 +24,14 @@ stages:
   services:
     - name: postgres:latest
   variables:
-    # BUNDLE_CACHE: "vendor/bundle/"
+    BUNDLE_CACHE: "vendor/bundle/"
     RAILS_ENV: "test"
-    DB_USERNAME: "orte"
-    DB_PASSWORD: "orte00"
+    DB_HOST: postgres
+    DB_USERNAME: postgres
+    DB_PASSWORD: ""
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+
   before_script:
     - export APT_CACHE_DIR=`pwd`/apt-cache && mkdir -pv $APT_CACHE_DIR
     - apt-get update -qq && apt-get -o dir::cache::archives="$APT_CACHE_DIR" install -yqq nodejs
