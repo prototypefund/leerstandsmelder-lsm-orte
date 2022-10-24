@@ -1,0 +1,10 @@
+- content_for(:title) { "User roles (Edit)" }
+
+#form-wrapper
+  %p.text-right.close_link_wrapper
+    =link_to admin_roles_path, :class=>'close_link' do
+      %i.fi.fi-x
+  %h1 Editing role
+  = render 'form'
+  %hr
+  = link_to 'All roles', admin_roles_path

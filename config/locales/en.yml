@@ -63,3 +63,9 @@ en:
       blank: can't be blank
       present: can't be filled
       inclusion: must be accepted
+  pundit:
+    default: "You cannot perform this action."
+    group_policy:
+      update?: "You can't edit this group."
+      edit?: "You can't edit this group."
+      create?: "You can't create groups!"

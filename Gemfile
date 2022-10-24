@@ -42,6 +42,7 @@ gem 'pg'
 gem 'pundit'
 gem 'rack-attack'
 gem 'rack-cors'
+gem 'rolify'
 gem 'secure_headers'
 gem 'select2-rails'
 # NOTE: settingslogic != rails 3

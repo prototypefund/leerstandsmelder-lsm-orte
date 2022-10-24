@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Map < ApplicationRecord
+  resourcify
   belongs_to :group
   belongs_to :iconset, optional: true
   has_many :layers, dependent: :destroy
@@ -31,5 +32,13 @@ class Map < ApplicationRecord
 
   def image_link
     ApplicationController.helpers.image_url(image) if image&.attached?
+  end
+
+  def self.first
+    order("maps.created_at").first
+  end
+    
+  def self.last
+    order("maps.created_at DESC").first
   end
 end

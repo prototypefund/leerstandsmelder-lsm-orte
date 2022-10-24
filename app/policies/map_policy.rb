@@ -2,21 +2,35 @@
 
 class MapPolicy < ApplicationPolicy
   attr_reader :user, :map
-
-  def index
-    true
+  def initialize(user, map)
+    @user = user
+    @map = map
   end
 
   def new?
-    true
+    user.admin?
   end
 
+  def edit?
+    user.admin?
+  end
   def create?
-    true
+    user.admin?
+  end
+  def update?
+    user.admin?
   end
 
   def show?
-    user.admin? || record.published?
+    user.admin? || map.published?
+  end
+
+  def self.destroy?(user, map)
+    new(user, map).destroy?
+  end
+
+  def destroy?
+    user.admin?
   end
 
   class Scope < Scope

@@ -9,17 +9,25 @@ class Admin::GroupsController < ApplicationController
                     else
                       Group.by_user(current_user)
                     end
+    authorize Group
   end
 
   def new
+    authorize Group
+
     @admin_group = Group.new
   end
 
   def edit
-    redirect_to admin_groups_path, notice: "You can't edit this group." unless @admin_group
+    if @admin_group
+      authorize @admin_group
+    else
+      redirect_to admin_groups_path, notice: "You can't edit this group."
+    end
   end
 
   def create
+    authorize Group
     @admin_group = Group.new(admin_group_params)
 
     respond_to do |format|
@@ -35,6 +43,7 @@ class Admin::GroupsController < ApplicationController
   # PATCH/PUT /admin_groups/1
   # PATCH/PUT /admin_groups/1.json
   def update
+    authorize @admin_group
     respond_to do |format|
       if @admin_group.update(admin_group_params)
         format.html { redirect_to admin_groups_url, notice: 'Group was successfully updated.' }
@@ -49,6 +58,7 @@ class Admin::GroupsController < ApplicationController
   # DELETE /admin_groups/1
   # DELETE /admin_groups/1.json
   def destroy
+    authorize @admin_group
     @admin_group.destroy
     respond_to do |format|
       format.html { redirect_to admin_groups_url, notice: 'Group was successfully destroyed.' }

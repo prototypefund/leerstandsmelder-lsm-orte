@@ -1,0 +1,13 @@
+
+= simple_form_for [:admin, @admin_role], as: :admin_role do |f|
+  .grid-x
+    .large-12.cell
+      = f.error_notification
+  .grid-x
+    .large-12.medium-12.cell
+      .form-inputs
+        = f.input :name
+      .form-inputs
+        %hr
+      .form-actions
+        = f.button :submit, :class => "button"

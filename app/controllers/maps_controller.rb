@@ -16,6 +16,7 @@ class MapsController < ApplicationController
   # GET /maps/1.json
   def show
     if @map
+      authorize @map
       @map_layers = @map.layers
       respond_to do |format|
         format.html { render :show }
@@ -28,12 +29,14 @@ class MapsController < ApplicationController
 
   # GET /maps/new
   def new
+    authorize Map
     @map = Map.new
     @groups = Group.by_user(current_user)
   end
 
   # GET /maps/1/edit
   def edit
+    authorize @map
     @map.northeast_corner = params[:northeast] if params[:northeast]
     @map.southwest_corner = params[:southwest] if params[:southwest]
   end
@@ -58,6 +61,7 @@ class MapsController < ApplicationController
   # PATCH/PUT /maps/1
   # PATCH/PUT /maps/1.json
   def update
+    authorize @map
     respond_to do |format|
       if @map.update(map_params)
         format.html { redirect_to @map, notice: 'Map was successfully updated.' }
@@ -72,6 +76,7 @@ class MapsController < ApplicationController
   # DELETE /maps/1
   # DELETE /maps/1.json
   def destroy
+    authorize @map
     @map.destroy
     respond_to do |format|
       format.html { redirect_to maps_url, notice: 'Map was successfully destroyed.' }
@@ -92,7 +97,6 @@ class MapsController < ApplicationController
     @maps = Map.sorted.by_user(current_user)
     # flexible query: Find slugged resource, if not, find a non-slugged resoure. All that to avoid an exception if a resource is unknown or not accessible (which would happen with friendly.find)
     @map = Map.by_user(current_user).find_by_slug(params[:id]) || Map.by_user(current_user).find_by_id(params[:id])
-    authorize @map
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
