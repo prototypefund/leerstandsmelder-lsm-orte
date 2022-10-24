@@ -7,12 +7,16 @@ class MapsController < ApplicationController
 
   # GET /maps
   # GET /maps.json
-  def index; end
+  def index
+    @maps = Map.all
+    authorize Map
+  end
 
   # GET /maps/1
   # GET /maps/1.json
   def show
     if @map
+      authorize @map
       @map_layers = @map.layers
       respond_to do |format|
         format.html { render :show }
@@ -25,12 +29,14 @@ class MapsController < ApplicationController
 
   # GET /maps/new
   def new
+    authorize Map
     @map = Map.new
     @groups = Group.by_user(current_user)
   end
 
   # GET /maps/1/edit
   def edit
+    authorize @map
     @map.northeast_corner = params[:northeast] if params[:northeast]
     @map.southwest_corner = params[:southwest] if params[:southwest]
   end
@@ -38,6 +44,7 @@ class MapsController < ApplicationController
   # POST /maps
   # POST /maps.json
   def create
+    authorize Map
     @map = Map.new(map_params)
 
     respond_to do |format|
@@ -54,6 +61,7 @@ class MapsController < ApplicationController
   # PATCH/PUT /maps/1
   # PATCH/PUT /maps/1.json
   def update
+    authorize @map
     respond_to do |format|
       if @map.update(map_params)
         format.html { redirect_to @map, notice: 'Map was successfully updated.' }
@@ -68,6 +76,7 @@ class MapsController < ApplicationController
   # DELETE /maps/1
   # DELETE /maps/1.json
   def destroy
+    authorize @map
     @map.destroy
     respond_to do |format|
       format.html { redirect_to maps_url, notice: 'Map was successfully destroyed.' }

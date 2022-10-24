@@ -74,7 +74,7 @@ class SubmissionConfigsController < ApplicationController
   end
 
   def layer_from_id
-    params[:layer_id].to_i
+    params[:layer_id]
   end
 
   private

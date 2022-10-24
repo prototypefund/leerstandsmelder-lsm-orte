@@ -4,6 +4,7 @@ class StartController < ApplicationController
   skip_before_action :authenticate_user!, only: %i[index info]
 
   def index
+    authorize :start, :index?
     redirect_to maps_path if current_user
   end
 
@@ -12,6 +13,7 @@ class StartController < ApplicationController
   def notfound; end
 
   def settings
+    authorize :start, :settings?
     @user = current_user
     @users = User.by_group(current_user).order(:email)
     @maps = Map.by_user(current_user).order(:title)
@@ -20,9 +22,15 @@ class StartController < ApplicationController
               else
                 Group.by_user(current_user)
               end
+    @roles = if current_user.admin?
+               Role.all
+             else
+               []
+             end
   end
 
   def edit_profile
+    authorize :start, :edit_profile?
     @user = current_user
   end
 

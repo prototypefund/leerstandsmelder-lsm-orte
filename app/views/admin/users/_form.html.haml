@@ -10,7 +10,7 @@
     = f.input :email
   %p
     = f.label :role
-    = f.select :role, Ability.role_symbols, include_blank: false
+    = f.select :role, Role.all.map {|r| r.name}, include_blank: false
     %span.shy Admins can edit/add User
   %p
     = f.association :group, collection: @groups, include_blank: false

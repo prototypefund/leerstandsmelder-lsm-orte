@@ -18,6 +18,6 @@ FactoryBot.define do
     password { 'password12345' }
     password_confirmation { 'password12345' }
     group
-    role { 'admin' }
+    after(:create) { |user| user.add_role(:admin) }
   end
 end

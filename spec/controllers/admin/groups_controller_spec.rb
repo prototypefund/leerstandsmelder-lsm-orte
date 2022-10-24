@@ -49,7 +49,7 @@ RSpec.describe Admin::GroupsController, type: :controller do
     end
 
     describe 'GET #edit' do
-      it "returns a success response (if its the user's group" do
+      it "returns a success response (if its the user's group)" do
         get :edit, params: { id: @group.to_param }, session: valid_session
         expect(response).to have_http_status(200)
       end
