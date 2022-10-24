@@ -4,6 +4,7 @@ class Admin::UsersController < ApplicationController
   before_action :set_admin_user, only: %i[show edit update destroy]
 
   def create
+    authorize User
     @admin_user = User.new(admin_user_params)
     password_length = 10
     password = Devise.friendly_token.first(password_length)
@@ -24,6 +25,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def destroy
+    authorize User
     @admin_user.destroy
     respond_to do |format|
       format.html { redirect_to admin_users_url, notice: 'User was successfully destroyed.' }
@@ -34,10 +36,12 @@ class Admin::UsersController < ApplicationController
   def edit; end
 
   def index
+    authorize User
     @admin_users = User.by_group(current_user).order('last_sign_in_at DESC').page params[:page]
   end
 
   def new
+    authorize User
     @admin_user = User.new
     @groups = if current_user.admin? && current_user.group.title == 'Admins'
                 Group.all
@@ -79,6 +83,7 @@ class Admin::UsersController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_admin_user
+    authorize User
     @admin_user = User.find(params[:id])
     @groups = if current_user.admin?
                 Group.all
