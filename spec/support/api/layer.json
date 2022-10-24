@@ -27,7 +27,7 @@
         "properties": {
           "id": {
             "$id": "#/properties/map/properties/layer/items/properties/id",
-            "type": "integer",
+            "type": "string",
             "title": "The Id Schema",
             "default": 0,
             "examples": [
@@ -205,7 +205,7 @@
               "properties": {
                 "id": {
                   "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/id",
-                  "type": "integer",
+                  "type": "string",
                   "title": "The Id Schema",
                   "default": 0,
                   "examples": [
