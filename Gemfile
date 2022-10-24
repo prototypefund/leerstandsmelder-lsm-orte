@@ -64,6 +64,8 @@ gem 'turnout'
 
 gem 'net-smtp'
 
+gem 'webdack-uuid_migration'
+
 group :staging, :production do
   # gem 'pg'
   gem 'passenger'
