@@ -25,7 +25,6 @@ gem 'bcrypt'
 gem 'deep_cloneable', '~> 3'
 
 # custom
-gem 'cancancan'
 gem 'devise'
 gem 'devise_token_auth'
 gem 'exception_notification'
@@ -40,6 +39,7 @@ gem 'jquery-ui-rails'
 gem 'kaminari'
 gem 'omniauth'
 gem 'pg'
+gem 'pundit'
 gem 'rack-attack'
 gem 'rack-cors'
 gem 'secure_headers'
@@ -62,6 +62,7 @@ gem 'rubyzip'
 gem 'tinymce-rails', '~> 5'
 gem 'turnout'
 
+gem 'net-http'
 gem 'net-smtp'
 
 gem 'webdack-uuid_migration'

@@ -1,9 +1,14 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  include Pundit::Authorization
+  after_action :verify_authorized, unless: :devise_controller?
+
   before_action :authenticate_user!, except: %i[new create]
 
   protect_from_forgery unless: -> { request.format.json? }
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   before_action :cors_set_access_control_headers
 
@@ -28,5 +33,12 @@ class ApplicationController < ActionController::Base
     else
       false
     end
+  end
+
+  private
+
+  def user_not_authorized
+    flash[:notice] = 'Sorry, You Are Not Authorized To Do This'
+    redirect_to(request.referrer || root_path)
   end
 end

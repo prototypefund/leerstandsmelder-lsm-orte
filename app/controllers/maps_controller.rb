@@ -7,7 +7,10 @@ class MapsController < ApplicationController
 
   # GET /maps
   # GET /maps.json
-  def index; end
+  def index
+    @maps = Map.all
+    authorize Map
+  end
 
   # GET /maps/1
   # GET /maps/1.json
@@ -38,6 +41,7 @@ class MapsController < ApplicationController
   # POST /maps
   # POST /maps.json
   def create
+    authorize Map
     @map = Map.new(map_params)
 
     respond_to do |format|
@@ -88,6 +92,7 @@ class MapsController < ApplicationController
     @maps = Map.sorted.by_user(current_user)
     # flexible query: Find slugged resource, if not, find a non-slugged resoure. All that to avoid an exception if a resource is unknown or not accessible (which would happen with friendly.find)
     @map = Map.by_user(current_user).find_by_slug(params[:id]) || Map.by_user(current_user).find_by_id(params[:id])
+    authorize @map
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

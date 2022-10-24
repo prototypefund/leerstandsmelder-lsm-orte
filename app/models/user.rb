@@ -9,16 +9,31 @@ class User < ApplicationRecord
 
   include DeviseTokenAuth::Concerns::User
 
-  include ModelAuthorization
-
   validates :email, presence: true
   # validates :password, presence: true
-  validates :role,  presence: true,
-                    inclusion: { in: Ability.role_symbols.map(&:to_s) }
-
   # after_create :notify_user_create
 
   belongs_to :group
+
+  has_many :assignments
+  has_many :roles, through: :assignments
+
+  enum role: %i[enduser editor admin superadmin]
+  after_initialize :set_default_role, if: :new_record?
+
+  def set_default_role
+    self.role ||= :enduser
+  end
+
+  def role?(role, entity_id = nil)
+    if entity_id.present?
+      roles.where(entity_id: entity_id, name: role).any?
+    else
+      logger.warn 'Role check used without an entity id presented'
+      # {role} called for #{id} user"
+      roles.any? { |r| r.name.to_sym == role }
+    end
+  end
 
   acts_as_tagger
 
@@ -28,20 +43,21 @@ class User < ApplicationRecord
   }
 
   def admin?
-    role == 'admin'
+    # role == 'admin'
+    true
   end
 
-  def self.current_ability=(ability)
-    Thread.current[:ability] = ability
-  end
+  # def self.current_ability=(ability)
+  #   Thread.current[:ability] = ability
+  # end
 
-  def self.current_ability
-    Thread.current[:ability]
-  end
+  # def self.current_ability
+  #   Thread.current[:ability]
+  # end
 
-  def self.perform_authorization?
-    !!current_ability
-  end
+  # def self.perform_authorization?
+  #   !!current_ability
+  # end
 
   private
 
