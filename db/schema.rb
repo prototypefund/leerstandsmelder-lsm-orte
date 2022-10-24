@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_18_135055) do
+ActiveRecord::Schema.define(version: 2022_10_24_115504) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -43,10 +44,10 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "annotations", force: :cascade do |t|
+  create_table "annotations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title"
     t.text "text"
-    t.bigint "place_id"
+    t.uuid "place_id"
     t.boolean "published", default: false
     t.integer "sorting"
     t.text "source"
@@ -57,8 +58,8 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
   end
 
   create_table "build_logs", force: :cascade do |t|
-    t.bigint "map_id"
-    t.bigint "layer_id"
+    t.uuid "map_id"
+    t.uuid "layer_id"
     t.string "output"
     t.string "size"
     t.string "version"
@@ -79,7 +80,7 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
-  create_table "groups", force: :cascade do |t|
+  create_table "groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -111,7 +112,7 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.string "licence"
     t.text "source"
     t.string "creator"
-    t.bigint "place_id"
+    t.uuid "place_id"
     t.string "alt"
     t.string "caption"
     t.integer "sorting"
@@ -122,11 +123,11 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["place_id"], name: "index_images_on_place_id"
   end
 
-  create_table "layers", force: :cascade do |t|
+  create_table "layers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title"
     t.string "subtitle"
     t.boolean "published"
-    t.bigint "map_id"
+    t.uuid "map_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "color"
@@ -159,11 +160,11 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["slug"], name: "index_layers_on_slug", unique: true
   end
 
-  create_table "maps", force: :cascade do |t|
+  create_table "maps", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title"
     t.string "subtitle"
     t.boolean "published"
-    t.bigint "group_id"
+    t.uuid "group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "script"
@@ -218,16 +219,16 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["translatable_id", "translatable_type", "locale", "key"], name: "index_mobility_text_translations_on_keys", unique: true
   end
 
-  create_table "people", force: :cascade do |t|
+  create_table "people", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.text "info"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "map_id"
+    t.uuid "map_id"
     t.index ["map_id"], name: "index_people_on_map_id"
   end
 
-  create_table "places", force: :cascade do |t|
+  create_table "places", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title"
     t.text "teaser"
     t.text "text"
@@ -242,7 +243,7 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.string "city"
     t.string "country"
     t.boolean "published"
-    t.bigint "layer_id"
+    t.uuid "layer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "imagelink"
@@ -254,12 +255,23 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["layer_id"], name: "index_places_on_layer_id"
   end
 
-  create_table "relations", force: :cascade do |t|
-    t.integer "relation_from_id"
-    t.integer "relation_to_id"
+  create_table "relations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "relation_from_id"
+    t.uuid "relation_to_id"
     t.string "rtype"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "resource_type"
+    t.uuid "resource_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
+    t.index ["name"], name: "index_roles_on_name"
+    t.index ["resource_type", "resource_id"], name: "index_roles_on_resource"
   end
 
   create_table "submission_configs", force: :cascade do |t|
@@ -271,20 +283,20 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.datetime "start_time"
     t.datetime "end_time"
     t.boolean "use_city_only"
-    t.bigint "layer_id"
+    t.uuid "layer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "locales"
     t.index ["layer_id"], name: "index_submission_configs_on_layer_id"
   end
 
-  create_table "submissions", force: :cascade do |t|
+  create_table "submissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name"
     t.string "email"
     t.boolean "rights"
     t.boolean "privacy"
     t.string "locale"
-    t.bigint "place_id"
+    t.uuid "place_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "status", default: 0, null: false
@@ -294,7 +306,7 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
   create_table "taggings", id: :serial, force: :cascade do |t|
     t.integer "tag_id"
     t.string "taggable_type"
-    t.integer "taggable_id"
+    t.uuid "taggable_id"
     t.string "tagger_type"
     t.integer "tagger_id"
     t.string "context", limit: 128
@@ -318,7 +330,7 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -330,7 +342,7 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.string "role", default: "user"
-    t.bigint "group_id"
+    t.uuid "group_id"
     t.datetime "created_at", default: "2021-11-06 17:42:00", null: false
     t.datetime "updated_at", default: "2021-11-06 17:42:00", null: false
     t.string "authentication_token", limit: 30
@@ -345,12 +357,18 @@ ActiveRecord::Schema.define(version: 2022_10_18_135055) do
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
+  create_table "users_roles", id: false, force: :cascade do |t|
+    t.uuid "user_id"
+    t.uuid "role_id"
+    t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
+  end
+
   create_table "videos", force: :cascade do |t|
     t.string "title"
     t.string "licence"
     t.text "source"
     t.string "creator"
-    t.bigint "place_id"
+    t.uuid "place_id"
     t.string "alt"
     t.string "caption"
     t.integer "sorting"

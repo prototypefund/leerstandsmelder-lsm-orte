@@ -2,7 +2,7 @@
 
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
-  after_action :verify_authorized, unless: :devise_controller?
+  # after_action :verify_authorized, unless: :devise_controller?
 
   before_action :authenticate_user!, except: %i[new create]
 
@@ -37,8 +37,10 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def user_not_authorized
-    flash[:notice] = 'Sorry, You Are Not Authorized To Do This'
+  def user_not_authorized(exception)
+    policy_name = exception.policy.class.to_s.underscore
+
+    flash[:notice] = "#{policy_name}.#{exception.query}"
     redirect_to(request.referrer || root_path)
   end
 end

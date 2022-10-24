@@ -70,7 +70,7 @@ class Public::SubmissionsController < ApplicationController
   end
 
   def create
-    @submission = Submission.find(session[:submission_id]) if session[:submission_id]&.positive?
+    @submission = Submission.find(session[:submission_id]) if session[:submission_id]
 
     @submission = Submission.new(submission_params)
     @submission.status = SUBMISSION_STATUS_STEP1
@@ -89,7 +89,7 @@ class Public::SubmissionsController < ApplicationController
 
   def edit
     if @layer&.public_submission
-      if session[:submission_id]&.positive? && session[:submission_id] == params['id'].to_i
+      if session[:submission_id] && session[:submission_id] == params['id']
         @submission = Submission.find(session[:submission_id])
       else
         redirect_to new_submission_path
@@ -105,7 +105,7 @@ class Public::SubmissionsController < ApplicationController
   def update
     return unless @layer.public_submission
 
-    if session[:submission_id]&.positive? && session[:submission_id] == params['id'].to_i
+    if session[:submission_id] && session[:submission_id] == params['id']
       @submission = Submission.find(session[:submission_id])
       @submission.status = SUBMISSION_STATUS_STEP1
       @form_url = submission_path(@submission, locale: @locale, layer_id: @layer.id)
@@ -129,7 +129,7 @@ class Public::SubmissionsController < ApplicationController
   end
 
   def new_place
-    return unless session[:submission_id]&.positive? && session[:submission_id] == submission_from_id
+    return unless session[:submission_id] && session[:submission_id] == submission_from_id
 
     @submission = Submission.find(session[:submission_id])
 
@@ -146,7 +146,7 @@ class Public::SubmissionsController < ApplicationController
   end
 
   def create_place
-    return unless session[:submission_id]&.positive? && session[:submission_id] == submission_from_id
+    return unless session[:submission_id] && session[:submission_id] == submission_from_id
 
     @submission = Submission.find(session[:submission_id])
     @place = Place.new(place_params)
@@ -167,7 +167,7 @@ class Public::SubmissionsController < ApplicationController
   end
 
   def edit_place
-    return unless session[:submission_id]&.positive? && session[:submission_id] == submission_from_id
+    return unless session[:submission_id] && session[:submission_id] == submission_from_id
 
     @submission = Submission.find(session[:submission_id])
     @place = @submission.place
@@ -176,7 +176,7 @@ class Public::SubmissionsController < ApplicationController
   end
 
   def update_place
-    return unless session[:submission_id]&.positive? && session[:submission_id] == submission_from_id
+    return unless session[:submission_id] && session[:submission_id] == submission_from_id
 
     @submission = Submission.find(session[:submission_id])
     @place = @submission.place
@@ -194,7 +194,7 @@ class Public::SubmissionsController < ApplicationController
   end
 
   def new_image
-    return unless session[:submission_id]&.positive? && session[:submission_id] == submission_from_id
+    return unless session[:submission_id] && session[:submission_id] == submission_from_id
 
     @image = Image.new
     @submission = Submission.find(session[:submission_id])
@@ -202,7 +202,7 @@ class Public::SubmissionsController < ApplicationController
   end
 
   def create_image
-    return unless session[:submission_id]&.positive? && session[:submission_id] == submission_from_id
+    return unless session[:submission_id] && session[:submission_id] == submission_from_id
 
     @submission = Submission.find(session[:submission_id])
     @image = Image.new(image_params)
@@ -228,7 +228,7 @@ class Public::SubmissionsController < ApplicationController
   end
 
   def finished
-    return unless session[:submission_id].positive? && session[:submission_id] == submission_from_id
+    return unless session[:submission_id] && session[:submission_id] == submission_from_id
 
     @submission = Submission.find(session[:submission_id])
     @place = @submission.place
@@ -236,13 +236,13 @@ class Public::SubmissionsController < ApplicationController
   end
 
   def layer_from_id
-    params[:layer_id].to_i
+    params[:layer_id]
     # ? direct call via http://127.0.0.1:3000/de/public/submissions/new?layer_id=1 doesn't work anymore
     # 1
   end
 
   def submission_from_id
-    params[:submission_id].to_i
+    params[:submission_id]
   end
 
   def place_params
