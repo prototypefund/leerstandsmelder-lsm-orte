@@ -35,10 +35,10 @@ class Map < ApplicationRecord
   end
 
   def self.first
-    order("maps.created_at").first
+    order('maps.created_at').first
   end
-    
+
   def self.last
-    order("maps.created_at DESC").first
+    order('maps.created_at DESC').first
   end
 end

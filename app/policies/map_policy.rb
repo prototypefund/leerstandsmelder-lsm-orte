@@ -2,6 +2,7 @@
 
 class MapPolicy < ApplicationPolicy
   attr_reader :user, :map
+
   def initialize(user, map)
     @user = user
     @map = map
@@ -14,9 +15,11 @@ class MapPolicy < ApplicationPolicy
   def edit?
     user.admin?
   end
+
   def create?
     user.admin?
   end
+
   def update?
     user.admin?
   end
