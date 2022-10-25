@@ -30,10 +30,12 @@ class Api::V1::MapsController < Api::V1::ApplicationController
 
     respond_to do |format|
       @map_layers = @map.layers if @map&.layers
-      if @map_layers.present?
+      # TODO: set a lag to display by layer
+      show_by_layer = false
+      if @map_layers.present? && show_by_layer
         format.json { render :show, location: @map }
       elsif @map.present?
-        format.json { render :show, location: @map }
+        format.json { render :show_flat, location: @map }
       else
         # format.json { head :no_content }
         format.json { render json: { error: 'Map not accessible' }, status: :forbidden }

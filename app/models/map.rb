@@ -34,6 +34,20 @@ class Map < ApplicationRecord
     ApplicationController.helpers.image_url(image) if image&.attached?
   end
 
+  def places_flatten
+    places = []
+    layers.each do |layer|
+      next unless layer.published
+
+      layer.places.each do |place|
+        next unless place.published
+
+        places << place
+      end
+    end
+    places
+  end
+
   def self.first
     order('maps.created_at').first
   end
