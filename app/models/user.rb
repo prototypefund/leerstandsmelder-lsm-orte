@@ -33,6 +33,16 @@ class User < ApplicationRecord
     has_role? :admin
   end
 
+  def role_keys
+    roles.map do |r|
+      if r.resource_type.blank?
+        r.name
+      else
+        "#{r.name}_#{r.resource_type.downcase}_#{r.resource_id}"
+      end
+    end
+  end
+
   # def self.current_ability=(ability)
   #   Thread.current[:ability] = ability
   # end
