@@ -10,8 +10,9 @@
     = f.input :email
   %p
     = f.label :role
-    = f.select :role, Role.all.map {|r| r.name}, include_blank: false
-    %span.shy Admins can edit/add User
+    = #f.input :role, :collection => Role.all.map {|r| r.name}, :as => :check_boxes, include_hidden: false, input_html: { multiple: true }
+    = f.collection_check_boxes :role_ids, Role.all, :id, :name_with_resource
+    %span.shy Admins can edit/add Users
   %p
     = f.association :group, collection: @groups, include_blank: false
     - if admin?

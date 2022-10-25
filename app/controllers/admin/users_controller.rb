@@ -94,8 +94,8 @@ class Admin::UsersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def admin_user_params
-    permitted_attributes = %i[email password group_id]
-    permitted_attributes << :role if current_user.try(:admin?)
+    permitted_attributes = [:email, :password, :group_id, { role_ids: [] }]
+    # permitted_attributes << :role if current_user.try(:admin?)
     params.require(:admin_user).permit(permitted_attributes)
   end
 end

@@ -12,4 +12,16 @@ class Role < ApplicationRecord
             allow_nil: true
 
   scopify
+
+  def name_with_resource
+    if resource_type.blank?
+      name
+    else
+      resource_obj = resource_type.constantize
+      resource_instance = resource_obj.find(resource_id)
+      resource_label = resource_instance.try(:title)
+      "#{name}: #{resource_label}"
+      # self.name + '_' + self.resource_type.downcase + '_' + self.resource_id
+    end
+  end
 end
