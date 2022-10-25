@@ -20,7 +20,7 @@ class PlacesController < ApplicationController
     @place = Place.new
     @place.location = params[:location]
     @place.address = params[:address]
-    @place.zip = params[:zip]
+    @place.zip = params[:zip] || params[:postcode]
     @place.city = params[:city]
     @place.lat = params[:lat]
     @place.lon = params[:lon]
@@ -47,7 +47,7 @@ class PlacesController < ApplicationController
     @old_place = @place.dup
     @place.location = params[:location]
     @place.address = params[:address]
-    @place.zip = params[:zip]
+    @place.zip = params[:zip] || params[:postcode]
     @place.city = params[:city]
     @place.lat = params[:lat]
     @place.lon = params[:lon]
