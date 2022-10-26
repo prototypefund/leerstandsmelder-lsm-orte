@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Api::V1::MapsController < Api::V1::ApplicationController
+  before_action :authenticate_user!, except: %i[index show]
+
   before_action :cors_set_access_control_headers
 
   # For all responses in this controller, return the CORS access control headers.
@@ -14,7 +16,7 @@ class Api::V1::MapsController < Api::V1::ApplicationController
 
   # GET /maps.json
   def index
-    @maps = Map.published
+    @maps = policy_scope(Map)
     respond_to do |format|
       if @maps
         format.json { render json: @maps }
@@ -26,11 +28,12 @@ class Api::V1::MapsController < Api::V1::ApplicationController
 
   # GET /maps/1.json
   def show
-    @map = Map.published.find_by_slug(params[:id]) || Map.published.find_by_id(params[:id])
+    @map = policy_scope(Map).find_by_slug(params[:id]) || policy_scope(Map).find_by_id(params[:id])
 
+    authorize @map
     respond_to do |format|
       @map_layers = @map.layers if @map&.layers
-      # TODO: set a lag to display by layer
+      # TODO: set a flag to display by layer 
       show_by_layer = false
       if @map_layers.present? && show_by_layer
         format.json { render :show, location: @map }
