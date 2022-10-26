@@ -33,8 +33,8 @@ class Api::V1::MapsController < Api::V1::ApplicationController
     authorize @map
     respond_to do |format|
       @map_layers = @map.layers if @map&.layers
-      # TODO: set a flag to display by layer 
-      show_by_layer = false
+      # TODO: set a flag to display by layer
+      show_by_layer = params[:show_by_layer] || false
       if @map_layers.present? && show_by_layer
         format.json { render :show, location: @map }
       elsif @map.present?

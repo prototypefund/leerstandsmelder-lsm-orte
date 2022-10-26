@@ -18,6 +18,7 @@ RSpec.describe 'Maps', type: :request do
       expect(response).to have_http_status(:success)
     end
   end
+
   describe 'GET /index with logged in user' do
     before do
       FactoryBot.create_list(:map, 10, published: true)
@@ -72,6 +73,18 @@ RSpec.describe 'Maps', type: :request do
 
     it 'returns status code 200' do
       expect(response).to have_http_status(:success)
+    end
+  end
+  describe 'GET /show with parameter ?show_by_layer=true' do
+    before do
+      FactoryBot.create_list(:map, 10, published: true)
+      @map = create(:map, published: true)
+      @layer = create(:layer, map: @map, published: true)
+      get "/api/v1/maps/#{@map.id}?show_by_layer=true"
+    end
+
+    it 'returns all maps and layers' do
+      expect(json['map']['layer'].size).to eq(1)
     end
   end
   describe 'GET /show with logged in admin user' do

@@ -1,20 +1,14 @@
 # frozen_string_literal: true
 
 json.map do
-  next unless @map.published
-
   json.call(@map, :id, :title, :subtitle, :text, :credits, :image_link, :created_at, :updated_at, :published, :mapcenter_lat, :mapcenter_lon)
   json.owner @map.group.title
   json.iconset @map.iconset, :title, :icon_anchor, :icon_size, :popup_anchor, :class_name if @map.iconset
   json.layer do
-    json.array! @map.layers.published do |layer|
-      next unless layer.published
-
+    json.array! policy_scope(@map.layers) do |layer|
       json.call(layer, :id, :title, :subtitle, :text, :credits, :image_link, :color, :created_at, :updated_at, :published)
       json.places do
-        json.array! layer.places.published do |place|
-          next unless place.published
-
+        json.array! policy_scope(layer.places) do |place|
           json.call(place, :id, :title, :teaser, :link, :imagelink, :imagelink2, :audiolink, :published, :startdate, :enddate, :location, :address, :zip, :city, :text, :country, :featured, :shy, :layer_id, :icon_link, :icon_class, :icon_name)
           json.lat place.public_lat
           json.lon place.public_lon
@@ -28,9 +22,7 @@ json.map do
           end
         end
       end
-      json.places_with_relations layer.places.published do |place|
-        next unless place.published
-
+      json.places_with_relations policy_scope(layer.places) do |place|
         if place.relations_froms.count.positive?
           json.relations place.relations_froms do |relation|
             json.id relation.id
