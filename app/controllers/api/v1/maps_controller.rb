@@ -19,7 +19,7 @@ class Api::V1::MapsController < Api::V1::ApplicationController
     @maps = policy_scope(Map)
     respond_to do |format|
       if @maps
-        format.json { render json: @maps }
+        format.json { render :index, maps: @maps }
       else
         format.json { head :no_content }
       end
@@ -36,9 +36,9 @@ class Api::V1::MapsController < Api::V1::ApplicationController
       # TODO: set a flag to display by layer
       show_by_layer = params[:show_by_layer] || false
       if @map_layers.present? && show_by_layer
-        format.json { render :show, location: @map }
+        format.json { render :show, map: @map }
       elsif @map.present?
-        format.json { render :show_flat, location: @map }
+        format.json { render :show_flat, map: @map }
       else
         # format.json { head :no_content }
         format.json { render json: { error: 'Map not accessible' }, status: :forbidden }
