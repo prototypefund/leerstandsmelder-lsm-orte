@@ -108,13 +108,12 @@ RSpec.describe '/places', type: :request do
       end
     end
 
-
     describe 'PATCH /update' do
       context 'with valid parameters' do
         let(:new_attributes) do
           FactoryBot.attributes_for(:place, :changed)
         end
-  
+
         it 'renders a non-successful response' do
           place = Place.create! valid_attributes
           patch "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/#{place.id}", params: { place: new_attributes }
@@ -124,7 +123,7 @@ RSpec.describe '/places', type: :request do
         end
       end
     end
-  
+
     describe 'DELETE /destroy' do
       it 'destroys the requested place' do
         place = Place.create! valid_attributes
@@ -192,13 +191,12 @@ RSpec.describe '/places', type: :request do
       end
     end
 
-
     describe 'PATCH /update' do
       context 'with valid parameters' do
         let(:new_attributes) do
           FactoryBot.attributes_for(:place, :changed)
         end
-  
+
         it 'updates the requested place' do
           place = Place.create! valid_attributes
           patch "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/#{place.id}", params: { place: new_attributes }
@@ -207,7 +205,7 @@ RSpec.describe '/places', type: :request do
         end
       end
     end
-  
+
     describe 'DELETE /destroy' do
       it 'destroys the requested place' do
         place = Place.create! valid_attributes
@@ -215,10 +213,6 @@ RSpec.describe '/places', type: :request do
           delete "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/#{place.id}"
         end.to change(Place, :count).by(-1)
       end
-  
     end
   end
-
-
-  
 end

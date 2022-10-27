@@ -97,7 +97,7 @@ class Api::V1::PlacesController < Api::V1::ApplicationController
     params[:place][:sensitive] = default_checkbox(params[:place][:sensitive])
     respond_to do |format|
       if @place.update(place_params)
-        @place.update({ 'published' => params[:place][:published] })        
+        @place.update({ 'published' => params[:place][:published] })
         format.json { render :show, status: :ok, place: @place }
       else
         format.json { render json: @place.errors, status: :unprocessable_entity }
