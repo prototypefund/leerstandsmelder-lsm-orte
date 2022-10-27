@@ -19,7 +19,7 @@ class ApplicationPolicy
   end
 
   def create?
-    true
+    user.present?
   end
 
   def new?
@@ -27,7 +27,7 @@ class ApplicationPolicy
   end
 
   def update?
-    false
+    user.admin?
   end
 
   def edit?
@@ -35,14 +35,11 @@ class ApplicationPolicy
   end
 
   def destroy?
-    false
+    user&.admin?
   end
 
   def admin?
-    puts 'ADMIN?'
-    puts @user.inspect
     @user.admin?
-    true
   end
 
   def scope
