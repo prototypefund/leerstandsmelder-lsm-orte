@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_24_115504) do
+ActiveRecord::Schema.define(version: 2022_11_01_144635) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -252,6 +252,11 @@ ActiveRecord::Schema.define(version: 2022_10_24_115504) do
     t.boolean "shy", default: false
     t.boolean "sensitive", default: false
     t.integer "sensitive_radius", default: 100
+    t.string "road"
+    t.string "house_number"
+    t.string "borough"
+    t.string "suburb"
+    t.string "country_code"
     t.index ["layer_id"], name: "index_places_on_layer_id"
   end
 

@@ -8,6 +8,10 @@ class MapPolicy < ApplicationPolicy
     @map = map
   end
 
+  def index?
+    true
+  end
+
   def new?
     user.admin?
   end
@@ -25,7 +29,7 @@ class MapPolicy < ApplicationPolicy
   end
 
   def show?
-    user.admin? || map.published?
+    user&.admin? || map.published?
   end
 
   def self.destroy?(user, map)
@@ -38,8 +42,10 @@ class MapPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      if user.admin?
+      if user&.admin?
         scope.all
+      elsif user&.blank?
+        scope.where(published: true)
       else
         scope.where(published: true)
       end

@@ -29,10 +29,14 @@
         %tr
           %td= admin_user.email
           %td
-            - if admin_user.role == 'admin'
-              %label.label.warning admin
+            - if admin_user.admin?
+              %label.label.warning
+                - admin_user.roles.each do |role|
+                  = role.name
             - else
-              %label.label #{admin_user.role}
+              %label.label 
+                - admin_user.roles.each do |role|
+                  = role.name
           %td
             - if admin_user.group
               %label.label

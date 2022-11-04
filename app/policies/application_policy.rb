@@ -4,7 +4,7 @@ class ApplicationPolicy
   attr_reader :user, :record
 
   def initialize(user, record)
-    raise Pundit::NotAuthorizedError, 'must be logged in' unless user
+    # raise Pundit::NotAuthorizedError, 'must be logged in' unless user
 
     @user = user
     @record = record
@@ -15,11 +15,11 @@ class ApplicationPolicy
   end
 
   def show?
-    false
+    scope.where(id: record.id).exists?
   end
 
   def create?
-    true
+    user.present?
   end
 
   def new?
@@ -27,7 +27,7 @@ class ApplicationPolicy
   end
 
   def update?
-    false
+    user.admin?
   end
 
   def edit?
@@ -35,26 +35,28 @@ class ApplicationPolicy
   end
 
   def destroy?
-    false
+    user&.admin?
   end
 
   def admin?
-    puts 'ADMIN?'
-    puts @user.inspect
     @user.admin?
-    true
+  end
+
+  def scope
+    Pundit.policy_scope!(user, record.class)
   end
 
   class Scope
     def initialize(user, scope)
-      raise Pundit::NotAuthorizedError, 'must be logged in' unless user
+      # raise Pundit::NotAuthorizedError, 'must be logged in' unless user
 
       @user = user
       @scope = scope
     end
 
     def resolve
-      raise NotImplementedError, "You must define #resolve in #{self.class}"
+      scope
+      # raise NotImplementedError, "You must define #resolve in #{self.class}"
     end
 
     private

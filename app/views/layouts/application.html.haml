@@ -45,7 +45,8 @@
 
     %header
       = render 'layouts/navigation'
-    = render 'layouts/offcanvas'
+    - if current_user.present?
+      = render 'layouts/offcanvas'
     #map
       &nbsp;
     %main{role: "main"}

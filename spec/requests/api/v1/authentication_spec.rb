@@ -64,3 +64,20 @@ RSpec.describe 'DELETE /api/v1/auth/sign_out', type: :request do
     expect(response).to have_http_status(401)
   end
 end
+
+RSpec.describe 'GET /api/v1/me', type: :request do
+  before do
+    group = FactoryBot.create(:group)
+    @user = FactoryBot.create(:user, group: group)
+    sign_in @user
+    @map = create(:map, group: group, published: true)
+    @layer = create(:layer, map: @map, published: true)
+  end
+
+  it 'returns 200' do
+    get '/api/v1/me'
+    expect(response).to have_http_status(200)
+    # puts json.inspect
+    expect(json['data']['id']).to eq(@user.id)
+  end
+end

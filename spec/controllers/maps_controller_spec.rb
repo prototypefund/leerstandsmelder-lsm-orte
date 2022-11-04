@@ -72,7 +72,6 @@ RSpec.describe MapsController, type: :controller do
       it 'a map w/title for a published map' do
         map = FactoryBot.create(:map, group_id: @group.id, published: true)
         get :show, params: { id: map.friendly_id }, session: valid_session, format: 'json'
-        json = JSON.parse(response.body)
         expect(json['title']).to eq map.title
       end
     end

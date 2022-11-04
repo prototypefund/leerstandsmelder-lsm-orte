@@ -4,7 +4,7 @@ require 'csv'
 
 class Place < ApplicationRecord
   # self.skip_time_zone_conversion_for_attributes = [:startdate,:startdate_date,:startdate_time]
-
+  resourcify
   belongs_to :layer
   belongs_to :icon, optional: true
 

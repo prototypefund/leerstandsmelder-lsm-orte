@@ -5,6 +5,7 @@ class Api::V1::Users::InformationsController < Api::V1::ApplicationController
   before_action :authenticate_user!
 
   def me
-    render json: current_user.as_json(only: %i[id email role]), status: :ok
+    # render json: current_user.to_json(only: %i[id email roles]), status: :ok
+    render json: UserSerializer.new(current_user).serializable_hash, status: :ok
   end
 end

@@ -1,14 +1,25 @@
 # frozen_string_literal: true
 
-class PlacesController < ApplicationController
+class Api::V1::PlacesController < Api::V1::ApplicationController
+  before_action :authenticate_user!, except: %i[index show]
   before_action :set_place, only: %i[show edit clone edit_clone update_clone update destroy]
+
+  before_action :cors_set_access_control_headers
 
   # GET /places
   # GET /places.json
   def index
-    @layer = Layer.friendly.find(params[:layer_id])
+    @layer = policy_scope(Layer).friendly.find(params[:layer_id])
     @map = @layer.map
-    @places = @layer.places
+    @places = policy_scope(@layer.places)
+    authorize @places
+    respond_to do |format|
+      if @places
+        format.json { render :index, json: @places }
+      else
+        format.json { head :no_content }
+      end
+    end
   end
 
   # GET /places/1
@@ -56,47 +67,19 @@ class PlacesController < ApplicationController
     @layer = Layer.friendly.find(params[:layer_id])
   end
 
-  def clone
-    @new_place = @place.deep_clone include: [{ images: %i[file_attachment file_blob] }, { videos: %i[file_attachment file_blob filmstill_attachment filmstill_blob] }, :submissions, :annotations]
-    @new_place.title = "#{@new_place.title} (Copy)"
-    @new_place.published = false
-
-    respond_to do |format|
-      if @new_place.save!
-        format.html { redirect_to edit_clone_map_layer_place_path(@map, @layer, @new_place), notice: 'Place cloned with all assets, submissions and annotations. Place is automatically set to unpublished' }
-      else
-        format.html { redirect_to map_layer_places_path(@map, @layer), notice: 'Place could not be copied' }
-      end
-    end
-  end
-
-  def edit_clone
-    @maps = Map.by_user(current_user).all
-  end
-
-  def update_clone
-    respond_to do |format|
-      if @place.save!
-        format.html { redirect_to edit_map_layer_place_path(@map, @layer, @place), notice: 'Place has been saved.' }
-      else
-        format.html { redirect_to map_layer_places_path(@map, @layer), notice: 'Place could not be updated' }
-      end
-    end
-  end
-
   # POST /places
   # POST /places.json
   def create
+    authorize Place
     @place = Place.new(place_params)
     @layer = Layer.friendly.find(@place.layer_id)
+    authorize @layer
     @map = @layer.map
 
     respond_to do |format|
       if @place.save
-        format.html { redirect_to map_layer_url(@map, @layer), notice: 'Place was successfully created.' }
-        format.json { render :show, status: :created, location: @place }
+        format.json { render :show, status: :created, place: @place }
       else
-        format.html { render :new }
         format.json { render json: @place.errors, status: :unprocessable_entity }
       end
     end
@@ -115,10 +98,8 @@ class PlacesController < ApplicationController
     respond_to do |format|
       if @place.update(place_params)
         @place.update({ 'published' => params[:place][:published] })
-        format.html { redirect_to map_layer_url(@map.id, @place.layer.id), notice: "#{view_context.link_to(@place.title, map_layer_place_path(@map, @layer, @place))} was successfully updated." }
-        format.json { render :show, status: :ok, location: @place }
+        format.json { render :show, status: :ok, place: @place }
       else
-        format.html { render :edit }
         format.json { render json: @place.errors, status: :unprocessable_entity }
       end
     end
@@ -160,13 +141,14 @@ class PlacesController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_place
-    @map = Map.by_user(current_user).friendly.find(params[:map_id])
-    @layer = Layer.friendly.find(params[:layer_id])
+    @map = policy_scope(Map).friendly.find(params[:map_id]) if params[:map_id]
+    @layer = policy_scope(Layer).friendly.find(params[:layer_id]) if params[:layer_id]
     @place = Place.find(params[:id])
+    authorize @place
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def place_params
-    params.require(:place).permit(:title, :teaser, :text, :link, :startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :lat, :lon, :location, :address, :zip, :city, :country, :published, :featured, :sensitive, :sensitive_radius, :shy, :imagelink, :layer_id, :icon_id, :audio, :relations_tos, :relations_froms, annotations_attributes: %i[title text person_id source], tag_list: [], images: [], videos: [])
+    params.require(:place).permit(:title, :teaser, :text, :link, :startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :lat, :lon, :location, :address, :zip, :city, :road, :house_number, :borough, :suburb, :country_code, :country, :published, :featured, :sensitive, :sensitive_radius, :shy, :imagelink, :layer_id, :icon_id, :audio, :relations_tos, :relations_froms, annotations_attributes: %i[title text person_id source], tag_list: [], images: [], videos: [])
   end
 end
