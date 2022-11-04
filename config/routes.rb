@@ -10,7 +10,8 @@ Rails.application.routes.draw do
       mount_devise_token_auth_for 'User', at: 'auth'
     end
     namespace :v1 do
-      get 'me', controller: 'users/informations', action: :me
+      get 'me', controller: 'users/informations', action: :me, :defaults => { :format => :json }
+      resources :places, controller: 'places', :defaults => { :format => :json }
       resources :maps, only: [:show, :index], :defaults => { :format => :json } do
         resources :layers, only: [:show], :defaults => { :format => :json } do
           resources :places do

@@ -141,14 +141,14 @@ class Api::V1::PlacesController < Api::V1::ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_place
-    @map = policy_scope(Map).friendly.find(params[:map_id])
-    @layer = policy_scope(Layer).friendly.find(params[:layer_id])
+    @map = policy_scope(Map).friendly.find(params[:map_id]) if params[:map_id]
+    @layer = policy_scope(Layer).friendly.find(params[:layer_id]) if params[:layer_id]
     @place = Place.find(params[:id])
     authorize @place
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def place_params
-    params.require(:place).permit(:title, :teaser, :text, :link, :startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :lat, :lon, :location, :address, :zip, :city, :country, :published, :featured, :sensitive, :sensitive_radius, :shy, :imagelink, :layer_id, :icon_id, :audio, :relations_tos, :relations_froms, annotations_attributes: %i[title text person_id source], tag_list: [], images: [], videos: [])
+    params.require(:place).permit(:title, :teaser, :text, :link, :startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :lat, :lon, :location, :address, :zip, :city, :road, :house_number, :borough, :suburb, :country_code, :country, :published, :featured, :sensitive, :sensitive_radius, :shy, :imagelink, :layer_id, :icon_id, :audio, :relations_tos, :relations_froms, annotations_attributes: %i[title text person_id source], tag_list: [], images: [], videos: [])
   end
 end

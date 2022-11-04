@@ -88,9 +88,9 @@ RSpec.describe '/places', type: :request do
             post "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places", params: { place: valid_attributes }
           end.to change(Place, :count).by(1)
           expect(response).to be_successful
-          # TODO: should the response be like this layer -> place?
-          expect(json['id']).to eq(@layer.id)
-          expect(json['places'].size).to eq(1)
+          p = Place.all.last
+          expect(json['id']).to eq(p.id)
+          # expect(json['places'].size).to eq(1)
         end
       end
 
@@ -171,9 +171,8 @@ RSpec.describe '/places', type: :request do
             post "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places", params: { place: valid_attributes }
           end.to change(Place, :count).by(1)
           expect(response).to be_successful
-          # TODO: should the response be like this layer -> place?
-          expect(json['id']).to eq(@layer.id)
-          expect(json['places'].size).to eq(1)
+          p = Place.all.last
+          expect(json['id']).to eq(p.id)
         end
       end
 
