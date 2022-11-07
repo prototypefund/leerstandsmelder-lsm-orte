@@ -13,6 +13,7 @@ Rails.application.configure do
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = true
+  config.action_controller.always_permitted_parameters = ['controller', 'action', 'locale']
 
   # active storage
   config.active_storage.service = :local
