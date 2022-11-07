@@ -59,5 +59,13 @@ DeviseTokenAuth.setup do |config|
   # By default DeviseTokenAuth will not send confirmation email, even when including
   # devise confirmable module. If you want to use devise confirmable module and
   # send email, set it to true. (This is a setting for compatibility)
-  # config.send_confirmation_email = true
+   config.send_confirmation_email = true
+
+   # By default, the password-reset confirmation link redirects to the client with valid
+   # session credentials as querystring params. With this option enabled, the redirect 
+   # will NOT include the valid session credentials. 
+   # Instead the redirect will include a password_reset_token querystring param that can 
+   # be used to reset the users password. Once the user has reset their password, the password-reset 
+   # success response headers will contain valid session credentials.
+   config.require_client_password_reset_token = true
 end
