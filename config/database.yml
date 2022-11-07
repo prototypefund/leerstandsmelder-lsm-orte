@@ -19,10 +19,10 @@ staging:
   <<: *default
   database: lsm_orte_staging
   username: lsm_orte
-  password: <%%= ENV["LSM_ORTE_DATABASE_PASSWORD"] %>
+  password: <%= Rails.application.credentials.dig(:postgres, :staging, :password ) %>
 
 production:
   <<: *default
   database: lsm_orte_production
   username: lsm_orte
-  password: <%%= ENV["LSM_ORTE_DATABASE_PASSWORD"] %>
+  password: <%= Rails.application.credentials.dig(:postgres, :production, :password ) %>
