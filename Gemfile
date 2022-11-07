@@ -26,8 +26,8 @@ gem 'deep_cloneable', '~> 3'
 
 # custom
 gem 'devise'
-gem 'devise_token_auth'
 gem 'devise-i18n'
+gem 'devise_token_auth'
 gem 'exception_notification'
 gem 'fast_jsonapi'
 gem 'foundation-icons-sass-rails'
