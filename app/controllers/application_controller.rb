@@ -14,8 +14,6 @@ class ApplicationController < ActionController::Base
 
   around_action :switch_locale
 
-
-
   # For all responses in this controller, return the CORS access control headers.
 
   def cors_set_access_control_headers

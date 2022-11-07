@@ -61,6 +61,8 @@ DeviseTokenAuth.setup do |config|
   # send email, set it to true. (This is a setting for compatibility)
    config.send_confirmation_email = true
 
+   config.default_confirm_success_url = "http://localhost:8080/login"
+
    # By default, the password-reset confirmation link redirects to the client with valid
    # session credentials as querystring params. With this option enabled, the redirect 
    # will NOT include the valid session credentials. 

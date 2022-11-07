@@ -57,7 +57,6 @@ class Api::V1::Users::UsersController < Api::V1::ApplicationController
 
     respond_to do |format|
       if @user.update(sanitized_params)
-        #format.json { render :show, status: :ok, user: @user }
         format.json { render json: UserSerializer.new(current_user).serializable_hash, status: :ok }
       else
         format.json { render json: @user.errors, status: :unprocessable_entity }

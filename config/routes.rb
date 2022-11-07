@@ -9,6 +9,8 @@ Rails.application.routes.draw do
     scope :v1 do
       mount_devise_token_auth_for 'User', at: 'auth', controllers: {
         passwords: 'api/v1/users/passwords',
+        registrations: 'api/v1/users/registrations',
+        confirmations: 'api/v1/users/confirmations',
       }
     end
     namespace :v1 do
