@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_07_135814) do
+ActiveRecord::Schema.define(version: 2022_11_14_081057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -54,6 +54,10 @@ ActiveRecord::Schema.define(version: 2022_11_07_135814) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "person_id"
+    t.string "user_id"
+    t.string "to_user_id"
+    t.boolean "hidden", default: false
+    t.string "legacy_id"
     t.index ["place_id"], name: "index_annotations_on_place_id"
   end
 
