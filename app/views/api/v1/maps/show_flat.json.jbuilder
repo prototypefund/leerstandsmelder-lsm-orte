@@ -10,11 +10,11 @@ json.map do
       json.call(place, :id, :created_at, :updated_at, :title, :teaser, :link, :imagelink, :imagelink2, :audiolink, :published, :startdate, :enddate, :location, :address, :zip, :city, :text, :country, :featured, :shy, :layer_id, :icon_link, :icon_class, :icon_name)
       json.lat place.public_lat
       json.lon place.public_lon
-      json.annotations place.annotations do |annotation|
-        json.extract! annotation, :id, :title, :text, :person_name, :audiolink
+      json.annotations policy_scope(place.annotations) do |annotation|
+        json.extract! annotation, :id, :title, :text, :person_name, :audiolink, :published
       end
       json.images do
-        json.array! place.images.order('sorting ASC') do |image|
+        json.array! policy_scope(place.images).order('sorting ASC') do |image|
           json.call(image, :id, :title, :source, :creator, :alt, :sorting, :image_linktag, :image_url)
         end
       end
