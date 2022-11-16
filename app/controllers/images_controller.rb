@@ -8,7 +8,7 @@ class ImagesController < ApplicationController
   def index
     @place = Place.where(id: params[:place_id]).first
     redirect_to root_url, notice: 'No place defined for showing this image' if !@place || @place.layer.map.group != current_user.group
-    @images = Image.where(place_id: @place_id)
+    @images = Image.where(place_id: @place.id)
   end
 
   # GET /images/1
