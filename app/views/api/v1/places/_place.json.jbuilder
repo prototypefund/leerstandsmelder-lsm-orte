@@ -10,4 +10,9 @@ json.images do
 end
 json.comments policy_scope(place.annotations) do |annotation|
   json.extract! annotation, :id, :created_at, :updated_at, :title, :text, :person_name, :audiolink, :published
+  if annotation.user.present?
+    json.user do
+      json.extract! annotation.user, :id, :nickname
+    end  
+  end
 end

@@ -17,10 +17,11 @@ Rails.application.routes.draw do
       get 'me', controller: 'users/informations', action: :me, :defaults => { :format => :json }
       resources :users, controller: 'users/users', :defaults => { :format => :json }
       resources :places, controller: 'places', :defaults => { :format => :json } do
+        resources :annotations, controller: 'annotations', :defaults => { :format => :json }
         resources :images
         resources :videos
       end
-      resources :annotations
+      resources :annotations, controller: 'annotations', :defaults => { :format => :json }
       resources :maps, only: [:show, :index], :defaults => { :format => :json } do
         resources :layers, only: [:show], :defaults => { :format => :json } do
           resources :places do

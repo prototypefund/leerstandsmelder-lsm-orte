@@ -2,6 +2,7 @@
 
 class Annotation < ApplicationRecord
   belongs_to :place
+  belongs_to :user, optional: true
   belongs_to :person, optional: true
 
   acts_as_taggable_on :tags
