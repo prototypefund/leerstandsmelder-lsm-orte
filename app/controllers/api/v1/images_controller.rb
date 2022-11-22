@@ -9,7 +9,6 @@ class Api::V1::ImagesController < Api::V1::ApplicationController
   def index
     @place = Place.where(id: params[:place_id]).first
     # authorize @place
-    puts @place.inspect
     @images = Image.where(place_id: @place.id)
   end
 

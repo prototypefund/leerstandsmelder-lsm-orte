@@ -11,9 +11,6 @@ class Api::V1::AnnotationsController < Api::V1::ApplicationController
 
   def new
     authorize Annotation
-    puts 'NEW'
-    puts current_user.inspect
-
     @annotation = Annotation.new
     @annotation.place_id = params[:place_id]
     @annotation.user = current_user
