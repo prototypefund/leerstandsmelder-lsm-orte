@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_14_081057) do
+ActiveRecord::Schema.define(version: 2022_11_21_225344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -374,6 +374,7 @@ ActiveRecord::Schema.define(version: 2022_11_14_081057) do
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
     t.datetime "locked_at"
+    t.string "password_salt"
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -410,7 +411,6 @@ ActiveRecord::Schema.define(version: 2022_11_14_081057) do
   add_foreign_key "build_logs", "maps"
   add_foreign_key "icons", "iconsets"
   add_foreign_key "images", "places"
-  add_foreign_key "layers", "maps"
   add_foreign_key "maps", "groups"
   add_foreign_key "people", "maps"
   add_foreign_key "places", "layers"
