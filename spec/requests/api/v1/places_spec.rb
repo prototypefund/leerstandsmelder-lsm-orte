@@ -84,10 +84,15 @@ RSpec.describe 'Places', type: :request do
     end
 
     describe 'GET /index' do
-      it 'renders a successful response' do
-        Place.create! valid_attributes
+      it 'renders a successful response and returns only published places' do
+        p = FactoryBot.create(:place, published: true, map: @map, layer: @layer, user: @user)
+        p2 = FactoryBot.create(:place, published: false, map: @map, layer: @layer, user: @other_user)
+        map_alt = create(:map, published: true)
+        layer_alt = create(:layer, map: map_alt, published: true)
+        p3 = FactoryBot.create(:place, published: false, map: map_alt, layer: layer_alt, user: @user)
         get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places"
         expect(response).to be_successful
+        expect(json.size).to eq(1)
       end
     end
 
@@ -209,10 +214,15 @@ RSpec.describe 'Places', type: :request do
     end
 
     describe 'GET /index' do
-      it 'renders a successful response' do
-        Place.create! valid_attributes
+      it 'renders a successful response and returns all places on this map' do
+        p = FactoryBot.create(:place, published: true, map: @map, layer: @layer, user: @other_user)
+        p2 = FactoryBot.create(:place, published: false, map: @map, layer: @layer, user: @other_user)
+        map_alt = create(:map, published: true)
+        layer_alt = create(:layer, map: map_alt, published: true)
+        p3 = FactoryBot.create(:place, published: false, map: map_alt, layer: layer_alt, user: @user)
         get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places"
         expect(response).to be_successful
+        expect(json.size).to eq(2)
       end
     end
 

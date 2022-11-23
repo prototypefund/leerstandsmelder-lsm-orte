@@ -30,9 +30,8 @@ class PlacePolicy < ApplicationPolicy
     def resolve
       if user&.admin?
         scope.all
-      # TODO: make this work
-      # elsif user&.has_role?(:moderator, :any)
-      # scope.where(map: Map.with_role(:moderator, user))
+      elsif user&.has_role?(:moderator, :any)
+        scope.where(map: Map.with_role(:moderator, user).map(&:id))
       elsif user&.blank?
         scope.where(published: true)
       else
