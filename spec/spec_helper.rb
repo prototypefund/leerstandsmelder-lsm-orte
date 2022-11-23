@@ -7,6 +7,10 @@ require 'webmock/rspec'
 require 'active_support/testing/time_helpers'
 require 'pundit/rspec'
 
+RspecApiDocumentation.configure do |config|
+  config.format = :json
+end
+
 WebMock.disable_net_connect!(allow: [
                                'localhost',
                                '0.0.0.0',

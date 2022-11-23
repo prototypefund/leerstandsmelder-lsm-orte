@@ -46,7 +46,7 @@ gem 'rack-cors'
 gem 'rolify'
 gem 'secure_headers'
 gem 'select2-rails'
-# NOTE: settingslogic != rails 3
+# NOTE: settingslogic != ruby 3
 gem 'settingslogic'
 gem 'simple_form'
 gem 'sprockets', '~> 4'
@@ -65,6 +65,9 @@ gem 'tinymce-rails', '~> 5'
 gem 'turnout'
 
 gem 'net-smtp'
+
+gem 'rspec_api_documentation'
+gem "apitome"
 
 gem 'webdack-uuid_migration'
 

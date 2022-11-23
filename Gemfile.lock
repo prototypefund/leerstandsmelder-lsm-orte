@@ -66,6 +66,9 @@ GEM
       public_suffix (>= 2.0.2, < 6.0)
     airbrussh (1.4.1)
       sshkit (>= 1.6.1, != 1.7.0)
+    apitome (0.3.1)
+      kramdown
+      railties
     ast (2.4.2)
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
@@ -235,6 +238,8 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
+    kramdown (2.4.0)
+      rexml
     kwalify (0.7.2)
     launchy (2.5.0)
       addressable (~> 2.7)
@@ -260,6 +265,7 @@ GEM
     mobility (1.2.9)
       i18n (>= 0.6.10, < 2)
       request_store (~> 1.0)
+    mustache (1.1.1)
     net-protocol (0.1.3)
       timeout
     net-scp (1.2.1)
@@ -353,6 +359,10 @@ GEM
       railties (>= 5.0)
     rexml (3.2.5)
     rolify (6.0.0)
+    rspec (3.11.0)
+      rspec-core (~> 3.11.0)
+      rspec-expectations (~> 3.11.0)
+      rspec-mocks (~> 3.11.0)
     rspec-core (3.11.0)
       rspec-support (~> 3.11.0)
     rspec-expectations (3.11.1)
@@ -370,6 +380,10 @@ GEM
       rspec-mocks (~> 3.11)
       rspec-support (~> 3.11)
     rspec-support (3.11.1)
+    rspec_api_documentation (6.1.0)
+      activesupport (>= 3.0.0)
+      mustache (~> 1.0, >= 0.99.4)
+      rspec (~> 3.0)
     rspec_junit_formatter (0.6.0)
       rspec-core (>= 2, < 4, != 2.12.0)
     rubocop (1.36.0)
@@ -522,6 +536,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts-as-taggable-on (~> 9)
+  apitome
   bcrypt
   brakeman
   bundler-audit
@@ -575,6 +590,7 @@ DEPENDENCIES
   redis (~> 5)
   rolify
   rspec-rails
+  rspec_api_documentation
   rspec_junit_formatter
   rubocop
   rubocop-rspec
@@ -603,4 +619,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   2.3.23
+   2.3.19
