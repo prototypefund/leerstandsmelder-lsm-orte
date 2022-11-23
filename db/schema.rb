@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_14_081057) do
+ActiveRecord::Schema.define(version: 2022_11_23_104120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -48,17 +48,16 @@ ActiveRecord::Schema.define(version: 2022_11_14_081057) do
     t.string "title"
     t.text "text"
     t.uuid "place_id"
+    t.uuid "person_id"
     t.boolean "published", default: false
     t.integer "sorting"
     t.text "source"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "person_id"
     t.string "user_id"
     t.string "to_user_id"
     t.boolean "hidden", default: false
     t.string "legacy_id"
-    t.index ["place_id"], name: "index_annotations_on_place_id"
   end
 
   create_table "build_logs", force: :cascade do |t|
@@ -71,17 +70,6 @@ ActiveRecord::Schema.define(version: 2022_11_14_081057) do
     t.datetime "updated_at", null: false
     t.index ["layer_id"], name: "index_build_logs_on_layer_id"
     t.index ["map_id"], name: "index_build_logs_on_map_id"
-  end
-
-  create_table "friendly_id_slugs", force: :cascade do |t|
-    t.string "slug", null: false
-    t.integer "sluggable_id", null: false
-    t.string "sluggable_type", limit: 50
-    t.string "scope"
-    t.datetime "created_at"
-    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
-    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
-    t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
   end
 
   create_table "groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -206,9 +194,9 @@ ActiveRecord::Schema.define(version: 2022_11_14_081057) do
     t.bigint "translatable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["translatable_id", "translatable_type", "key"], name: "index_mobility_string_translations_on_translatable_attribute"
+    t.index ["translatable_id", "translatable_type", "key"], name: "index_mobility_string_translate_translatable_attribute"
     t.index ["translatable_id", "translatable_type", "locale", "key"], name: "index_mobility_string_translations_on_keys", unique: true
-    t.index ["translatable_type", "key", "value", "locale"], name: "index_mobility_string_translations_on_query_keys"
+    t.index ["translatable_type", "key", "value", "locale"], name: "index_mobility_string_translate_query_keys"
   end
 
   create_table "mobility_text_translations", force: :cascade do |t|
@@ -321,7 +309,6 @@ ActiveRecord::Schema.define(version: 2022_11_14_081057) do
     t.string "context", limit: 128
     t.datetime "created_at"
     t.index ["context"], name: "index_taggings_on_context"
-    t.index ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true
     t.index ["tag_id"], name: "index_taggings_on_tag_id"
     t.index ["taggable_id", "taggable_type", "context"], name: "taggings_taggable_context_idx"
     t.index ["taggable_id", "taggable_type", "tagger_id", "context"], name: "taggings_idy"
@@ -336,7 +323,6 @@ ActiveRecord::Schema.define(version: 2022_11_14_081057) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "taggings_count", default: 0
-    t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -352,9 +338,8 @@ ActiveRecord::Schema.define(version: 2022_11_14_081057) do
     t.string "last_sign_in_ip"
     t.string "role", default: "user"
     t.uuid "group_id"
-    t.datetime "created_at", default: "2021-11-06 17:42:00", null: false
-    t.datetime "updated_at", default: "2021-11-06 17:42:00", null: false
-    t.string "authentication_token", limit: 30
+    t.datetime "created_at", default: "2022-11-23 10:34:18", null: false
+    t.datetime "updated_at", default: "2022-11-23 10:34:18", null: false
     t.string "provider", default: "email", null: false
     t.string "uid", default: "", null: false
     t.text "tokens"
@@ -374,7 +359,6 @@ ActiveRecord::Schema.define(version: 2022_11_14_081057) do
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
     t.datetime "locked_at"
-    t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["group_id"], name: "index_users_on_group_id"
@@ -404,7 +388,9 @@ ActiveRecord::Schema.define(version: 2022_11_14_081057) do
     t.index ["place_id"], name: "index_videos_on_place_id"
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "annotations", "people"
   add_foreign_key "annotations", "places"
   add_foreign_key "build_logs", "layers"
   add_foreign_key "build_logs", "maps"
