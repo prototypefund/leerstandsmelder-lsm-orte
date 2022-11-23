@@ -17,7 +17,7 @@ RSpec.describe 'Admin::Users', type: :request do
     end
     it 'redirects for pages/show' do
       get admin_users_path
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status(302)
     end
   end
 end

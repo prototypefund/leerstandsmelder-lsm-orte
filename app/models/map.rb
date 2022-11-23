@@ -19,10 +19,10 @@ class Map < ApplicationRecord
 
   # call me: Map.by_user(current_user).find(params[:id])
   scope :by_user, lambda { |user|
-    if user.group.active
+    if user.group && user.group.active
       where(group_id: user.group.id) unless user.group.title == 'Admins'
     else
-      where(group_id: -1) unless user.group.title == 'Admins'
+      where(group_id: -1) unless user.group && user.group.title == 'Admins'
     end
   }
 

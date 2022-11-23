@@ -16,8 +16,7 @@ class Api::V1::AnnotationsController < Api::V1::ApplicationController
     @annotation.user = current_user
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     authorize Annotation
