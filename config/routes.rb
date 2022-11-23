@@ -17,9 +17,9 @@ Rails.application.routes.draw do
       get 'me', controller: 'users/informations', action: :me, :defaults => { :format => :json }
       resources :users, controller: 'users/users', :defaults => { :format => :json }
       resources :places, controller: 'places', :defaults => { :format => :json } do
-        resources :annotations, controller: 'annotations', :defaults => { :format => :json }
-        resources :images
-        resources :videos
+        resources :annotations, :defaults => { :format => :json }
+        resources :images, :defaults => { :format => :json }
+        resources :videos, :defaults => { :format => :json }
       end
       resources :annotations, controller: 'annotations', :defaults => { :format => :json }
       resources :maps, only: [:show, :index], :defaults => { :format => :json } do
