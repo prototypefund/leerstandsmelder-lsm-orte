@@ -10,8 +10,8 @@ class PlacePolicy < ApplicationPolicy
   end
 
   def index?
-    #true
-    user&.admin?
+    true
+    #user&.admin?
   end
 
   def show?
