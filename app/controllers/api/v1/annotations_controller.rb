@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Api::V1::AnnotationsController < Api::V1::ApplicationController
-  before_action :authenticate_user!, except: %i[show]
   before_action :set_annotation, only: %i[edit show update destroy]
+  before_action :authenticate_user!, except: %i[show]
 
   # GET  /annotation.json
   def index
