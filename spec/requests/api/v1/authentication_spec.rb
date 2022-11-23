@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'rspec_api_documentation/dsl'
 require 'json'
 
 RSpec.describe 'POST /api/v1/auth/sign_in', type: :request do

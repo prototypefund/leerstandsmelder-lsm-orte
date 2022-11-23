@@ -1,0 +1,50 @@
+{
+  "resource": "Maps",
+  "resource_explanation": null,
+  "http_method": "GET",
+  "route": "/api/v1/maps",
+  "description": "Listing maps",
+  "explanation": null,
+  "parameters": [
+
+  ],
+  "response_fields": [
+
+  ],
+  "requests": [
+    {
+      "request_method": "GET",
+      "request_path": "/api/v1/maps",
+      "request_body": null,
+      "request_headers": {
+        "Version": "HTTP/1.0",
+        "Host": "example.org",
+        "Cookie": ""
+      },
+      "request_query_parameters": {
+      },
+      "request_content_type": null,
+      "response_status": 200,
+      "response_status_text": "OK",
+      "response_body": "[binary data]",
+      "response_headers": {
+        "Content-Type": "application/json; charset=utf-8",
+        "ETag": "W/\"4f53cda18c2baa0c0354bb5f9a3ecbe5\"",
+        "Cache-Control": "max-age=0, private, must-revalidate",
+        "X-Request-Id": "580098be-f8b1-4a7b-a3f7-83839ff17a1d",
+        "X-Runtime": "0.276413",
+        "X-Frame-Options": "DENY",
+        "X-Content-Type-Options": "nosniff",
+        "X-XSS-Protection": "1; mode=block",
+        "X-Download-Options": "noopen",
+        "X-Permitted-Cross-Domain-Policies": "none",
+        "Referrer-Policy": "origin-when-cross-origin",
+        "Content-Security-Policy": "default-src 'self' https://staging.orte.link https://orte.link; base-uri 'self' https://staging.orte.link https://orte.link; child-src 'self' 'unsafe-inline' https://player.vimeo.com https://www.youtube.com https://www.facebook.com; connect-src 'self' https://nominatim.openstreetmap.org/search https://nominatim.openstreetmap.org/reverse https://staging.orte.link ws://staging.orte.link wss://staging.orte.link https://orte.link ws://orte.link wss://orte.link; font-src 'self' 'unsafe-inline' https://staging.orte.link https://orte.link; form-action 'self'; frame-ancestors 'none'; img-src * data:; manifest-src 'self' https://staging.orte.link https://orte.link; media-src 'self' https://staging.orte.link https://orte.link; object-src 'self' 'unsafe-eval'; script-src 'self' 'unsafe-inline' https://staging.orte.link https://orte.link; style-src 'self' 'unsafe-inline' https://staging.orte.link https://orte.link; worker-src 'self'",
+        "Vary": "Origin",
+        "Content-Length": "2"
+      },
+      "response_content_type": "application/json; charset=utf-8",
+      "curl": null
+    }
+  ]
+}

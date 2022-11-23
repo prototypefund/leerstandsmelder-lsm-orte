@@ -1,0 +1,17 @@
+{
+  "resources": [
+    {
+      "name": "Maps",
+      "explanation": null,
+      "examples": [
+        {
+          "description": "Listing maps",
+          "link": "maps/listing_maps.json",
+          "groups": "all",
+          "route": "/api/v1/maps",
+          "method": "get"
+        }
+      ]
+    }
+  ]
+}
