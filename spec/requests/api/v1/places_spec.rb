@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe '/places', type: :request do
+RSpec.describe 'Places', type: :request do
   let(:valid_attributes) do
     FactoryBot.build(:place, layer: @layer, published: true).attributes
   end
@@ -14,16 +14,29 @@ RSpec.describe '/places', type: :request do
   describe 'No user logged in' do
     before do
       group = FactoryBot.create(:group)
-      user = FactoryBot.create(:admin_user, group: group)
-      # sign_in user
       @map = create(:map, group: group, published: true)
       @layer = create(:layer, map: @map, published: true)
     end
+
     describe 'GET /index' do
       it 'renders a successful response' do
         Place.create! valid_attributes
         get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places"
         expect(response).to be_successful
+      end
+    end
+
+    describe 'GET /show' do
+      it 'renders a successful response (for a published place)' do
+        p = Place.create! valid_attributes
+        get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/#{p.id}"
+        expect(response).to be_successful
+      end
+
+      it 'renders a non-successful response (for a un-published place)' do
+        p = FactoryBot.create(:place, layer: @layer, published: false)
+        get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/#{p.id}"
+        expect(response).not_to be_successful
       end
     end
 
@@ -42,10 +55,20 @@ RSpec.describe '/places', type: :request do
         expect(response.status).to eq(401)
       end
     end
+
     describe 'POST /create' do
       it 'renders a forbidden response' do
         post "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places", params: { place: valid_attributes }
         expect(response.status).to eq(401)
+      end
+    end
+
+    describe 'DELETE /destroy' do
+      it 'is not allowed to destroy the requested place' do
+        place = Place.create! valid_attributes
+        expect do
+          delete "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/#{place.id}"
+        end.to change(Place, :count).by(0)
       end
     end
   end
@@ -53,15 +76,30 @@ RSpec.describe '/places', type: :request do
   describe 'User is logged in' do
     before do
       group = FactoryBot.create(:group)
-      user = FactoryBot.create(:user, group: group)
-      sign_in user
+      @user = FactoryBot.create(:user, group: group)
+      sign_in @user
       @map = create(:map, group: group, published: true)
       @layer = create(:layer, map: @map, published: true)
     end
+
     describe 'GET /index' do
       it 'renders a successful response' do
         Place.create! valid_attributes
         get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places"
+        expect(response).to be_successful
+      end
+    end
+
+    describe 'GET /show' do
+      it 'renders a successful response (for a published place)' do
+        p = Place.create! valid_attributes
+        get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/#{p.id}"
+        expect(response).to be_successful
+      end
+
+      it 'renders a non-successful response (for a un-published place)' do
+        p = Place.create! valid_attributes
+        get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/#{p.id}"
         expect(response).to be_successful
       end
     end
@@ -74,7 +112,15 @@ RSpec.describe '/places', type: :request do
     end
 
     describe 'GET /edit' do
-      it 'render a unauthorized response' do
+      it 'render an authorized response (edit view of my place)' do
+        pending 'The policy for this task is not yet defined'
+        place = Place.create! valid_attributes
+        @user.add_role :user, place
+        get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/#{place.id}/edit"
+        expect(response).to be_successful
+      end
+
+      it 'render a unauthorized response (edit view of any other place)' do
         place = Place.create! valid_attributes
         get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/#{place.id}/edit"
         # response should have HTTP Status 403 Forbidden
@@ -114,7 +160,17 @@ RSpec.describe '/places', type: :request do
           FactoryBot.attributes_for(:place, :changed)
         end
 
-        it 'renders a non-successful response' do
+        it 'renders a non-successful response (update of my place)' do
+          pending 'The policy for this task is not yet defined'
+          place = Place.create! valid_attributes
+          @user.add_role :user, place
+          patch "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/#{place.id}", params: { place: new_attributes }
+          place.reload
+          expect(place.title).to eq('MyNewTitle')
+          expect(response).to be_successful
+        end
+
+        it 'renders a non-successful response (update of any other place)' do
           place = Place.create! valid_attributes
           patch "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/#{place.id}", params: { place: new_attributes }
           place.reload
@@ -125,7 +181,7 @@ RSpec.describe '/places', type: :request do
     end
 
     describe 'DELETE /destroy' do
-      it 'destroys the requested place' do
+      it 'is not allowed to destroy the requested place' do
         place = Place.create! valid_attributes
         expect do
           delete "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/#{place.id}"

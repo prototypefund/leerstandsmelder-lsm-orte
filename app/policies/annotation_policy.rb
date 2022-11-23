@@ -19,7 +19,7 @@ class AnnotationPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      puts user&.inspect
+      # puts user&.inspect
       if user&.admin?
         scope.all
       elsif user&.blank?
