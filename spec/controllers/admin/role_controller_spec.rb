@@ -14,6 +14,7 @@ RSpec.describe Admin::RolesController, type: :controller do
 
   describe "functionalities with logged in user with role 'user'" do
     before(:all) do
+      Role.delete_all
       User.destroy_all
       @group = FactoryBot.create(:group)
       @user = FactoryBot.create(:user, group_id: @group.id)
@@ -32,6 +33,7 @@ RSpec.describe Admin::RolesController, type: :controller do
 
   describe "functionalities with logged in user with role 'admin'" do
     before(:all) do
+      Role.delete_all
       User.destroy_all
       @admin_group = FactoryBot.create(:group)
       @other_group = FactoryBot.create(:group)
