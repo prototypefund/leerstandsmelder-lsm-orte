@@ -13,7 +13,7 @@
   %table
     %thead
       %tr
-        %th name
+        %th Role
         %th Users
         %th Maps
         %th
@@ -23,7 +23,7 @@
       - @admin_roles.each do |role|
         %tr
           %td
-            #{role.name}&nbsp;<i class="fi-prohibited fi-21"></i>
+            #{role.name_with_resource}&nbsp;<i class="fi-prohibited fi-21"></i>
           %td
             
           %td

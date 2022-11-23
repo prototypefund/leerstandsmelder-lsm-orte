@@ -18,9 +18,9 @@ class Role < ApplicationRecord
       name
     else
       resource_obj = resource_type.constantize
-      resource_instance = resource_obj.find(resource_id)
+      resource_instance = resource_obj.find(resource_id) if resource_id
       resource_label = resource_instance.try(:title)
-      "#{name}: #{resource_label}"
+      "#{name}/#{resource_type}: #{resource_label}"
       # self.name + '_' + self.resource_type.downcase + '_' + self.resource_id
     end
   end
