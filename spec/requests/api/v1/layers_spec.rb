@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Layers', type: :request do
-
   describe 'No user logged in' do
     before do
       group = FactoryBot.create(:group)
@@ -70,6 +69,4 @@ RSpec.describe 'Layers', type: :request do
       end
     end
   end
-
-
 end
