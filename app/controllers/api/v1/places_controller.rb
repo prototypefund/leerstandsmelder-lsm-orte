@@ -36,6 +36,7 @@ class Api::V1::PlacesController < Api::V1::ApplicationController
     @place.lat = params[:lat]
     @place.lon = params[:lon]
     @place.layer_id = params[:layer_id]
+    @place.user = current_user
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
     @layer = Layer.friendly.find(params[:layer_id])
   end
@@ -72,6 +73,7 @@ class Api::V1::PlacesController < Api::V1::ApplicationController
   def create
     authorize Place
     @place = Place.new(place_params)
+    @place.user = current_user
     @layer = Layer.friendly.find(@place.layer_id)
     authorize @layer
     @map = @layer.map
