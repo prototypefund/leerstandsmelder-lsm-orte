@@ -154,6 +154,7 @@ RSpec.describe Admin::UsersController, type: :controller do
           user = User.create! valid_attributes
           put :update, params: { id: user.to_param, admin_user: new_attributes }, session: valid_session
           user.reload
+          user.confirm
           expect(user.email).to eq 'abc@def.ghi'
         end
 

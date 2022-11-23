@@ -15,13 +15,10 @@ class MigrateUuid < ActiveRecord::Migration[6.1]
         primary_key_and_all_references_to_uuid :people
         primary_key_and_all_references_to_uuid :relations
         primary_key_and_all_references_to_uuid :submissions
-        primary_key_and_all_references_to_uuid :submissions
-        primary_key_and_all_references_to_uuid :roles
-        primary_key_and_all_references_to_uuid :assignments
       end
 
       dir.down do
-       # raise ActiveRecord::IrreversibleMigration
+        raise ActiveRecord::IrreversibleMigration
       end
     end
   end

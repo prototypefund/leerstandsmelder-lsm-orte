@@ -9,5 +9,12 @@
         = f.input :name
       .form-inputs
         %hr
+      - if @admin_role.resource_type
+        .form-inputs
+          = f.input :resource_type, disabled: true
+        .form-inputs
+          = f.input :resource_id, disabled: true, as: :string
+        .form-inputs
+          %hr  
       .form-actions
         = f.button :submit, :class => "button"

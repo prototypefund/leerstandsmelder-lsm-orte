@@ -9,4 +9,9 @@ FactoryBot.define do
       resource_type { Map }
     end
   end
+  factory :admin_role, class: Role do
+    name { 'admin' }
+    resource_id {}
+    resource_type {}
+  end
 end

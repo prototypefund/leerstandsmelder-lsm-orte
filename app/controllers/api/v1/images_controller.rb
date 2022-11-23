@@ -4,21 +4,19 @@ class Api::V1::ImagesController < Api::V1::ApplicationController
   before_action :set_image, only: %i[show edit update destroy]
   before_action :authenticate_user!, except: %i[index show]
 
-  # GET /images
   # GET /images.json
   def index
     @place = Place.where(id: params[:place_id]).first
     # authorize @place
-    puts @place.inspect
     @images = Image.where(place_id: @place.id)
+
+    # TODO: Is this view needed?
   end
 
-  # GET /images/1
   # GET /images/1.json
-  def show
-  end
+  def show; end
 
-  # GET /images/new
+  # GET /images/new.json
   def new
     @image = Image.new
     @map = Map.by_user(current_user).friendly.find(params[:map_id]) if params[:map_id]
@@ -34,7 +32,6 @@ class Api::V1::ImagesController < Api::V1::ApplicationController
     redirect_to root_url, notice: 'No valid place defined for editing an mage' unless @place || (@place && @place.layer.map.group == current_user.group)
   end
 
-  # POST /images
   # POST /images.json
   def create
     authorize Image
@@ -75,8 +72,8 @@ class Api::V1::ImagesController < Api::V1::ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_image
-    @map = Map.by_user(current_user).friendly.find(params[:map_id]) if params[:map_id]
-    @layer = Layer.friendly.find(params[:layer_id]) if params[:layer_id]
+    @map = policy_scope(Map).friendly.find(params[:map_id]) if params[:map_id]
+    @layer = policy_scope(Layer).friendly.find(params[:layer_id]) if params[:layer_id]
     @place = Place.find(params[:place_id])
     authorize @place
     @image = Image.find(params[:id])

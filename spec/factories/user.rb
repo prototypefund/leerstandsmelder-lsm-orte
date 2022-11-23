@@ -9,7 +9,9 @@ FactoryBot.define do
     email
     password { 'password12345' }
     password_confirmation { 'password12345' }
+    confirmed_at { DateTime.now }
     group
+    after(:create, &:confirm)
   end
 
   factory :admin_user, class: User do
@@ -17,6 +19,7 @@ FactoryBot.define do
     email
     password { 'password12345' }
     password_confirmation { 'password12345' }
+    confirmed_at { DateTime.now }
     group
     after(:create) { |user| user.add_role(:admin) }
   end

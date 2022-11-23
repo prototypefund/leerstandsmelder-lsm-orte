@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Api::V1::AnnotationsController < Api::V1::ApplicationController
-  before_action :authenticate_user!, except: %i[show]
   before_action :set_annotation, only: %i[edit show update destroy]
+  before_action :authenticate_user!, except: %i[show]
 
   # GET  /annotation.json
   def index
@@ -11,16 +11,12 @@ class Api::V1::AnnotationsController < Api::V1::ApplicationController
 
   def new
     authorize Annotation
-    puts 'NEW'
-    puts current_user.inspect
-
     @annotation = Annotation.new
     @annotation.place_id = params[:place_id]
     @annotation.user = current_user
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     authorize Annotation

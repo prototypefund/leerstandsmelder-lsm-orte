@@ -20,7 +20,7 @@
 
 
 
-- if !current_user.group.active
+- if current_user.group && !current_user.group.active
   %script
     $(document).ready(function(){
     $('#group-message-modal').foundation('open');
