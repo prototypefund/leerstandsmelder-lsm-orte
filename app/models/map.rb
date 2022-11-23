@@ -21,8 +21,8 @@ class Map < ApplicationRecord
 
   def setup_map_role
     r = Role.new
-    r.name = "moderator"
-    r.resource_type = "Map"
+    r.name = 'moderator'
+    r.resource_type = 'Map'
     r.resource_id = id
     r.save!
   end
