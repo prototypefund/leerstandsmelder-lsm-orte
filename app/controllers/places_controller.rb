@@ -25,6 +25,7 @@ class PlacesController < ApplicationController
     @place.lat = params[:lat]
     @place.lon = params[:lon]
     @place.layer_id = params[:layer_id]
+    @place.user = current_user
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
     @layer = Layer.friendly.find(params[:layer_id])
   end
@@ -88,6 +89,7 @@ class PlacesController < ApplicationController
   # POST /places.json
   def create
     @place = Place.new(place_params)
+    @place.user = current_user
     @layer = Layer.friendly.find(@place.layer_id)
     @map = @layer.map
 

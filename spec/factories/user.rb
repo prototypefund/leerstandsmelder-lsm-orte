@@ -11,6 +11,7 @@ FactoryBot.define do
     password_confirmation { 'password12345' }
     confirmed_at { DateTime.now }
     group
+    after(:create, &:confirm)
   end
 
   factory :admin_user, class: User do

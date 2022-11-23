@@ -17,6 +17,16 @@ FactoryBot.define do
     country { 'Country' }
     published { false }
     layer
+    user { create(:user) }
+    map
+    rumor { false }
+    slug { 'mytitleslug' }
+    emptySince { 'many years' }
+    buildingType { 'house' }
+    active { false }
+    hidden { false }
+    demolished { false }
+    slug_aliases { [] }
     trait :published do
       published { true }
     end

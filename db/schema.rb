@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_23_104120) do
+ActiveRecord::Schema.define(version: 2022_11_23_153719) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -261,7 +261,19 @@ ActiveRecord::Schema.define(version: 2022_11_23_104120) do
     t.string "borough"
     t.string "suburb"
     t.string "country_code"
+    t.uuid "user_id"
+    t.boolean "rumor", default: false
+    t.string "slug", default: ""
+    t.string "emptySince", default: ""
+    t.string "buildingType", default: ""
+    t.uuid "map_id"
+    t.boolean "active", default: false
+    t.boolean "hidden", default: false
+    t.boolean "demolished", default: false
+    t.string "slug_aliases", default: [], array: true
     t.index ["layer_id"], name: "index_places_on_layer_id"
+    t.index ["map_id"], name: "index_places_on_map_id"
+    t.index ["user_id"], name: "index_places_on_user_id"
   end
 
   create_table "relations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -414,6 +426,8 @@ ActiveRecord::Schema.define(version: 2022_11_23_104120) do
   add_foreign_key "maps", "groups"
   add_foreign_key "people", "maps"
   add_foreign_key "places", "layers"
+  add_foreign_key "places", "maps"
+  add_foreign_key "places", "users"
   add_foreign_key "submission_configs", "layers"
   add_foreign_key "submissions", "places"
   add_foreign_key "taggings", "tags"

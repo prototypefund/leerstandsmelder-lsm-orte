@@ -6,6 +6,8 @@ class Place < ApplicationRecord
   # self.skip_time_zone_conversion_for_attributes = [:startdate,:startdate_date,:startdate_time]
   resourcify
   belongs_to :layer
+  belongs_to :user, optional: true
+  belongs_to :map, optional: true
   belongs_to :icon, optional: true
 
   acts_as_taggable_on :tags
