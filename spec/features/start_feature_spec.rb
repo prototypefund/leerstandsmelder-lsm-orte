@@ -21,7 +21,7 @@ RSpec.feature 'Login' do
     visit root_path
     click_link 'Sign in'
     expect(page).to have_current_path '/users/sign_in'
-    expect(page).to have_content 'Sign in'
+    expect(page).to have_content 'Log in'
   end
 
   scenario 'shows error if login with wrong credentials' do

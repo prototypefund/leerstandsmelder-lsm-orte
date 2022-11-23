@@ -35,8 +35,11 @@ RSpec.describe Admin::RolesController, type: :controller do
       User.destroy_all
       @admin_group = FactoryBot.create(:group)
       @other_group = FactoryBot.create(:group)
+
       @admin_user = FactoryBot.create(:admin_user, group_id: @admin_group.id)
       @other_user = FactoryBot.create(:admin_user, group_id: @other_group.id)
+
+      @admin_user.add_role :admin
     end
 
     before(:each) do
@@ -47,7 +50,9 @@ RSpec.describe Admin::RolesController, type: :controller do
     # User. As you add validations to Admin::User, be sure to
     # adjust the attributes here as well.
     let(:valid_attributes) do
-      { name: 'admin' }
+      { email: 'admin@domain.com',
+        password: '1234567890ß',
+        group: @admin_group }
     end
 
     let(:invalid_attributes) do

@@ -19,7 +19,6 @@ class AnnotationPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      # puts user&.inspect
       if user&.admin?
         scope.all
       elsif user&.blank?
@@ -28,6 +27,7 @@ class AnnotationPolicy < ApplicationPolicy
         scope.where(published: true)
       end
     end
+
     private
 
     attr_reader :user, :scope

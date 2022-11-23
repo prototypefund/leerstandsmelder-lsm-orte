@@ -5,7 +5,6 @@ class ImagePolicy < ApplicationPolicy
 
   def initialize(user, record)
     # raise Pundit::NotAuthorizedError, 'must be logged in' unless user
-    puts 'initttttttttttttt'
     @user = user
     @record = record
   end
@@ -16,11 +15,8 @@ class ImagePolicy < ApplicationPolicy
 
   def show?
     true
-    # puts 'polis'
-    # puts record.inspect
     # scope.where(id: record.id).exists?
   end
-
 
   class Scope < Scope
     def resolve

@@ -13,6 +13,6 @@ json.comments policy_scope(place.annotations) do |annotation|
   if annotation.user.present?
     json.user do
       json.extract! annotation.user, :id, :nickname
-    end  
+    end
   end
 end

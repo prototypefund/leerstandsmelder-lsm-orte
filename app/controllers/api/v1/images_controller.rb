@@ -14,8 +14,7 @@ class Api::V1::ImagesController < Api::V1::ApplicationController
 
   # GET /images/1
   # GET /images/1.json
-  def show
-  end
+  def show; end
 
   # GET /images/new
   def new
