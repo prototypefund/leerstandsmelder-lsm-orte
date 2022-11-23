@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Annotations', type: :request do
-
   let(:valid_attributes) do
     FactoryBot.build(:annotation, place: @place).attributes
   end
@@ -18,7 +17,7 @@ RSpec.describe 'Annotations', type: :request do
 
     describe 'GET /index' do
       it 'renders a successful response (for all annotations of a published place)' do
-        pending "this should be possible to view for everybody"
+        pending 'this should be possible to view for everybody'
         @annotation = create(:annotation, place: @place, published: true)
         get "/api/v1/places/#{@place.id}/annotations"
         expect(response).to be_successful
@@ -32,7 +31,6 @@ RSpec.describe 'Annotations', type: :request do
         expect(response).to be_successful
       end
     end
-
 
     describe 'GET /new' do
       it 'renders a unauthroized response' do
@@ -85,7 +83,6 @@ RSpec.describe 'Annotations', type: :request do
     end
 
     # TODO: CRUD actions
-
   end
 
   describe 'ADMINUSER is logged in' do

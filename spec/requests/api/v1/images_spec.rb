@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe 'Images', type: :request do
-
   let(:valid_attributes) do
     FactoryBot.build(:image, place: @place).attributes
   end
@@ -31,7 +30,6 @@ RSpec.describe 'Images', type: :request do
         expect(response).to be_successful
       end
     end
-
 
     describe 'GET /new' do
       it 'renders a unauthroized response' do
@@ -84,7 +82,6 @@ RSpec.describe 'Images', type: :request do
     end
 
     # TODO: CRUD actions
-
   end
 
   describe 'ADMINUSER is logged in' do

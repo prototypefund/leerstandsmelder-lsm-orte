@@ -26,6 +26,7 @@ Rails.application.routes.draw do
         resources :layers, only: [:show], :defaults => { :format => :json } do
           resources :places do
             resources :images
+            resources :annotations
             resources :videos
             member do
               delete :delete_image_attachment
