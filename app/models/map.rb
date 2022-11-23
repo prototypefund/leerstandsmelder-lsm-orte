@@ -2,7 +2,7 @@
 
 class Map < ApplicationRecord
   resourcify
-  belongs_to :group
+  belongs_to :group, optional: true
   belongs_to :iconset, optional: true
   has_many :layers, dependent: :destroy
   has_many :people, dependent: :destroy
@@ -16,6 +16,16 @@ class Map < ApplicationRecord
 
   extend FriendlyId
   friendly_id :title, use: :slugged
+
+  after_create :setup_map_role
+
+  def setup_map_role
+    r = Role.new
+    r.name = 'moderator'
+    r.resource_type = 'Map'
+    r.resource_id = id
+    r.save!
+  end
 
   # call me: Map.by_user(current_user).find(params[:id])
   scope :by_user, lambda { |user|
