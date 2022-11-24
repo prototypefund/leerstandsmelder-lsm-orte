@@ -252,6 +252,7 @@ ActiveRecord::Schema.define(version: 2022_11_23_153719) do
     t.uuid "user_id"
     t.boolean "rumor", default: false
     t.string "slug", default: ""
+    t.string "owner", default: ""
     t.string "emptySince", default: ""
     t.string "buildingType", default: ""
     t.uuid "map_id"
@@ -414,7 +415,6 @@ ActiveRecord::Schema.define(version: 2022_11_23_153719) do
   add_foreign_key "people", "maps"
   add_foreign_key "places", "layers"
   add_foreign_key "places", "maps"
-  add_foreign_key "places", "users"
   add_foreign_key "submission_configs", "layers"
   add_foreign_key "submissions", "places"
   add_foreign_key "taggings", "tags"
