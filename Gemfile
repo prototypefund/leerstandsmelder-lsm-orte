@@ -26,9 +26,9 @@ gem 'deep_cloneable', '~> 3'
 
 # custom
 gem 'devise'
+gem 'devise-encryptable'
 gem 'devise-i18n'
 gem 'devise_token_auth'
-gem "devise-encryptable"
 gem 'exception_notification'
 gem 'fast_jsonapi'
 gem 'foundation-icons-sass-rails'
@@ -39,9 +39,9 @@ gem 'jquery-rails'
 gem 'jquery-turbolinks'
 gem 'jquery-ui-rails'
 gem 'kaminari'
+gem 'mongoid', '~> 8.0.2'
 gem 'omniauth'
 gem 'pg'
-gem "mongoid", "~> 8.0.2"
 gem 'pundit'
 gem 'rack-attack'
 gem 'rack-cors'
