@@ -264,6 +264,7 @@ ActiveRecord::Schema.define(version: 2022_11_23_153719) do
     t.uuid "user_id"
     t.boolean "rumor", default: false
     t.string "slug", default: ""
+    t.string "owner", default: ""
     t.string "emptySince", default: ""
     t.string "buildingType", default: ""
     t.uuid "map_id"
@@ -386,6 +387,7 @@ ActiveRecord::Schema.define(version: 2022_11_23_153719) do
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
     t.datetime "locked_at"
+    t.string "password_salt"
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
@@ -427,7 +429,6 @@ ActiveRecord::Schema.define(version: 2022_11_23_153719) do
   add_foreign_key "people", "maps"
   add_foreign_key "places", "layers"
   add_foreign_key "places", "maps"
-  add_foreign_key "places", "users"
   add_foreign_key "submission_configs", "layers"
   add_foreign_key "submissions", "places"
   add_foreign_key "taggings", "tags"
