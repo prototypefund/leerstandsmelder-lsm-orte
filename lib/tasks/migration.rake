@@ -1,13 +1,25 @@
 # frozen_string_literal: true
 
 namespace :migration do
+  desc 'migrate everything'
+  task all: :environment do
+    log('#################################')
+    log('LSM Migration mongodb -> postgres')
+    log('#################################')
+    Rake::Task['migration:regions'].invoke
+    log('#################################')
+    Rake::Task['migration:users'].invoke
+    log('#################################')
+    Rake::Task['migration:locations'].invoke
+    log('#################################')
+    Rake::Task['migration:comments'].invoke
+    log('#################################')
+    Rake::Task['migration:images'].invoke
+    log('#################################')
+  end
+
   desc 'migrate regions'
   task regions: :environment do
-    def log(msg)
-      puts msg
-      Rails.logger.info msg
-    end
-
     log('Starting task to migrate regions => maps')
 
     start_time = Time.now
@@ -72,33 +84,31 @@ namespace :migration do
 
   desc 'migrate users'
   task users: :environment do
-    def log(msg)
-      puts msg
-      Rails.logger.info msg
-    end
-
     log('Starting task to migrate users => users')
 
     start_time = Time.now
     users = Mongodb::User.collection.find.to_a
 
     count = 0
-    count_break = 3000
+    count_break = 8000
     present = 0
-    present_break = 1000
+    present_break = 8000
+    keys_arr = []
+
     users.each do |reg|
       break if count > count_break || present > present_break
 
       log('-----------------------------------')
-      log("User: #{reg['email']} - #{reg['uuid']}")
+      log("#{count} / #{present} User: #{reg['email']} - #{reg['uuid']}")
       # log( reg.inspect)
       if User.exists?(['lower(email) = ?', reg['email'].downcase])
         log("NO go: #{reg['email']} - #{reg['uuid']}")
-        log("NO go: #{reg.inspect}")
+        keys_arr.push reg.keys
+
         present += 1
         next
       else
-        log("Lets go: #{reg['email']} - #{reg['uuid']}")
+        log("Create: #{reg['email']} - #{reg['uuid']}")
 
         # ActiveRecord::Base.transaction do
 
@@ -153,16 +163,12 @@ namespace :migration do
     log('====================================')
     log("Number of affected users #{count}")
     log("Number of already present users #{present}")
+    log(keys_arr.uniq.inspect)
     log("Task completed in #{Time.now - start_time} seconds.")
   end
 
   desc 'migrate location'
   task locations: :environment do
-    def log(msg)
-      puts msg
-      Rails.logger.info msg
-    end
-
     log('Starting task to migrate locations => places')
 
     start_time = Time.now
@@ -170,10 +176,141 @@ namespace :migration do
 
     count = 0
     locations.each do |loc|
-      puts loc['slug']
       count += 1
+      log('-----------------------------------')
+      log("#{count} Place: #{loc['slug']} - #{loc['uuid']}")
+      if Place.exists?(loc['uuid'])
+        log("#{loc['uuid']} Place exists")
+      else
+        log("Map: #{loc['region_uuid']}")
+        if Map.exists?(loc['region_uuid'])
+          map = Map.find(loc['region_uuid'])
+          default_layer_id = map.layers.first.id
+        else
+          map = Map.new
+          map.id = loc['region_uuid']
+          map.slug = loc['region_uuid']
+          map.title = loc['region_uuid']
+          map.save!
+          layer = Layer.new
+          layer.map = map
+          layer.slug = loc['region_uuid']
+          layer.title = "#{loc['region_uuid']} DEFAULT"
+          layer.save!
+          default_layer_id = layer.id
+        end
+
+        place = Place.new
+
+        place.id = loc['uuid']
+        place.slug = loc['slug']
+        place.title = loc['title']
+        place.text = loc['description']
+        place.lon = loc['lonlat'][0]
+        place.lat = loc['lonlat'][1]
+        place.created_at = loc['created']
+        place.updated_at = loc['updated']
+        place.owner = loc['owner']
+        place.emptySince = loc['emptySince']
+        place.buildingType = loc['buildingType']
+        place.active = loc['active']
+        place.hidden = loc['hidden']
+        place.road = loc['street']
+        place.city = loc['city']
+        place.zip = loc['postcode']
+
+        place.user_id = loc['user_uuid']
+        place.map_id = loc['region_uuid']
+        place.layer_id = default_layer_id || 'xxxx'
+        place.demolished = loc['demolished']
+        place.slug_aliases = loc['slug_aliases']
+
+        place.published = !loc['hidden']
+
+        place.save!
+
+      end
     end
+    log('====================================')
     log("Number of affected locations #{count}")
     log("Task completed in #{Time.now - start_time} seconds.")
   end
+
+  desc 'migrate comments'
+  task comments: :environment do
+    log('Starting task to migrate comments => annotations')
+
+    start_time = Time.now
+    comments = Mongodb::Comment.collection.find.to_a
+
+    count = 0
+    comments.each do |com|
+      log('-----------------------------------')
+      log("#{count} Comments: #{com['slug']} - #{com['uuid']}")
+      if Annotation.exists?(com['uuid'])
+        log("#{com['uuid']} Comment exists")
+      else
+        log("Comment: #{com['subject_uuid']}")
+
+        anno = Annotation.new
+        anno.id = com['uuid']
+        anno.title = '' # com['title']
+        anno.text = com['body']
+        anno.created_at = com['created']
+        anno.updated_at = com['updated']
+        anno.hidden = com['hidden']
+        # TODO: add field subject_id
+        anno.place_id = com['subject_uuid']
+        anno.user_id = com['user_uuid']
+        anno.published = !com['hidden']
+        begin
+          anno.save!
+        rescue ActiveRecord::RecordInvalid => e
+          puts e.record.errors
+        end
+      end
+
+      count += 1
+    end
+    log('====================================')
+    log("Number of affected comments #{count}")
+    log("Task completed in #{Time.now - start_time} seconds.")
+  end
+
+  desc 'migrate images'
+  task images: :environment do
+    log('Starting task to migrate photos => images')
+
+    start_time = Time.now
+    photos = Mongodb::Photo.collection.find.to_a
+
+    count = 0
+    photos.each do |pho|
+      log('-----------------------------------')
+      log("Photo: #{pho['filename']} - #{pho['uuid']}")
+      log(pho.inspect)
+      # img = Image.new
+      # img.id = com['uuid']
+      # img.title = '' #com['title']
+      # img.text = com['body']
+      # img.created_at = com['created']
+      # img.updated_at = com['updated']
+      # img.hidden = com['hidden']
+      # # TODO: add field subject_id
+      # # img.subject_id = com['subject_uuid']
+      # img.user_id = com['user_uuid']
+      # img.published = !com['hidden']
+      # img.save!
+
+      count += 1
+    end
+    log('====================================')
+    log("Number of affected photos #{count}")
+    log("Task completed in #{Time.now - start_time} seconds.")
+  end
+end
+
+def log(msg)
+  puts msg
+  Rails.logger.info msg
 end
