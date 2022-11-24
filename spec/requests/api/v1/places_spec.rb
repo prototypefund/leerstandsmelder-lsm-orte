@@ -3,6 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Places', type: :request do
+
+  include Docs::Places::Api
+
   let(:valid_attributes) do
     FactoryBot.build(:place, layer: @layer, published: true).attributes
   end
@@ -19,7 +22,8 @@ RSpec.describe 'Places', type: :request do
     end
 
     describe 'GET /index' do
-      it 'renders a successful response' do
+      include Docs::Places::Index
+      it 'renders a successful response', :dox do
         Place.create! valid_attributes
         get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places"
         expect(response).to be_successful
