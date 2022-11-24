@@ -2,10 +2,11 @@
 
 require 'rails_helper'
 
-RSpec.describe 'user/users', type: :request do
+RSpec.describe 'Users', type: :request do
   let(:valid_attributes) do
     FactoryBot.build(:user, group: @group).attributes
   end
+
   describe 'No user logged in' do
     before do
       @group = FactoryBot.create(:group)
