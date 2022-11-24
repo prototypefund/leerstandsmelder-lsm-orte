@@ -1,8 +1,9 @@
 class AddLsmToPlaces < ActiveRecord::Migration[6.1]
   def change
-    add_reference :places, :user, foreign_key: true, type: :uuid
+    add_reference :places, :user, foreign_key: false, type: :uuid
     add_column :places, :rumor, :boolean, default: false
     add_column :places, :slug, :string, default: ''
+    add_column :places, :owner, :string, default: ''
     add_column :places, :emptySince, :string, default: ''
     add_column :places, :buildingType, :string, default: ''
     # TODO: do we need this
