@@ -82,7 +82,36 @@ RSpec.describe 'Annotations', type: :request do
       end
     end
 
-    # TODO: CRUD actions
+    describe 'GET /new' do
+      it 'renders an authorized response' do
+        get "/api/v1/places/#{@place.id}/annotations/new"
+        expect(response).to be_successful
+      end
+    end
+
+    describe 'GET /edit' do
+      it 'render an un-authorized response' do
+        annotation = Annotation.create! valid_attributes
+        get "/api/v1/places/#{@place.id}/annotations/#{annotation.id}/edit"
+        expect(response).not_to be_successful
+      end
+    end
+
+    describe 'POST /create' do
+      it 'renders an authorized response' do
+        post "/api/v1/places/#{@place.id}/annotations/", params: { annotation: valid_attributes }
+        expect(response).to be_successful
+      end
+    end
+
+    describe 'DELETE /destroy' do
+      it 'is not allowed to destroy the requested place' do
+        annotation = Annotation.create! valid_attributes
+        expect do
+          delete "/api/v1/places/#{@place.id}/annotations/#{annotation.id}"
+        end.to change(Annotation, :count).by(0)
+      end
+    end
   end
 
   describe 'ADMINUSER is logged in' do
@@ -103,6 +132,43 @@ RSpec.describe 'Annotations', type: :request do
       end
     end
 
-    # TODO: CRUD actions
+    describe 'GET /show' do
+      it 'renders a successful response (for an annotation of a published place)' do
+        @annotation = create(:annotation, place: @place, user: @user, published: true)
+        get "/api/v1/places/#{@place.id}/annotations/#{@annotation.id}"
+        expect(response).to be_successful
+      end
+    end
+
+    describe 'GET /new' do
+      it 'renders an authorized response' do
+        get "/api/v1/places/#{@place.id}/annotations/new"
+        expect(response).to be_successful
+      end
+    end
+
+    describe 'GET /edit' do
+      it 'render an authorized response' do
+        annotation = Annotation.create! valid_attributes
+        get "/api/v1/places/#{@place.id}/annotations/#{annotation.id}/edit"
+        expect(response).to be_successful
+      end
+    end
+
+    describe 'POST /create' do
+      it 'renders an authorized response' do
+        post "/api/v1/places/#{@place.id}/annotations/", params: { annotation: valid_attributes }
+        expect(response).to be_successful
+      end
+    end
+
+    describe 'DELETE /destroy' do
+      it 'is allowed to destroy the requested place' do
+        annotation = Annotation.create! valid_attributes
+        expect do
+          delete "/api/v1/places/#{@place.id}/annotations/#{annotation.id}"
+        end.to change(Annotation, :count).by(-1)
+      end
+    end
   end
 end

@@ -45,7 +45,7 @@ class Api::V1::AnnotationsController < Api::V1::ApplicationController
   def destroy
     @annotation.destroy
     respond_to do |format|
-      format.html { render :json, status: :destroyed }
+      format.json { head :no_content }
     end
   end
 
