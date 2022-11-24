@@ -134,6 +134,9 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.5.0)
     docile (1.4.0)
+    dox (2.2.0)
+      activesupport (>= 4.0)
+      rspec-core
     equalizer (0.0.11)
     erubi (1.11.0)
     exception_notification (4.5.0)
@@ -497,6 +500,7 @@ DEPENDENCIES
   database_cleaner
   deep_cloneable (~> 3)
   devise
+  dox
   exception_notification
   factory_bot_rails
   foundation-icons-sass-rails

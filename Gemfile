@@ -92,6 +92,7 @@ group :development, :test do
   gem 'webdrivers', '~> 5'
 
   gem 'webmock'
+  gem 'dox', require: false
 end
 
 group :development do

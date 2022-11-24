@@ -49,6 +49,22 @@ Shoulda::Matchers.configure do |config|
   end
 end
 
+# This is telling RSpec to use all of the files in that folder you can name it as you want, in this case it will be "docs"
+
+Dir[Rails.root.join("spec/docs/**/*.rb")].each { |f| require f }
+RSpec.configure do |config|
+  config.after(:each, :dox) do |example|
+    example.metadata[:request] = request
+    example.metadata[:response] = response
+  end
+end
+# This last config is to specify which files are the ones which are going to be in charge to be associated with the created resource
+Dox.configure do |config|
+  config.header_file_path = Rails.root.join("spec/docs/descriptions/header.md")
+  config.desc_folder_path = Rails.root.join("spec/docs/descriptions")
+  config.headers_whitelist = ["Accept"]
+end
+
 RSpec.configure do |config|
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include Devise::Test::ControllerHelpers, type: :view
