@@ -5,6 +5,45 @@ Rails.application.routes.draw do
   resources :submission_configs
   devise_for :users
 
+  namespace :api do
+    scope :v1 do
+      mount_devise_token_auth_for 'User', at: 'auth', controllers: {
+        passwords: 'api/v1/users/passwords',
+        registrations: 'api/v1/users/registrations',
+        confirmations: 'api/v1/users/confirmations',
+      }
+    end
+    namespace :v1 do
+      get 'me', controller: 'users/informations', action: :me, :defaults => { :format => :json }
+      resources :users, controller: 'users/users', :defaults => { :format => :json }
+      resources :places, controller: 'places', :defaults => { :format => :json } do
+        resources :annotations, :defaults => { :format => :json }
+        resources :images, :defaults => { :format => :json }
+        resources :videos, :defaults => { :format => :json }
+      end
+      resources :annotations, controller: 'annotations', :defaults => { :format => :json }
+      resources :maps, only: [:show, :index], :defaults => { :format => :json } do
+        resources :layers, only: [:show], :defaults => { :format => :json } do
+          resources :places do
+            resources :images
+            resources :annotations
+            resources :videos
+            member do
+              delete :delete_image_attachment
+              post :sort
+              get :clone
+              get :edit_clone
+              patch :update_clone
+            end
+          end
+        end
+
+      end
+      get 'regions', to: 'maps#index', as: :regions, :defaults => { :format => :json }
+      get 'region/:id', to: 'maps#show_defaults', as: :region, :defaults => { :format => :json }
+    end
+  end
+
   root 'start#index'
 
   get 'info',      to: 'start#info'
@@ -61,6 +100,7 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :users
     resources :groups
+    resources :roles
   end
 
   scope "/:locale" do

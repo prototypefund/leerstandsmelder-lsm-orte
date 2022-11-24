@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.feature 'User views a map and may create a new one ' do
   before do
     @group = FactoryBot.create(:group)
-    user = FactoryBot.create(:user, group_id: @group.id)
+    user = FactoryBot.create(:admin_user, group_id: @group.id)
     visit root_path
     click_link 'Sign in'
     fill_in 'user_email', with: user.email

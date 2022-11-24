@@ -17,6 +17,16 @@ FactoryBot.define do
     country { 'Country' }
     published { false }
     layer
+    user { create(:user) }
+    map
+    rumor { false }
+    slug { 'mytitleslug' }
+    emptySince { 'many years' }
+    buildingType { 'house' }
+    active { false }
+    hidden { false }
+    demolished { false }
+    slug_aliases { [] }
     trait :published do
       published { true }
     end
@@ -35,11 +45,23 @@ FactoryBot.define do
       published { true }
     end
     trait :with_audio do
-      audio { [fixture_file_upload(Rails.root.join('spec', 'support', 'files', 'test.mp3'), 'audio/mpeg')] }
+      after(:build) do |place|
+        place.audio.attach(
+          io: File.open(Rails.root.join('spec/support/files/test.mp3')),
+          filename: 'test.mp3',
+          content_type: 'audio/mpeg'
+        )
+      end
     end
     trait :with_images do
       # deprecated
-      images { [fixture_file_upload(Rails.root.join('spec', 'support', 'files', 'test.jpg'), 'image/jpeg')] }
+      after(:build) do |place|
+        place.file.attach(
+          io: File.open(Rails.root.join('spec/support/files/test.jpg')),
+          filename: 'test.jpg',
+          content_type: 'image/jpeg'
+        )
+      end
     end
   end
 end

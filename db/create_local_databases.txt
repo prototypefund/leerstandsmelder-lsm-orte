@@ -1,0 +1,9 @@
+$ sudo su postgres
+$ psql
+
+CREATE USER lsm_orte WITH ENCRYPTED PASSWORD 'lsm_orte00' SUPERUSER;
+CREATE DATABASE "lsm_orte_development" ENCODING 'UTF8';
+GRANT ALL PRIVILEGES ON DATABASE "lsm_orte_development" TO lsm_orte;
+
+CREATE DATABASE "lsm_orte_test" ENCODING 'UTF8';
+GRANT ALL PRIVILEGES ON DATABASE "lsm_orte_test" TO lsm_orte;

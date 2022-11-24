@@ -1,0 +1,39 @@
+#offCanvas.off-canvas.position-left(data-off-canvas data-transition="overlap")
+  %button{class:"close-button", "aria-label" => "Close menu", type:"button", "data-close" => "data-close"}
+    &times
+    %span{"aria-hidden" => "true"}
+    
+  %nav.sticky-container(data-sticky-container)
+    .sticky(data-sticky data-top-anchor="all_controls:top" data-sticky-on="large")
+      %h2 Menu
+      %nav(data-magellan data-deep-linking="true" data-update-history="false" data-offset=50)
+        
+        %ul.vertical.menu.accordion-menu{ "data-smooth-scroll" => "","data-accordion-menu" => "", "data-multi-open"=>"false"}
+          %li 
+            %a.header{:href => "#"}
+              Maps
+            - if @maps && @maps.count > 0  
+              %ul.menu.vertical.is-active.nested  
+                - @maps.each do |map|
+                  %li{:value => "#m" + map.title, :id => "m_" + map.id.to_s}
+                    = link_to map_path(map), {:class => ''} do  
+                      %span.badge
+                      = map.title
+            %li
+              = link_to new_map_path, :class => '', :id => 'new_map_button', :title => 'Create a new map' do
+                %i.fi-plus.fi-24    
+                New Map    
+          %li 
+            %a.header{:href => "#"}
+              Layers
+            - if @map_layers && @map_layers.count > 0  
+              %ul.menu.vertical.is-active.nested  
+                - @map_layers.each do |layer|
+                  %li{:value => "#l" + layer.title, :id => "m_" + layer.id.to_s}
+                    = link_to map_layer_path(@map, layer), {:class => ''} do  
+                      %span.badge
+                      = layer.title
+                %li
+                  = link_to new_map_layer_path(@map), :class => '', :id => 'new_map_button', :title => 'Create a new map' do
+                    %i.fi-plus.fi-24    
+                    New layer

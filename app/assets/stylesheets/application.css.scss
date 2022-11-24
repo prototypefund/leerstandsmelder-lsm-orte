@@ -59,45 +59,6 @@ body.development .top-bar-right * {
   color:  #939300;
 }
 /* --------------------------- */
-body[data-app-shortname='A1000C-ORTE'] {
-  .top-bar {
-    background-size:  cover;
-    background: linear-gradient(-90deg, rgba(255,198,198,1) 0%, rgba(51,51,51,1) 100%);
-    background:  linear-gradient(-90deg,rgba(255,0,249,.85),rgba(255,117,0,.85) 50%,rgba(255,0,35,.85));
-    background:  linear-gradient(90deg,rgba(255,117,0,.85), rgba(50,50,50,1) 75%, rgba(50,50,50,1));
-    background:  linear-gradient(90deg,rgba(255, 191, 200,.85), rgba(50,50,50,1) 85%, rgba(50,50,50,1));
-    background: none;
-    background-color: #333333;
-    color:  black;
-  }
-    .top-bar-left * {
-    color:  #333;
-    color:  #939300;
-  }
-    .top-bar-right * {
-    color:  #939300;
-  }
-
-  .top-bar img.app_icon {
-      background-color: rgba(255, 255, 255,0);
-      border-radius: 50px;
-      padding: 0;
-      margin: 0;
-      height: 65px;
-      margin-top:  -10px;
-      position: absolute;
-  }
-  .top-bar .menu li.name a {
-    padding: 0.2rem 1rem 0 3.6rem;
-  }
-  svg.icons path {
-    fill: #333;
-    fill: #939300;
-
-  }
-}
-
-/* --------------------------- */
 main {
   min-height: 450px;
 }
@@ -232,4 +193,68 @@ a.edit_link:hover .fi {
     height: 72px;
     opacity: 0;
   }
+}
+
+.off-canvas {
+  background-color: #ffffff;
+  h1,
+  h2,
+  h3 {
+    margin: 1rem 1.5rem;
+  }
+  ul.menu {
+    border-left: 0px;
+    margin-left: 0;
+    li {
+      margin-left: 0rem;
+      font-size: 12px;
+    }
+    li:before {
+      content: none;
+      padding-right: 4px;
+    }
+    li a.is-active {
+      background-color: #f7e4e9;
+    }
+    li a:focus {
+      color: #333;
+      border-bottom: 1px solid #333;
+    }
+    a {
+      color: #333;
+    }
+    a.header {
+      font-weight: bold;
+      color: #333;
+      font-size: 1.1rem;
+    }
+  }
+  .accordion-menu .nested.is-accordion-submenu li {
+    padding-left: 1rem;
+    font-weight: normal;
+  }
+  .accordion-menu .nested.is-accordion-submenu {
+    margin-right: 0;
+    margin-left: 0rem;
+    li {
+      padding-left: 0rem;
+      border-bottom: 1px solid #999999;
+      a {
+        .badge {
+          color: #333;
+          font-size: 0.8rem;
+        }
+        line-height: inherit;
+        padding-left: 2rem;
+        border-bottom: 0px solid #999999;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+
+
+.off-canvas.is-transition-overlap {
+  z-index: 1111 !important;
 }

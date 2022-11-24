@@ -9,6 +9,7 @@ class AnnotationsController < ApplicationController
   end
 
   def new
+    authorize Annotation
     @annotation = Annotation.new
     @annotation.place_id = params[:place_id]
     @annotations = Annotation.all
@@ -21,6 +22,7 @@ class AnnotationsController < ApplicationController
   end
 
   def create
+    authorize Annotation
     @annotation = Annotation.new(annotation_params)
     @annotations = Annotation.all
     @map = @annotation.place.layer.map if @annotation.place
@@ -71,6 +73,7 @@ class AnnotationsController < ApplicationController
 
   def set_annotation
     @annotation = Annotation.find(params[:id])
+    authorize @annotation
   end
 
   def annotation_params

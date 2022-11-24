@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationMailer < ActionMailer::Base
-  default from: 'technik@3plusx.de'
+  default from: 'technik@leerstandsmelder.de'
   layout 'mailer'
 
   def notify_user_created(user)

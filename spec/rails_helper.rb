@@ -71,6 +71,7 @@ RSpec.configure do |config|
   config.include Devise::Test::ControllerHelpers, type: :helper
 
   config.include RequestSpecHelper, type: :request
+  config.include ApiHelpers
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   # config.fixture_path = "#{::Rails.root}/spec/fixtures"
 

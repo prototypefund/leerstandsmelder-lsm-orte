@@ -5,7 +5,11 @@ require 'capybara/rspec'
 require 'webdrivers/chromedriver'
 require 'webmock/rspec'
 require 'active_support/testing/time_helpers'
+<<<<<<< HEAD
 require 'dox'
+=======
+require 'pundit/rspec'
+>>>>>>> lsm
 
 WebMock.disable_net_connect!(allow: [
                                'localhost',

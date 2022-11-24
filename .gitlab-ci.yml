@@ -1,0 +1,165 @@
+stages:
+  - build
+  - test
+  - report
+  - deploy
+
+.base:
+  image: registry.gitlab.com/leerstandsmelder/lsm-orte:ruby276
+  cache:
+    key: gems_and_packages
+    paths:
+      - apt-cache/
+      - vendor/ruby
+      - node_modules/
+      - vendor/
+      - public/
+    policy: pull
+  before_script:
+    - gem install bundler --no-document
+    - bundle install --jobs $(nproc) "${FLAGS[@]}" --path=vendor
+
+.base_db:
+  extends: .base
+  services:
+    - name: postgres:latest
+  variables:
+    BUNDLE_CACHE: "vendor/bundle/"
+    RAILS_ENV: "test"
+    DB_HOST: postgres
+    DB_USERNAME: postgres
+    DB_PASSWORD: ""
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+
+  before_script:
+    - export APT_CACHE_DIR=`pwd`/apt-cache && mkdir -pv $APT_CACHE_DIR
+    - apt-get update -qq && apt-get -o dir::cache::archives="$APT_CACHE_DIR" install -yqq nodejs
+    - gem install bundler --no-document
+    - bundle install --jobs $(nproc) "${FLAGS[@]}" --path=vendor
+    - cp config/database.yml.ci config/database.yml
+    - bundle exec rails db:setup
+    - bundle exec rake db:migrate
+
+.base_minimal:
+  image: alpine:latest
+  cache: {}
+
+build:assets_precompile:
+  extends: .base_db
+  stage: build
+  script:
+    - bundle exec rake assets:precompile
+
+build:rubocop:
+  extends: .base
+  stage: build
+  cache:
+    policy: pull-push
+  script:
+    - bundle exec rubocop
+
+test:brakeman:
+  extends: .base
+  stage: test
+  allow_failure: true
+  artifacts:
+    name: brakeman_report
+    when: always
+    paths:
+      - brakeman/
+  only:
+    - main
+  script:
+    - bundle exec brakeman --format html -o brakeman/index.html
+
+test:bundle_audit:
+  extends: .base
+  allow_failure: true
+  script:
+    - bundle exec bundle audit check --update
+
+test:dawnscanner:
+  extends: .base
+  stage: test
+  allow_failure: true
+  artifacts:
+    name: dawnscanner_report
+    when: always
+    paths:
+      - dawnscanner
+  only:
+    - main
+  script:
+    - mkdir dawnscanner
+    - bundle exec dawn --html -zF dawnscanner/index.html .
+
+test:erd:
+  extends: .base_db
+  stage: test
+  allow_failure: true
+  artifacts:
+    name: erd
+    paths:
+      - erd.pdf
+  only:
+    - main
+    - lsm
+  script:
+    - apt-get -o dir::cache::archives="$APT_CACHE_DIR" install -y -qq graphviz
+    - bundle exec rake erd
+
+test:rspec:
+  extends: .base_db
+  stage: test
+  artifacts:
+    name: coverage_report
+    paths:
+      - coverage/
+  script:
+    - bundle exec rspec
+
+pages:
+  extends: .base_minimal
+  stage: report
+  allow_failure: true
+  dependencies:
+    - test:brakeman
+    - test:dawnscanner
+    - test:erd
+    - test:rspec
+  artifacts:
+    name: time_tracking_artifacts
+    paths:
+      - public/brakeman
+      - public/coverage
+      - public/dawnscanner
+      - public/erd.pdf
+  only:
+    - main
+    - lsm
+  script:
+    - mv brakeman public/ || true
+    - mv coverage public/ || true
+    - mv dawnscanner public/ || true
+    - mv erd.pdf public/ || true
+
+deploy:staging:
+  extends: .base
+  stage: deploy
+  only:
+    - staging
+  script:
+    - echo "Deploying to Staging..."
+
+deploy:production:
+  extends: .base
+  stage: deploy
+  when: manual
+  environment:
+    name: production
+    url: https://example.com
+  only:
+    - production
+  script:
+    - echo "Deploying to Production..."

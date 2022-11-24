@@ -6,7 +6,8 @@ module ApplicationHelper
   end
 
   def admin?
-    current_user&.admin?
+    # current_user&.admin?
+    current_user&.has_role? :admin
   end
 
   def basemaps

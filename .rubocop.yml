@@ -82,3 +82,7 @@ AllCops:
     - "contrib/**/*"
     - "scaffolding.rb"
     - vendor/**/*
+
+Lint/MissingSuper:
+  Exclude:
+    - "app/policies/**/*"

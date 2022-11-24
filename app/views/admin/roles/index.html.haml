@@ -1,0 +1,45 @@
+- content_for(:title) { "User roles" }
+
+#table-wrapper
+  %p.text-right.close_link_wrapper
+    =link_to settings_path, :class=>'close_link' do
+      %i.fi.fi-x
+  %p.small
+    %a{:href => settings_path, :title => 'Settings'}
+      %i.fi-widget.fi-21
+      Settings
+  %h1 Roles
+
+  %table
+    %thead
+      %tr
+        %th Role
+        %th Users
+        %th Maps
+        %th
+        %th
+
+    %tbody
+      - @admin_roles.each do |role|
+        %tr
+          %td
+            #{role.name_with_resource}&nbsp;<i class="fi-prohibited fi-21"></i>
+          %td
+            
+          %td
+            
+
+          %td
+            = link_to edit_admin_role_path(role), :class => 'button' do
+              %i.fi.fi-pencil
+              Edit
+          %td
+            = link_to admin_role_path(role), :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => 'button warning' do
+              %i.fi.fi-x
+              Destroy
+
+  %br
+
+  = link_to new_admin_role_path, :class => "button secondary" do
+    %i.fi.fi-plus
+    New Role

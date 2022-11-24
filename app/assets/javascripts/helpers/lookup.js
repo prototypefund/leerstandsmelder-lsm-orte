@@ -53,7 +53,7 @@ function lookupNominatim(address, url) {
             var nominatium_url_params = '&format=json&addressdetails=1';
             $.getJSON(nominatium_url + "?q=" + address +nominatium_url_params, function (data) {
 
-                console.log(data);
+                console.log('getJSON', data);
                 // if no result
                 if (!data || data.length === 0) {
                     console.log('Lookup:: No result');
@@ -70,7 +70,7 @@ function lookupNominatim(address, url) {
                     }
                     console.log('Lookup:: "value.class" ' + val.class);
 
-                    var regexp = /amenity|building|highway|boundary/gi;
+                    var regexp = /amenity|building|highway|boundary|place/gi;
                     var label = '';
                     if (val.class === 'building') {
                         label = 'Adresse:';
