@@ -40,7 +40,7 @@ class Api::V1::Users::UsersController < Api::V1::ApplicationController
   def new
     authorize User
     @user = User.new
-    @groups = if current_user.admin? && current_user.group.title == 'Admins'
+    @groups = if current_user&.admin? && current_user.group.title == 'Admins'
                 Group.all
               else
                 Group.by_user(current_user)

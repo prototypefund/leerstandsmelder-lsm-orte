@@ -12,6 +12,9 @@ FactoryBot.define do
     confirmed_at { DateTime.now }
     group
     after(:create, &:confirm)
+    trait :changed do
+      email { 'new@example.com' }
+    end
   end
 
   factory :admin_user, class: User do

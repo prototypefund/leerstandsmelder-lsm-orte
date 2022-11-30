@@ -200,7 +200,7 @@ RSpec.describe 'Places', type: :request do
     end
   end
 
-  describe 'Moderator (for map) is logged in' do
+  describe 'Moderator (for a map) is logged in' do
     before do
       group = FactoryBot.create(:group)
       @user = FactoryBot.create(:user, group: group)
@@ -210,6 +210,10 @@ RSpec.describe 'Places', type: :request do
       @layer = create(:layer, map: @map, published: true)
       @user.add_role :moderator, @map
 
+      @other_map = create(:map, group: group, published: true)
+      @other_layer = create(:layer, map: @other_map, published: true)
+      @user.add_role :user, @other_map
+
       sign_in @user
     end
 
@@ -217,9 +221,7 @@ RSpec.describe 'Places', type: :request do
       it 'renders a successful response and returns all places on this map' do
         p = FactoryBot.create(:place, published: true, map: @map, layer: @layer, user: @other_user)
         p2 = FactoryBot.create(:place, published: false, map: @map, layer: @layer, user: @other_user)
-        map_alt = create(:map, published: true)
-        layer_alt = create(:layer, map: map_alt, published: true)
-        p3 = FactoryBot.create(:place, published: false, map: map_alt, layer: layer_alt, user: @user)
+        p3 = FactoryBot.create(:place, published: false, map: @other_map, layer: @other_layer, user: @user)
         get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places"
         expect(response).to be_successful
         expect(json.size).to eq(2)
@@ -241,17 +243,22 @@ RSpec.describe 'Places', type: :request do
     end
 
     describe 'GET /edit' do
-      it 'render an authorized response (edit view of moderated place)' do
+      it 'render an authorized response (edit view of a place of this map)' do
         place = FactoryBot.create(:place, map: @map, layer: @layer, user: @other_user)
         get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/#{place.id}/edit"
-
         expect(response).to be_successful
       end
 
-      it 'render a authorized response (edit view of any other place)' do
-        place = FactoryBot.create(:place, map: @map, layer: @layer, user: @other_user)
-        get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/#{place.id}/edit"
+      it 'render an authorized response (edit view of my place in any other map)' do
+        place = FactoryBot.create(:place, map: @other_map, layer: @other_layer, user: @user)
+        get "/api/v1/maps/#{@other_map.id}/layers/#{@other_layer.id}/places/#{place.id}/edit"
         expect(response).to be_successful
+      end
+
+      it 'render an un-authorized response (edit view of any place in any other map)' do
+        place = FactoryBot.create(:place, map: @other_map, layer: @other_layer, user: @other_user)
+        get "/api/v1/maps/#{@other_map.id}/layers/#{@other_layer.id}/places/#{place.id}/edit"
+        expect(response).not_to be_successful
       end
     end
 
@@ -261,12 +268,28 @@ RSpec.describe 'Places', type: :request do
           FactoryBot.attributes_for(:place, :changed)
         end
 
-        it 'renders an successful response (update of forgein place as a moderator)' do
+        it 'renders a successful response (update of foreign place as a moderator)' do
           place = FactoryBot.create(:place, title: 'housing', layer: @layer, map: @map, user: @other_user)
           patch "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/#{place.id}", params: { place: new_attributes }
           place.reload
           expect(place.title).to eq('OtherTitle')
           expect(response).to be_successful
+        end
+
+        it 'renders a successful response (update of my place)' do
+          place = FactoryBot.create(:place, title: 'housing', layer: @other_layer, map: @other_map, user: @user)
+          patch "/api/v1/maps/#{@other_map.id}/layers/#{@other_layer.id}/places/#{place.id}", params: { place: new_attributes }
+          place.reload
+          expect(place.title).to eq('OtherTitle')
+          expect(response).to be_successful
+        end
+
+        it 'renders an unsuccessful response (update of any place in any other map)' do
+          place = FactoryBot.create(:place, title: 'housing', layer: @other_layer, map: @other_map, user: @other_user)
+          patch "/api/v1/maps/#{@other_map.id}/layers/#{@other_layer.id}/places/#{place.id}", params: { place: new_attributes }
+          place.reload
+          expect(place.title).to eq('housing')
+          expect(response).not_to be_successful
         end
       end
     end
@@ -277,6 +300,13 @@ RSpec.describe 'Places', type: :request do
         expect do
           delete "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/#{place.id}"
         end.to change(Place, :count).by(-1)
+      end
+
+      it 'is not allowed to destroy the requested place (in any other map)' do
+        place = FactoryBot.create(:place, title: 'housing', layer: @other_layer, map: @other_map, user: @other_user)
+        expect do
+          delete "/api/v1/maps/#{@other_map.id}/layers/#{@other_layer.id}/places/#{place.id}"
+        end.to change(Place, :count).by(0)
       end
     end
   end

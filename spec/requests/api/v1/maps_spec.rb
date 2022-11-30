@@ -40,6 +40,7 @@ RSpec.describe 'Maps', type: :request do
 
   describe 'GET /index with logged in admin user' do
     before do
+      Map.destroy_all
       FactoryBot.create_list(:map, 10, published: true)
       create(:map, published: false)
       group = FactoryBot.create(:group)
