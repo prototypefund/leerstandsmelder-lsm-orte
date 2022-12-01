@@ -15,7 +15,9 @@ Rails.application.routes.draw do
     end
     namespace :v1 do
       get 'me', controller: 'users/informations', action: :me, :defaults => { :format => :json }
-      resources :users, controller: 'users/users', :defaults => { :format => :json }
+      resources :users, controller: 'users/users', :defaults => { :format => :json } do
+        get :places, controller: 'places', action: :user_places, :defaults => { :format => :json }
+      end
       resources :places, controller: 'places', :defaults => { :format => :json } do
         resources :annotations, :defaults => { :format => :json }
         resources :images, :defaults => { :format => :json }

@@ -26,12 +26,20 @@ class PlacePolicy < ApplicationPolicy
     user&.admin? || user&.has_role?(:moderator, record.layer.map)
   end
 
+  def user_places?
+    # we dont have 1 record here but many (like index) so use the scope
+    # user&.admin? || record.user_id == user.id
+    index?
+  end
+
   class Scope < Scope
     def resolve
       if user&.admin?
         scope.all
       elsif user&.has_role?(:moderator, :any)
         scope.where(map: Map.with_role(:moderator, user).map(&:id))
+      elsif user&.present?
+        scope.where(user: user)
       elsif user&.blank?
         scope.where(published: true)
       else

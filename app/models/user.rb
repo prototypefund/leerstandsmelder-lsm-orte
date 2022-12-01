@@ -16,6 +16,7 @@ class User < ApplicationRecord
   # after_create :notify_user_create
 
   belongs_to :group, required: false
+  has_many :places
 
   after_create :assign_default_role
 
