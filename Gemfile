@@ -102,6 +102,7 @@ group :development, :test do
 
   gem 'brakeman', require: false
   gem 'webmock'
+  gem 'rails-erd'
 end
 
 group :development do
