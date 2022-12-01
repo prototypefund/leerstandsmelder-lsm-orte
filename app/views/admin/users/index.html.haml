@@ -15,6 +15,8 @@
     = link_to new_admin_user_path, :class => "button secondary" do
       %i.fi.fi-plus
       New User
+  %p.text-right
+    = render 'admin/users/searchform'    
   %table
     %thead
       %tr

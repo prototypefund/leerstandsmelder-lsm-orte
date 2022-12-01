@@ -99,6 +99,8 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :users
+    # user search form
+    post 'users_search', to: 'users#search'
     resources :groups
     resources :roles
   end

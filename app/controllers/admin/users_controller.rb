@@ -54,6 +54,15 @@ class Admin::UsersController < ApplicationController
     redirect_to edit_admin_user_path(@admin_user), notice: 'Redirect to edit this User'
   end
 
+  def search
+    authorize User
+    @query = params[:q][:query]
+    @admin_users = User.by_group(current_user).where('lower(nickname) LIKE :search OR lower(email) LIKE :search', search: "%#{@query.downcase}%").order('last_sign_in_at DESC').page params[:page]
+    respond_to do |format|
+      format.html { render :index }
+    end
+  end
+
   def update
     sanitized_params = admin_user_params
     sanitized_params.delete(:password) if sanitized_params[:password].blank?
