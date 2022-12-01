@@ -6,7 +6,8 @@
       %i.fi.fi-x
   %h1 Editing role
   = render 'form'
-  %h2 All users
+  %h3 
+    All users with role "#{@admin_role.name}"
   - if @admin_role.users.count
     %table
       - @admin_role.users.each do |user|
