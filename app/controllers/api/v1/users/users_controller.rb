@@ -48,7 +48,9 @@ class Api::V1::Users::UsersController < Api::V1::ApplicationController
   end
 
   def show
-    redirect_to edit_user_path(@user), notice: 'Redirect to edit this User'
+    respond_to do |format|
+      format.json { render json: UserSerializer.new(@user, { params: { current_user: current_user } }).serializable_hash, status: :ok }
+    end
   end
 
   def update
