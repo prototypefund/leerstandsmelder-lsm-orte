@@ -24,7 +24,7 @@ class UserPolicy < ApplicationPolicy
   def permitted_attributes
     if user&.admin?
       %i[id email nickname roles role_keys created_at updated_at confirmed blocked message_me notify share_email accept_terms]
-    elsif record.id == user&.id
+    elsif record&.id == user&.id
       %i[id email nickname role_keys created_at updated_at message_me notify share_email]
     else
       %i[id nickname role_keys]

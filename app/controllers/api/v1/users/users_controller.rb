@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Api::V1::Users::UsersController < Api::V1::ApplicationController
+  include Paginable
+
   before_action :set_user, only: %i[show edit update destroy]
 
   def create
@@ -34,7 +36,10 @@ class Api::V1::Users::UsersController < Api::V1::ApplicationController
 
   def index
     authorize User
-    @users = User.by_group(current_user).order('last_sign_in_at DESC').page params[:page]
+    _sortable = params[:sort].present? ? "#{params[:sort]} #{sort_direction}" : 'created_at desc'
+    @users = User.reorder(Arel.sql(_sortable))
+    paginated = paginate(@users)
+    @users.present? ? render_collection(paginated) : :not_found
   end
 
   def new
@@ -49,7 +54,7 @@ class Api::V1::Users::UsersController < Api::V1::ApplicationController
 
   def show
     respond_to do |format|
-      format.json { render json: UserSerializer.new(@user, { params: { current_user: current_user } }).serializable_hash, status: :ok }
+      format.json { render json: UserSerializer.new(@user, { params: { admin: current_user.admin?, current_user: current_user } }).serializable_hash, status: :ok }
     end
   end
 
@@ -59,7 +64,7 @@ class Api::V1::Users::UsersController < Api::V1::ApplicationController
 
     respond_to do |format|
       if @user.update(sanitized_params)
-        format.json { render json: UserSerializer.new(current_user).serializable_hash, status: :ok }
+        format.json { render json: UserSerializer.new(current_user, { params: { admin: current_user.admin?, current_user: current_user } }).serializable_hash, status: :ok }
       else
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
@@ -95,5 +100,13 @@ class Api::V1::Users::UsersController < Api::V1::ApplicationController
     permitted_attributes = [:email, :nickname, :message_me, :notify, :share_email, :accept_terms, :password, :group_id, { role_ids: [] }]
     # permitted_attributes << :role if current_user.try(:admin?)
     params.require(:user).permit(permitted_attributes)
+  end
+
+  def serializer
+    UserSerializer
+  end
+
+  def sort_direction
+    %w[asc desc].include?(params[:sort_dir]) ? params[:sort_dir] : 'asc'
   end
 end

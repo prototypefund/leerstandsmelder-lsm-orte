@@ -67,4 +67,10 @@ class User < ApplicationRecord
     ApplicationMailer.notify_user_created(self).deliver_now
     ApplicationMailer.notify_admin_user_created(self).deliver_now
   end
+
+  protected
+
+  def serializable_hash(options = nil)
+    super(options).merge(last_sign_in_at: last_sign_in_at)
+  end
 end

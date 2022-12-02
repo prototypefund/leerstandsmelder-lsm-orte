@@ -70,6 +70,8 @@ gem 'net-smtp'
 
 gem 'webdack-uuid_migration'
 
+gem 'jsom-pagination'
+
 group :staging, :production do
   # gem 'pg'
   gem 'passenger'
@@ -101,8 +103,8 @@ group :development, :test do
   gem 'webdrivers', '~> 5'
 
   gem 'brakeman', require: false
-  gem 'webmock'
   gem 'rails-erd'
+  gem 'webmock'
 end
 
 group :development do
