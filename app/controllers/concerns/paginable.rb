@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 module Paginable
   extend ActiveSupport::Concern
-  
+
   def paginator
     JSOM::Pagination::Paginator.new
   end
-  
+
   def pagination_params
-    params.permit![:page] # defaults to 20 pages 
+    params.permit![:page] # defaults to 20 pages
   end
-  
+
   def paginate(collection)
     paginator.call(collection, params: pagination_params, base_url: request.url)
   end

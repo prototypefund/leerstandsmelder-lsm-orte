@@ -36,8 +36,8 @@ class Api::V1::Users::UsersController < Api::V1::ApplicationController
 
   def index
     authorize User
-    _sortable = params[:sort].present? ? "#{params[:sort]} #{sort_direction}" : 'created_at desc'
-    @users = User.reorder(Arel.sql(_sortable))
+    sortable_params = params[:sort].present? ? "#{params[:sort]} #{sort_direction}" : 'created_at desc'
+    @users = User.reorder(Arel.sql(sortable_params))
     paginated = paginate(@users)
     @users.present? ? render_collection(paginated) : :not_found
   end
