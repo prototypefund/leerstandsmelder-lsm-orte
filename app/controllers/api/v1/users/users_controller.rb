@@ -37,7 +37,11 @@ class Api::V1::Users::UsersController < Api::V1::ApplicationController
   def index
     authorize User
     sortable_params = params[:sort].present? ? "#{params[:sort]} #{sort_direction}" : 'created_at desc'
-    @users = User.reorder(Arel.sql(sortable_params))
+    @users = if params[:query].present?
+               User.where('lower(nickname) LIKE :search OR lower(email) LIKE :search', search: "%#{params[:query].downcase}%").reorder(Arel.sql(sortable_params))
+             else
+               User.reorder(Arel.sql(sortable_params))
+             end
     paginated = paginate(@users)
     @users.present? ? render_collection(paginated) : :not_found
   end
