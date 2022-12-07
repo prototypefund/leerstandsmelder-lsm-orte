@@ -7,6 +7,7 @@ FactoryBot.define do
     source { 'Source' }
     creator { 'Creator' }
     place
+    user { create(:user) }
     alt { 'Alt' }
     caption { 'Caption' }
     sorting { 2 }
