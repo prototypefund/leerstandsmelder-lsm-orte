@@ -1,7 +1,5 @@
 FROM ruby:${RUBY_VERSION:-2.7.6-alpine} AS build-env
 
-ENV BUNDLER_VERSION=2.1.2
-
 RUN apk add --update --no-cache \
   binutils-gold \
   build-base \
@@ -27,15 +25,21 @@ RUN apk add --update --no-cache \
   tzdata \
   yarn 
 
-RUN gem install bundler -v 2.1.2
+ENV BUNDLER_VERSION=2.3.23
 
 WORKDIR /app
 
 COPY Gemfile Gemfile.lock ./
 
-RUN bundle config build.nokogiri --use-system-libraries
+RUN gem install bundler:2.3.23
 
-RUN bundle check || bundle install 
+# RUN bundle config build.nokogiri --use-system-libraries
+
+RUN bundle check || bundle install \
+  && rm -rf $BUNDLE_PATH/cache/*.gem \
+  && find $BUNDLE_PATH/gems/ -name "*.c" -delete \
+  && find $BUNDLE_PATH/gems/ -name "*.o" -delete  
+
 
 COPY package.json yarn.lock ./
 
