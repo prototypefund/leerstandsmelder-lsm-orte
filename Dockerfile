@@ -35,11 +35,7 @@ RUN gem install bundler:2.3.23
 
 # RUN bundle config build.nokogiri --use-system-libraries
 
-RUN bundle check || bundle install \
-  && rm -rf $BUNDLE_PATH/cache/*.gem \
-  && find $BUNDLE_PATH/gems/ -name "*.c" -delete \
-  && find $BUNDLE_PATH/gems/ -name "*.o" -delete  
-
+RUN bundle check || bundle install
 
 COPY package.json yarn.lock ./
 
