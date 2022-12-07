@@ -63,6 +63,9 @@ build:rubocop:
     policy: pull-push
   script:
     - bundle exec rubocop
+  only:
+    - main
+    - lsm
 
 test:brakeman:
   extends: .base
@@ -83,6 +86,9 @@ test:bundle_audit:
   allow_failure: true
   script:
     - bundle exec bundle audit check --update
+  only:
+    - main
+    - lsm
 
 test:dawnscanner:
   extends: .base
@@ -123,6 +129,9 @@ test:rspec:
       - coverage/
   script:
     - bundle exec rspec
+  only:
+    - main
+    - lsm
 
 pages:
   extends: .base_minimal
@@ -159,6 +168,24 @@ publish:
     - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
     - docker push $TAG_COMMIT
     - docker push $TAG_LATEST
+
+deploy:
+  image: alpine:latest
+  stage: deploy
+  when: manual
+  tags:
+    - deployment
+  script:
+    - chmod og= $ID_RSA
+    - apk update && apk add openssh-client
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY"
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker pull $TAG_COMMIT"
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker container rm -f lsm_orte || true"
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "cd server && docker compose up -d --no-deps --build lsm_orte"
+    # - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p 80:80 --name lsm-server $TAG_COMMIT"
+  environment:
+    name: staging
+    url: https://staging.leerstandsmeldung.de/
 
 deploy:staging:
   extends: .base
