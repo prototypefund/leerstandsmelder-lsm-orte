@@ -280,32 +280,78 @@ namespace :migration do
   desc 'migrate images'
   task images: :environment do
     log('Starting task to migrate photos => images')
+    unless ENV['IMAGE_PATH'].present?
+      log('Please provide the import image path e.g. (IMAGE_PATH=/leerstandsmelder/leerstandsmelder-node-api/assets/photos/)')
+      next
+    end
+    image_path = ENV['IMAGE_PATH']
+
+    log("Image path: #{image_path}")
 
     start_time = Time.now
     photos = Mongodb::Photo.collection.find.to_a
 
     count = 0
+    non_existend = 0
+    rescue_count = 0
     photos.each do |pho|
       log('-----------------------------------')
       log("Photo: #{pho['filename']} - #{pho['uuid']}")
-      log(pho.inspect)
-      # img = Image.new
-      # img.id = com['uuid']
-      # img.title = '' #com['title']
-      # img.text = com['body']
-      # img.created_at = com['created']
-      # img.updated_at = com['updated']
-      # img.hidden = com['hidden']
-      # # TODO: add field subject_id
-      # # img.subject_id = com['subject_uuid']
-      # img.user_id = com['user_uuid']
-      # img.published = !com['hidden']
-      # img.save!
+      migrate_file = "#{image_path}#{pho['uuid']}"
 
-      count += 1
+      if File.exist?(migrate_file)
+
+        if Image.exists?(pho['uuid'])
+          log("#{pho['filename']} Image exists")
+        else
+
+          log(pho.inspect)
+
+          img = Image.new
+
+          img.id = pho['uuid']
+          img.title = pho['title'] || pho['filename']
+          img.created_at = pho['created']
+          img.updated_at = pho['updated']
+          img.hidden = false
+          # # TODO: add field subject_id
+          # # img.subject_id = com['subject_uuid']
+          img.user_id = pho['user_uuid']
+          img.place_id = pho['location_uuid']
+          img.preview = false
+
+          img.filename = pho['filename']
+          img.extension = pho['extension']
+          img.mime_type = pho['mime_type']
+          img.filehash = pho['filehash']
+          img.size = pho['size']
+
+          unless ENV['DRY_RUN']
+            begin
+              img.save!
+
+              img.attach(io: File.open("#{image_path}#{pho['uuid']}"), filename: pho['filename'], content_type: pho['mime_type'])
+
+              img.save!
+            rescue StandardError => e
+              puts e.inspect
+              rescue_count += 1
+            end
+          end
+          count += 1
+          log("Exists: #{migrate_file}")
+          log("Uploaded for place: #{img.place_id}")
+        end
+      else
+        non_existend += 1
+        log("NOT Exists: #{migrate_file}")
+      end
     end
     log('====================================')
     log("Number of affected photos #{count}")
+    log("Number of not existing photos #{non_existend}")
+    log("Number of failed save operations #{rescue_count}")
+
     log("Task completed in #{Time.now - start_time} seconds.")
   end
 end
