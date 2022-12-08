@@ -2,8 +2,8 @@ stages:
   - build
   - test
   - report
-  - deploy
   - publish
+  - deploy
 
 variables:
   TAG_LATEST: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:latest
@@ -170,7 +170,7 @@ publish:
     - docker push $TAG_LATEST
 
 deploy:
-  image: alpine:latest
+  extends: .base_minimal
   stage: deploy
   when: manual
   tags:
