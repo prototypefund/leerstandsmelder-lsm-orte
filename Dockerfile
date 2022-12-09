@@ -25,6 +25,17 @@ RUN apk add --update --no-cache \
   tzdata \
   yarn 
 
+ARG DB_HOST=localhost
+ARG POSTGRES_USER=lsm_orte
+ARG POSTGRES_PASSWORD=lsm_orte00
+
+ENV DB_HOST=${DB_HOST:-localhost}
+ENV POSTGRES_USER=${POSTGRES_USER:-lsm_orte}
+ENV POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-lsm_orte00}
+
+ENV GEM_HOME="/usr/local/bundle"
+ENV PATH $GEM_HOME/bin:$GEM_HOME/gems/bin:$PATH
+
 ENV BUNDLER_VERSION=2.3.23
 
 WORKDIR /app
@@ -35,7 +46,8 @@ RUN gem install bundler:2.3.23
 
 # RUN bundle config build.nokogiri --use-system-libraries
 
-RUN bundle check || bundle install
+# RUN bundle check 
+RUN bundle install
 
 COPY package.json yarn.lock ./
 

@@ -56,7 +56,7 @@ gem 'sprockets-es6'
 gem 'tzinfo-data'
 
 gem 'image_processing'
-gem 'mini_racer', '0.4', platforms: :ruby
+# gem 'mini_racer', '0.4', platforms: :ruby
 
 gem 'acts-as-taggable-on', '~> 9'
 gem 'color-generator'
@@ -67,6 +67,7 @@ gem 'tinymce-rails', '~> 5'
 gem 'turnout'
 
 gem 'net-smtp'
+gem 'net-http'
 
 gem 'webdack-uuid_migration'
 
