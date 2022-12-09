@@ -88,7 +88,7 @@ test:bundle_audit:
     - bundle exec bundle audit check --update
   only:
     - main
-    - lsm
+    # - lsm
 
 test:dawnscanner:
   extends: .base
@@ -115,7 +115,7 @@ test:erd:
       - erd.pdf
   only:
     - main
-    - lsm
+    #- lsm
   script:
     - apt-get -o dir::cache::archives="$APT_CACHE_DIR" install -y -qq graphviz
     - bundle exec rake erd
@@ -161,6 +161,9 @@ pages:
 publish:
   image: docker:latest
   stage: publish
+  only:
+    - main
+    - lsm
   services:
     - docker:dind
   script:
@@ -173,6 +176,9 @@ deploy:
   extends: .base_minimal
   stage: deploy
   when: manual
+  only:
+    - main
+    - lsm
   tags:
     - deployment
   script:
