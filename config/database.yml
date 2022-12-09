@@ -1,11 +1,11 @@
 default: &default
   adapter: postgresql
-  host: localhost
+  host: <%= ENV.fetch("DB_HOST") %>
   encoding: unicode
-  username: lsm_orte
-  password: lsm_orte00
+  username: <%= ENV.fetch("POSTGRES_USER") %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD") %>
   min_messages: WARNING
-  pool: 80
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
   <<: *default
@@ -17,12 +17,10 @@ test:
 
 staging:
   <<: *default
+  min_messages: WARNING
   database: lsm_orte_staging
-  username: lsm_orte
-  password: <%= Rails.application.credentials.dig(:postgres, :staging, :password ) %>
 
 production:
   <<: *default
+  min_messages: ERROR
   database: lsm_orte_production
-  username: lsm_orte
-  password: <%= Rails.application.credentials.dig(:postgres, :production, :password ) %>

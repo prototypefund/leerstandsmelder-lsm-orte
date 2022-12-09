@@ -2,7 +2,12 @@ stages:
   - build
   - test
   - report
+  - publish
   - deploy
+
+variables:
+  TAG_LATEST: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:latest
+  TAG_COMMIT: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME:$CI_COMMIT_SHORT_SHA
 
 .base:
   image: registry.gitlab.com/leerstandsmelder/lsm-orte:ruby276
@@ -17,7 +22,7 @@ stages:
     policy: pull
   before_script:
     - gem install bundler --no-document
-    - bundle install --jobs $(nproc) "${FLAGS[@]}" --path=vendor
+    - bundle install --jobs $(nproc)
 
 .base_db:
   extends: .base
@@ -36,7 +41,7 @@ stages:
     - export APT_CACHE_DIR=`pwd`/apt-cache && mkdir -pv $APT_CACHE_DIR
     - apt-get update -qq && apt-get -o dir::cache::archives="$APT_CACHE_DIR" install -yqq nodejs
     - gem install bundler --no-document
-    - bundle install --jobs $(nproc) "${FLAGS[@]}" --path=vendor
+    - bundle install --jobs $(nproc)
     - cp config/database.yml.ci config/database.yml
     - bundle exec rails db:setup
     - bundle exec rake db:migrate
@@ -58,6 +63,9 @@ build:rubocop:
     policy: pull-push
   script:
     - bundle exec rubocop
+  only:
+    - main
+    - lsm
 
 test:brakeman:
   extends: .base
@@ -78,6 +86,9 @@ test:bundle_audit:
   allow_failure: true
   script:
     - bundle exec bundle audit check --update
+  only:
+    - main
+    # - lsm
 
 test:dawnscanner:
   extends: .base
@@ -118,6 +129,9 @@ test:rspec:
       - coverage/
   script:
     - bundle exec rspec
+  only:
+    - main
+    - lsm
 
 pages:
   extends: .base_minimal
@@ -143,6 +157,41 @@ pages:
     - mv coverage public/ || true
     - mv dawnscanner public/ || true
     - mv erd.pdf public/ || true
+
+publish:
+  image: docker:latest
+  stage: publish
+  only:
+    - main
+    - lsm
+  services:
+    - docker:dind
+  script:
+    - docker build -t $TAG_COMMIT -t $TAG_LATEST .
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - docker push $TAG_COMMIT
+    - docker push $TAG_LATEST
+
+deploy:
+  extends: .base_minimal
+  stage: deploy
+  when: manual
+  only:
+    - main
+    - lsm
+  tags:
+    - deployment
+  script:
+    - chmod og= $ID_RSA
+    - apk update && apk add openssh-client
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY"
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker pull $TAG_COMMIT"
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker container rm -f lsm_orte || true"
+    - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "cd server && docker compose up -d --no-deps --build lsm_orte"
+    # - ssh -i $ID_RSA -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP "docker run -d -p 80:80 --name lsm-server $TAG_COMMIT"
+  environment:
+    name: staging
+    url: https://staging.leerstandsmeldung.de/
 
 deploy:staging:
   extends: .base

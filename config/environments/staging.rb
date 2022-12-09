@@ -15,6 +15,8 @@ Rails.application.configure do
   config.action_controller.perform_caching = true
   config.action_controller.always_permitted_parameters = ['controller', 'action', 'locale']
 
+  config.action_controller.forgery_protection_origin_check = false
+
   # active storage
   config.active_storage.service = :local
 
@@ -36,12 +38,10 @@ Rails.application.configure do
 
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
-  config.action_controller.default_url_options = { host: Settings.app_host, :protocol => Settings.app_host_protocol }
-
+  config.action_controller.default_url_options = { host: config_for(:settings).app_host.to_s, :protocol => config_for(:settings).app_host_protocol.to_s }
   # config.action_controller.asset_host = Settings.app_host
-
-  config.action_mailer.default_url_options = { host: Settings.app_host, :protocol => Settings.app_host_protocol }
-
+  # rails5?
+  config.action_mailer.default_url_options = { host: config_for(:settings).app_host.to_s, :protocol => config_for(:settings).app_host_protocol.to_s }
 
   # Prevent host header injection
   # TODO: fill in host name of production server

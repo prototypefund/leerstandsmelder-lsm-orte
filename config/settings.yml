@@ -2,13 +2,13 @@ defaults: &defaults
   app_name: "LSM23 Backend"
   app_shortname: "LSM23"
   app_tagline: "Leerstandsmeldungen"
-  app_version: 0.7
+  app_version: "0.72"
   app_credits: ""
   app_host: "127.0.0.1:3000"
   app_host_protocol: "http"
   app_url: "http://127.0.0.1:3000"
   app_domain: "127.0.0.1"
-  github_url: "https://github.com/leerstandsmelder/lsm23_backend"
+  github_url: "https://gitlab.com/leerstandsmelder/lsm-orte"
   base_log_level: <%= "#{Logger::DEBUG}" %>
   relative_url_root: ""
   secure: "false"

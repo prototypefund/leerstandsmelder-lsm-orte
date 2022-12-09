@@ -1,55 +1,58 @@
 FROM ruby:${RUBY_VERSION:-2.7.6-alpine} AS build-env
 
-ARG BUNDLER_VERSION=2.1.2
-ARG NODE_ENV=development
-ARG RAILS_ENV=development
-ARG RAILS_ROOT=/app
-ARG BUILD_PACKAGES="build-base curl-dev git"
-ARG DEV_PACKAGES="mysql-dev mariadb-connector-c-dev yaml-dev zlib-dev nodejs yarn chromium-chromedriver imagemagick"
-ARG RUBY_PACKAGES="tzdata"
+RUN apk add --update --no-cache \
+  binutils-gold \
+  build-base \
+  curl \
+  file \
+  g++ \
+  gcc \
+  git \
+  less \
+  libstdc++ \
+  libffi-dev \
+  libc-dev \ 
+  linux-headers \
+  libxml2-dev \
+  libxslt-dev \
+  libgcrypt-dev \
+  make \
+  netcat-openbsd \
+  nodejs \
+  openssl \
+  pkgconfig \
+  postgresql-dev \
+  tzdata \
+  yarn 
 
-ENV RAILS_ENV=${RAILS_ENV:-development} \
-  NODE_ENV=${NODE_ENV:-development} \
-  BUNDLER_VERSION=${BUNDLER_VERSION:-2.1.2} \
-  BUNDLE_APP_CONFIG="$RAILS_ROOT/.bundle" \
-  BUNDLE_PATH='vendor/bundle'
+ARG DB_HOST=localhost
+ARG POSTGRES_USER=lsm_orte
+ARG POSTGRES_PASSWORD=lsm_orte00
+
+ENV DB_HOST=${DB_HOST:-localhost}
+ENV POSTGRES_USER=${POSTGRES_USER:-lsm_orte}
+ENV POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-lsm_orte00}
 
 ENV GEM_HOME="/usr/local/bundle"
 ENV PATH $GEM_HOME/bin:$GEM_HOME/gems/bin:$PATH
 
-# install packages
-RUN apk update \
-  && apk upgrade \
-  && apk add --update --no-cache $BUILD_PACKAGES $DEV_PACKAGES \
-  $RUBY_PACKAGES
+ENV BUNDLER_VERSION=2.3.23
 
-# Default directory
-WORKDIR $RAILS_ROOT
+WORKDIR /app
 
-# Install gems
-COPY Gemfile* package.json yarn.lock ./
-RUN bundle config --global frozen 1 \
-  && bundle install --path=vendor/bundle
-RUN yarn install
-COPY . .
-RUN bin/rails assets:precompile
+COPY Gemfile Gemfile.lock ./
 
-############### Build step done ###############
+RUN gem install bundler:2.3.23
 
+# RUN bundle config build.nokogiri --use-system-libraries
 
-FROM ruby:2.7.6-alpine
-ARG RAILS_ROOT=/app
-ARG PACKAGES="tzdata mysql-client mariadb-connector-c-dev nodejs bash"
-ENV RAILS_ENV=production
-ENV BUNDLE_APP_CONFIG="$RAILS_ROOT/.bundle"
-WORKDIR $RAILS_ROOT
+# RUN bundle check 
+RUN bundle install
 
-# install packages
-RUN apk update \
-  && apk upgrade \
-  && apk add --update --no-cache $PACKAGES
+COPY package.json yarn.lock ./
 
-COPY --from=build-env $RAILS_ROOT $RAILS_ROOT
-ENTRYPOINT ["bundle", "exec"]
-EXPOSE 3000
-CMD ["rails", "server", "-b", "0.0.0.0"]
+RUN yarn install --check-files
+
+COPY . ./ 
+
+ENTRYPOINT ["./entrypoints/docker-entrypoint.sh"]

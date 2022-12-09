@@ -48,7 +48,7 @@ gem 'rack-cors'
 gem 'rolify'
 gem 'secure_headers'
 gem 'select2-rails'
-# NOTE: settingslogic != rails 3
+# NOTE: settingslogic != ruby 3
 gem 'settingslogic'
 gem 'simple_form'
 gem 'sprockets', '~> 4'
@@ -56,7 +56,7 @@ gem 'sprockets-es6'
 gem 'tzinfo-data'
 
 gem 'image_processing'
-gem 'mini_racer', '0.4', platforms: :ruby
+# gem 'mini_racer', '0.4', platforms: :ruby
 
 gem 'acts-as-taggable-on', '~> 9'
 gem 'color-generator'
@@ -66,6 +66,7 @@ gem 'rubyzip'
 gem 'tinymce-rails', '~> 5'
 gem 'turnout'
 
+gem 'net-http'
 gem 'net-smtp'
 
 gem 'webdack-uuid_migration'
