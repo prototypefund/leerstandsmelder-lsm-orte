@@ -66,8 +66,8 @@ gem 'rubyzip'
 gem 'tinymce-rails', '~> 5'
 gem 'turnout'
 
-gem 'net-smtp'
 gem 'net-http'
+gem 'net-smtp'
 
 gem 'webdack-uuid_migration'
 
