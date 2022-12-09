@@ -22,7 +22,7 @@ variables:
     policy: pull
   before_script:
     - gem install bundler --no-document
-    - bundle install --jobs $(nproc) "${FLAGS[@]}" --path=vendor
+    - bundle install --jobs $(nproc)
 
 .base_db:
   extends: .base
@@ -40,6 +40,8 @@ variables:
   before_script:
     - export APT_CACHE_DIR=`pwd`/apt-cache && mkdir -pv $APT_CACHE_DIR
     - apt-get update -qq && apt-get -o dir::cache::archives="$APT_CACHE_DIR" install -yqq nodejs
+    - gem install bundler --no-document
+    - bundle install --jobs $(nproc)
     - cp config/database.yml.ci config/database.yml
     - bundle exec rails db:setup
     - bundle exec rake db:migrate
