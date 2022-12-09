@@ -17,6 +17,7 @@ class User < ApplicationRecord
 
   belongs_to :group, required: false
   has_many :places
+  has_many :images
 
   after_create :assign_default_role
 

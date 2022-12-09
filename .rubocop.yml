@@ -21,6 +21,7 @@ Metrics/BlockLength:
 Metrics/BlockNesting:
   Exclude:
     - app/helpers/application_helper.rb
+    - lib/tasks/migration.rake
 
 Metrics/ClassLength:
   Max: 280
