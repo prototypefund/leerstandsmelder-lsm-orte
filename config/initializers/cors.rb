@@ -26,7 +26,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins 'localhost:8080', '127.0.0.1:8080', 'localhost:3000', '127.0.0.1:3000'
+    origins 'localhost:8080', '127.0.0.1:8080', 'localhost:3000', '127.0.0.1:3000', 'staging.leerstandsmeldung.de', 'dev.leerstandsmeldung.de'
 
     resource '*',
       headers: :any,

@@ -15,6 +15,8 @@ Rails.application.configure do
   config.action_controller.perform_caching = true
   config.action_controller.always_permitted_parameters = ['controller', 'action', 'locale']
 
+  config.action_controller.forgery_protection_origin_check = false
+
   # active storage
   config.active_storage.service = :local
 
