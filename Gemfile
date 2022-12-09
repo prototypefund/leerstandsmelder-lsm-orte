@@ -48,7 +48,7 @@ gem 'rack-cors'
 gem 'rolify'
 gem 'secure_headers'
 gem 'select2-rails'
-# NOTE: settingslogic != rails 3
+# NOTE: settingslogic != ruby 3
 gem 'settingslogic'
 gem 'simple_form'
 gem 'sprockets', '~> 4'
@@ -70,6 +70,8 @@ gem 'net-smtp'
 gem 'net-http'
 
 gem 'webdack-uuid_migration'
+
+gem 'jsom-pagination'
 
 group :staging, :production do
   # gem 'pg'
@@ -102,6 +104,7 @@ group :development, :test do
   gem 'webdrivers', '~> 5'
 
   gem 'brakeman', require: false
+  gem 'rails-erd'
   gem 'webmock'
 end
 

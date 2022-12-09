@@ -12,7 +12,20 @@ class Api::V1::PlacesController < Api::V1::ApplicationController
     @layer = policy_scope(Layer).friendly.find(params[:layer_id])
     @map = @layer.map
     @places = policy_scope(@layer.places)
-    authorize @places
+    # authorize @places
+    respond_to do |format|
+      if @places
+        format.json { render :index, json: @places }
+      else
+        format.json { head :no_content }
+      end
+    end
+  end
+
+  def user_places
+    @user = User.find(params[:user_id])
+    @places = policy_scope(@user.places)
+    # authorize @places
     respond_to do |format|
       if @places
         format.json { render :index, json: @places }
@@ -150,6 +163,6 @@ class Api::V1::PlacesController < Api::V1::ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def place_params
-    params.require(:place).permit(:title, :teaser, :text, :link, :startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :lat, :lon, :location, :address, :zip, :city, :road, :house_number, :borough, :suburb, :country_code, :country, :published, :featured, :sensitive, :sensitive_radius, :shy, :imagelink, :layer_id, :icon_id, :audio, :relations_tos, :relations_froms, annotations_attributes: %i[title text person_id source], tag_list: [], images: [], videos: [])
+    params.require(:place).permit(:user_id, :title, :teaser, :text, :link, :startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :lat, :lon, :location, :address, :zip, :city, :road, :house_number, :borough, :suburb, :country_code, :country, :published, :featured, :sensitive, :sensitive_radius, :shy, :imagelink, :layer_id, :icon_id, :audio, :relations_tos, :relations_froms, annotations_attributes: %i[title text person_id source], tag_list: [], images: [], videos: [])
   end
 end

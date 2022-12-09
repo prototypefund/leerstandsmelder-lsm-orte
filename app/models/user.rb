@@ -16,6 +16,8 @@ class User < ApplicationRecord
   # after_create :notify_user_create
 
   belongs_to :group, required: false
+  has_many :places
+  has_many :images
 
   after_create :assign_default_role
 
@@ -65,5 +67,11 @@ class User < ApplicationRecord
   def notify_user_create
     ApplicationMailer.notify_user_created(self).deliver_now
     ApplicationMailer.notify_admin_user_created(self).deliver_now
+  end
+
+  protected
+
+  def serializable_hash(options = nil)
+    super(options).merge(last_sign_in_at: last_sign_in_at)
   end
 end

@@ -7,22 +7,9 @@ json.map do
   json.default_layer @map.layers.published.first.id
   json.places do
     json.array! policy_scope(@map.places) do |place|
-      json.call(place, :id, :created_at, :updated_at, :title, :teaser, :published, :buildingType, :owner, :startdate, :enddate, :location, :address, :zip, :city, :text, :country, :featured, :shy, :layer_id)
+      json.call(place, :id, :created_at, :updated_at, :title, :teaser, :published, :buildingType, :owner, :startdate, :enddate, :location, :address, :zip, :city, :text, :country, :featured, :shy, :layer_id, :user_id)
       json.lat place.public_lat
       json.lon place.public_lon
-      if place.user.present?
-        json.user do
-          json.extract! place.user, :id, :nickname
-        end
-      end
-      json.annotations policy_scope(place.annotations) do |annotation|
-        json.extract! annotation, :id, :title, :text, :person_name, :audiolink, :published
-      end
-      json.images do
-        json.array! policy_scope(place.images).order('sorting ASC') do |image|
-          json.call(image, :id, :title, :source, :creator, :alt, :sorting, :image_linktag, :image_url)
-        end
-      end
     end
   end
 end

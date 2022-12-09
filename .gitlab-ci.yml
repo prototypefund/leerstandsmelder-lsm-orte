@@ -115,7 +115,7 @@ test:erd:
       - erd.pdf
   only:
     - main
-    #- lsm
+    # - lsm
   script:
     - apt-get -o dir::cache::archives="$APT_CACHE_DIR" install -y -qq graphviz
     - bundle exec rake erd

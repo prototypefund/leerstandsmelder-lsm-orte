@@ -15,6 +15,8 @@
     = link_to new_admin_user_path, :class => "button secondary" do
       %i.fi.fi-plus
       New User
+  %p.text-right
+    = render 'admin/users/searchform'    
   %table
     %thead
       %tr
@@ -27,7 +29,11 @@
     %tbody
       - @admin_users.each do |admin_user|
         %tr
-          %td= admin_user.email
+          %td
+            = admin_user.email
+            %br
+            %small
+              = admin_user.id
           %td
             - if admin_user.admin?
               %label.label.warning
@@ -52,7 +58,7 @@
               Last visit:
               %br
               - if admin_user.last_sign_in_at
-                = l(admin_user.current_sign_in_at)
+                = l(admin_user.last_sign_in_at)
               - else
                 \--
           %td

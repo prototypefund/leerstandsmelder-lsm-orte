@@ -11,7 +11,7 @@ class Group < ApplicationRecord
 
   # call me: Group.by_user(current_user).find(params[:id])
   scope :by_user, lambda { |user|
-    if user.group
+    if user&.group
       where(id: user.group.id) unless user.group && user.group.title == 'Admins'
     else
       where(group_id: -1)

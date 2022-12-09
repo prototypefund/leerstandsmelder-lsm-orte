@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_23_153719) do
+ActiveRecord::Schema.define(version: 2022_12_04_213556) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -111,7 +111,7 @@ ActiveRecord::Schema.define(version: 2022_11_23_153719) do
     t.string "class_name"
   end
 
-  create_table "images", force: :cascade do |t|
+  create_table "images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title"
     t.string "licence"
     t.text "source"
@@ -124,7 +124,15 @@ ActiveRecord::Schema.define(version: 2022_11_23_153719) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "itype", default: "image"
+    t.uuid "user_id"
+    t.string "filename", default: ""
+    t.string "extension", default: ""
+    t.string "mime_type", default: ""
+    t.string "filehash", default: ""
+    t.string "size", default: ""
+    t.boolean "hidden", default: false
     t.index ["place_id"], name: "index_images_on_place_id"
+    t.index ["user_id"], name: "index_images_on_user_id"
   end
 
   create_table "layers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
