@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   # For all responses in this controller, return the CORS access control headers.
 
   def cors_set_access_control_headers
-    headers['Access-Control-Allow-Origin'] = 'http://localhost:8080'
+    headers['Access-Control-Allow-Origin'] = ENV.fetch("API_FRONTEND_ALLOW_ORIGIN")
     headers['Access-Control-Allow-Methods'] = '*'
     headers['Access-Control-Request-Method'] = '*'
     headers['Access-Control-Allow-Credentials'] = true
