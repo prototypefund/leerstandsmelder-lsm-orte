@@ -16,6 +16,7 @@ RUN apk add --update --no-cache \
   libxml2-dev \
   libxslt-dev \
   libgcrypt-dev \
+  imagemagick \
   make \
   netcat-openbsd \
   nodejs \
