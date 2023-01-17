@@ -15,19 +15,14 @@ if @layer&.published
       json.coordinates [place.public_lon.to_f, place.public_lat.to_f]
     end
     json.properties do
-      json.id place.id
-      json.name place.title
-      json.address place.address
-      json.city place.city
-      json.country place.country
-      json.teaser place.teaser
-      json.text place.text
-      json.link place.link
-      json.images do
-        json.array! place.images do |image|
-          json.call(image, :id, :title, :source, :creator, :alt, :sorting, :image_linktag, :image_url)
-        end
-      end
+      json.call(place, :id, :created_at, :updated_at, :title, :teaser, :published, :buildingType, :owner, :startdate, :enddate, :location, :address, :zip, :city, :text, :country, :featured, :shy, :layer_id, :user_id)
+      
+      #json.link place.link
+      #json.images do
+      #  json.array! place.images do |image|
+      #    json.call(image, :id, :title, :source, :creator, :alt, :sorting, :image_linktag, :image_url)
+      #  end
+      #end
     end
   end
 end
