@@ -29,7 +29,7 @@ module OrteBackend
     config.active_storage.content_types_to_serve_as_binary -= ['image/svg+xml']
 
     config.generators do |g|
-      g.orm :active_record
+      g.orm :active_record, primary_key_type: :uuid
     end
   end
 end
