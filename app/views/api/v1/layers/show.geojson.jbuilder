@@ -16,13 +16,13 @@ if @layer&.published
     end
     json.properties do
       json.call(place, :id, :created_at, :updated_at, :title, :teaser, :published, :buildingType, :owner, :startdate, :enddate, :location, :address, :zip, :city, :text, :country, :featured, :shy, :layer_id, :user_id)
-      
-      #json.link place.link
-      #json.images do
+
+      # json.link place.link
+      # json.images do
       #  json.array! place.images do |image|
       #    json.call(image, :id, :title, :source, :creator, :alt, :sorting, :image_linktag, :image_url)
       #  end
-      #end
+      # end
     end
   end
 end
