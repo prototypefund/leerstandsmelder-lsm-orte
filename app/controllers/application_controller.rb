@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
   end
 
   def default_checkbox(param)
-    if %w[on true].include?(param)
+    if %w[on true].include?(param.to_s)
       true
     else
       false
