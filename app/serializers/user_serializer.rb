@@ -9,9 +9,17 @@ class UserSerializer
 
   all_attrs.each do |field|
     attribute field do |user, params|
-      user[field] if params[:admin]
+      user[field] if params[:admin] || params[:current_user]
     end
   end
+
+  #confirmed | blocked | message_me | notify | 
+
+  # attribute :share_email do |user, params|
+  #   user.share_email  # if Pundit.policy(params[:current_user], user).permitted_attributes.include?(:email)
+  # end
+
+  #| accept_terms
 
   attribute :email do |user, params|
     user.email if Pundit.policy(params[:current_user], user).permitted_attributes.include?(:email)
