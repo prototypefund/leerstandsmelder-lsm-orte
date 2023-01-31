@@ -609,6 +609,7 @@ DEPENDENCIES
   jsom-pagination
   json-schema
   kaminari
+  launchy
   letter_opener
   listen (~> 3)
   mini_magick
