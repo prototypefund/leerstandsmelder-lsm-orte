@@ -4,6 +4,8 @@ defaults: &defaults
   app_tagline: "Leerstandsmeldungen"
   app_version: "0.72"
   app_credits: ""
+  app_help_mail: "support@leerstandsmelder.de"
+  app_sender_mail: "noreply@leerstandsmelder.de"
   app_host: "127.0.0.1:3000"
   app_host_protocol: "http"
   app_url: "http://127.0.0.1:3000"

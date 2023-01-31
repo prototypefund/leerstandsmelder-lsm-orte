@@ -43,6 +43,17 @@ Rails.application.configure do
   # rails5?
   config.action_mailer.default_url_options = { host: config_for(:settings).app_host.to_s, :protocol => config_for(:settings).app_host_protocol.to_s }
 
+  config.action_mailer.default_options     = { from: config_for(:settings).app_sender_mail.to_s }
+
+  config.action_mailer.delivery_method = :smtp
+
+  config.action_mailer.perform_caching = false
+
+  # Ignore bad email addresses and do not raise email delivery errors.
+  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
+  config.action_mailer.raise_delivery_errors = true
+
+
   # Prevent host header injection
   # TODO: fill in host name of production server
   # config.action_controller.default_url_options = {host: "www.yoursite.com"}

@@ -7,7 +7,7 @@ class ApplicationMailer < ActionMailer::Base
   def notify_user_created(user)
     @user = user
     mail(to: user.email,
-         subject: 'Your profile for ORTE has been created')
+         subject: 'Your profile for LSM has been created')
   end
 
   def notify_admin_user_created(user, admin_adresses)
