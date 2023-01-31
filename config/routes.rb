@@ -24,7 +24,7 @@ Rails.application.routes.draw do
         resources :videos, :defaults => { :format => :json }
       end
       resources :annotations, controller: 'annotations', :defaults => { :format => :json }
-      resources :maps, only: [:show, :index], :defaults => { :format => :json } do
+      resources :maps, only: [:show, :index, :create], :defaults => { :format => :json } do
         resources :layers, only: [:show], :defaults => { :format => :json } do
           resources :places do
             resources :images
