@@ -10,14 +10,14 @@ RSpec.describe ApplicationMailer, type: :mailer do
     let(:mail) { ApplicationMailer.notify_user_created(user) }
 
     it 'renders the headers' do
-      expect(mail.subject).to eq('Your profile for ORTE has been created')
+      expect(mail.subject).to eq('Your profile for LSM has been created')
       expect(mail.to).to eq([user.email])
       expect(mail.from).to eq(['technik@leerstandsmelder.de'])
     end
 
     it 'renders the headers (in production env)' do
       allow(Rails).to receive(:env) { 'production'.inquiry }
-      expect(mail.subject).to eq('Your profile for ORTE has been created')
+      expect(mail.subject).to eq('Your profile for LSM has been created')
     end
 
     it 'renders the body' do
