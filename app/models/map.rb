@@ -18,7 +18,7 @@ class Map < ApplicationRecord
   friendly_id :title, use: :slugged
 
   after_create :setup_map_role
-  # after_create :setup_map_group 
+  # after_create :setup_map_group
   after_create :setup_map_default_layer
 
   def setup_map_role
@@ -36,7 +36,7 @@ class Map < ApplicationRecord
     g.save!
 
     self.group_id = g.id
-    self.save!
+    save!
   end
 
   def setup_map_default_layer
@@ -56,7 +56,6 @@ class Map < ApplicationRecord
 
     layer.save!
   end
-
 
   # call me: Map.by_user(current_user).find(params[:id])
   scope :by_user, lambda { |user|

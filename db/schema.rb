@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_16_132937) do
+ActiveRecord::Schema.define(version: 2023_01_31_170443) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -202,6 +202,17 @@ ActiveRecord::Schema.define(version: 2022_12_16_132937) do
     t.string "preview_url"
     t.boolean "enable_map_to_go", default: false
     t.boolean "enable_privacy_features", default: true
+    t.boolean "moderate", default: false
+    t.string "moderate_message", default: ""
+    t.boolean "hide", default: false
+    t.string "hide_message", default: ""
+    t.string "organisation", default: ""
+    t.string "organisation_address", default: ""
+    t.string "organisation_email", default: ""
+    t.string "organisation_url", default: ""
+    t.string "organisation_legal", default: ""
+    t.string "organisation_meeting", default: ""
+    t.string "organisation_intro", default: ""
     t.index ["group_id"], name: "index_maps_on_group_id"
     t.index ["slug"], name: "index_maps_on_slug", unique: true
   end

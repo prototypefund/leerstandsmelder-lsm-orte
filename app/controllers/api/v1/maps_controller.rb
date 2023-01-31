@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class Api::V1::MapsController < Api::V1::ApplicationController
-  before_action :authenticate_user!, except: %i[index show create]
+  before_action :authenticate_user!, except: %i[index show]
+  before_action :set_map, only: %i[show edit new update destroy]
 
   # GET /maps.json
   def index
@@ -17,8 +18,6 @@ class Api::V1::MapsController < Api::V1::ApplicationController
 
   # GET /maps/1.json
   def show
-    @map = policy_scope(Map).find_by_slug(params[:id]) || policy_scope(Map).find_by_id(params[:id])
-
     authorize @map
     respond_to do |format|
       @map_layers = @map.layers if @map&.layers
@@ -35,7 +34,6 @@ class Api::V1::MapsController < Api::V1::ApplicationController
     end
   end
 
-  # POST /maps
   # POST /maps.json
   def create
     authorize Map
@@ -43,17 +41,31 @@ class Api::V1::MapsController < Api::V1::ApplicationController
 
     respond_to do |format|
       if @map.save
-        format.html { redirect_to @map, notice: 'Map was successfully created. Please create at least one layer' }
-        format.json { render :show, status: :created, location: @map }
+        format.json { render :show_flat, status: :created, map: @map }
       else
-        format.html { render :new }
         format.json { render json: @map.errors, status: :unprocessable_entity }
       end
     end
   end
 
+  # PATCH/PUT /maps/1.json
+  def update
+    authorize @map
+    respond_to do |format|
+      if @map.update(map_params)
+        format.json { render :show_flat, status: :ok, map: @map }
+      else
+        format.json { render json: @map.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def set_map
+    @map = policy_scope(Map).find_by_slug(params[:id]) || policy_scope(Map).find_by_id(params[:id])
+  end
+
   # Never trust parameters from the scary internet, only allow the white list through.
   def map_params
-    params.require(:map).permit(:id, :title, :subtitle, :text, :credits, :published, :script, :image, :group_id, :mapcenter_lat, :mapcenter_lon, :zoom, :northeast_corner, :southwest_corner, :iconset_id, :basemap_url, :basemap_attribution, :background_color, :popup_display_mode, :show_annotations_on_map, :preview_url, :enable_privacy_features, :enable_map_to_go)
+    params.require(:map).permit(:id, :title, :subtitle, :text, :credits, :published, :image, :group_id, :mapcenter_lat, :mapcenter_lon, :zoom, :northeast_corner, :southwest_corner, :iconset_id, :basemap_url, :basemap_attribution, :background_color, :popup_display_mode, :show_annotations_on_map, :preview_url, :enable_privacy_features, :enable_map_to_go, :hide, :hide_message, :moderate, :moderate_message, :organisation, :organisation_address, :organisation_email, :organisation_url, :organisation_legal, :organisation_meeting, :organisation_intro)
   end
 end
