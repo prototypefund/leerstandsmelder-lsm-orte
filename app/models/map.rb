@@ -18,6 +18,8 @@ class Map < ApplicationRecord
   friendly_id :title, use: :slugged
 
   after_create :setup_map_role
+  # after_create :setup_map_group 
+  after_create :setup_map_default_layer
 
   def setup_map_role
     r = Role.new
@@ -26,6 +28,35 @@ class Map < ApplicationRecord
     r.resource_id = id
     r.save!
   end
+
+  def setup_map_group
+    g = Group.new
+    g.title = title
+    g.active = true
+    g.save!
+
+    self.group_id = g.id
+    self.save!
+  end
+
+  def setup_map_default_layer
+    layer = Layer.new
+
+    layer.map = self
+
+    layer.slug = slug
+    layer.title = "#{title} DEFAULT"
+    layer.mapcenter_lon = mapcenter_lon
+    layer.mapcenter_lat = mapcenter_lat
+    layer.created_at = created_at
+    layer.updated_at = updated_at
+    layer.published = true
+    layer.zoom = zoom
+    layer.public_submission = false
+
+    layer.save!
+  end
+
 
   # call me: Map.by_user(current_user).find(params[:id])
   scope :by_user, lambda { |user|
