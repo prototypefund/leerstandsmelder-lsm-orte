@@ -1,8 +1,15 @@
 # frozen_string_literal: true
 
-json.extract! place, :id, :title, :teaser, :text, :link, :startdate, :enddate, :full_address, :location, :address, :zip, :city, :country, :published, :featured, :layer_id, :created_at, :updated_at, :date
+json.extract! place, :id, :title, :teaser, :text, :link, :startdate, :enddate, :full_address, :location, :address, :road, :zip, :city, :country, :published, :featured, :layer_id, :created_at, :updated_at, :date, :buildingType, :owner
 json.lat place.public_lat
 json.lon place.public_lon
+json.user do
+  if place.user.present?
+    policy_scope(place.user) do |user|
+      json.extract! user, :id, :nickname unless user.nil?
+    end
+  end
+end
 json.images do
   json.array! policy_scope(place.images).order('sorting ASC') do |image|
     json.call(image, :id, :title, :source, :creator, :alt, :sorting, :image_linktag, :image_url, :image_path, :image_filename)
