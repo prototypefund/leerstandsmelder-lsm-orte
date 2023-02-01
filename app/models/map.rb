@@ -46,6 +46,10 @@ class Map < ApplicationRecord
 
     layer.slug = slug
     layer.title = "#{title} DEFAULT"
+    layer.subtitle = ''
+    layer.text = ''
+    layer.credits = ''
+    layer.color = ''
     layer.mapcenter_lon = mapcenter_lon
     layer.mapcenter_lat = mapcenter_lat
     layer.created_at = created_at

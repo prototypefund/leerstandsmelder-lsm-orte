@@ -80,7 +80,7 @@ RSpec.describe 'Maps', type: :request do
     before do
       FactoryBot.create_list(:map, 10, published: true)
       @map = create(:map, published: true)
-      @layer = create(:layer, map: @map, published: true)
+      # @layer = create(:layer, map: @map, published: true)
       get "/api/v1/maps/#{@map.id}?show_by_layer=true"
     end
 
