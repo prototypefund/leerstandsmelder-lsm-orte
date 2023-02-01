@@ -6,7 +6,7 @@ class Api::V1::MapsController < Api::V1::ApplicationController
 
   # GET /maps.json
   def index
-    @maps = policy_scope(Map)
+    @maps = policy_scope(Map).order(:title)
     respond_to do |format|
       if @maps
         format.json { render :index, maps: @maps }
