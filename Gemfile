@@ -49,12 +49,12 @@ gem 'rolify'
 gem 'secure_headers'
 gem 'select2-rails'
 # NOTE: settingslogic != ruby 3
+gem 'paper_trail'
 gem 'settingslogic'
 gem 'simple_form'
 gem 'sprockets', '~> 4'
 gem 'sprockets-es6'
 gem 'tzinfo-data'
-gem 'paper_trail'
 
 gem 'image_processing'
 # gem 'mini_racer', '0.4', platforms: :ruby
