@@ -35,9 +35,20 @@ class Api::V1::PlacesController < Api::V1::ApplicationController
     end
   end
 
-  # GET /places/1
   # GET /places/1.json
-  def show; end
+  def show
+    respond_to do |format|
+      if @place
+        if params[:versions]
+          format.json { render :show_with_versions }
+        else
+          format.json { render :show }
+        end
+      else
+        format.json { head :no_content }
+      end
+    end
+  end
 
   # GET /places/new
   def new
@@ -110,9 +121,12 @@ class Api::V1::PlacesController < Api::V1::ApplicationController
     params[:place][:published] = default_checkbox(params[:place][:published])
     params[:place][:featured] = default_checkbox(params[:place][:featured])
     params[:place][:sensitive] = default_checkbox(params[:place][:sensitive])
+
+    puts 'update'
+    puts place_params
     respond_to do |format|
       if @place.update(place_params)
-        @place.update({ 'published' => params[:place][:published] })
+        # @place.update({ 'published' => params[:place][:published] })
         format.json { render :show, status: :ok, place: @place }
       else
         format.json { render json: @place.errors, status: :unprocessable_entity }

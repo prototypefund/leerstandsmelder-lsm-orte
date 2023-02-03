@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-json.extract! place, :id, :title, :teaser, :text, :link, :startdate, :enddate, :full_address, :location, :address, :road, :zip, :city, :country, :published, :featured, :layer_id, :created_at, :updated_at, :date, :buildingType, :owner
+json.extract! place, :id, :title, :teaser, :text, :link, :startdate, :enddate, :published, :featured, :sensitive, :layer_id, :created_at, :updated_at, :date, :buildingType, :owner
+json.extract! place, *policy(place).sensitive_attributes
 json.lat place.public_lat
 json.lon place.public_lon
 json.user do

@@ -54,6 +54,7 @@ gem 'simple_form'
 gem 'sprockets', '~> 4'
 gem 'sprockets-es6'
 gem 'tzinfo-data'
+gem 'paper_trail'
 
 gem 'image_processing'
 # gem 'mini_racer', '0.4', platforms: :ruby

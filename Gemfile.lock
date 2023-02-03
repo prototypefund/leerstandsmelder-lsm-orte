@@ -317,6 +317,9 @@ GEM
       rack-protection
     orm_adapter (0.5.0)
     pagy (4.11.0)
+    paper_trail (14.0.0)
+      activerecord (>= 6.0)
+      request_store (~> 1.4)
     parallel (1.22.1)
     parser (3.1.3.0)
       ast (~> 2.4.1)
@@ -618,6 +621,7 @@ DEPENDENCIES
   net-http
   net-smtp
   omniauth
+  paper_trail
   passenger
   pg
   puma (~> 5)

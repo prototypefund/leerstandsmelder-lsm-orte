@@ -5,6 +5,8 @@ require 'csv'
 class Place < ApplicationRecord
   # self.skip_time_zone_conversion_for_attributes = [:startdate,:startdate_date,:startdate_time]
   resourcify
+  has_paper_trail ignore: %i[public_lat public_lon]
+
   belongs_to :layer
   belongs_to :user, optional: true
   belongs_to :map, optional: true
@@ -54,6 +56,7 @@ class Place < ApplicationRecord
     elsif enddate_date.present?
       self.enddate = "#{enddate_date} 00:00:00"
     end
+    self.sensitive_radius = 1000 if sensitive_radius.blank? || sensitive_radius == 100
   end
 
   def title_and_location
@@ -174,6 +177,10 @@ class Place < ApplicationRecord
         csv << attributes.map { |attr| place.send(attr) }
       end
     end
+  end
+
+  def all_versions
+    versions.to_a { |n| n.versions.to_a }.flatten.sort_by(&:created_at)
   end
 
   private

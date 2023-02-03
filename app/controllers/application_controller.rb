@@ -14,6 +14,8 @@ class ApplicationController < ActionController::Base
 
   around_action :switch_locale
 
+  before_action :set_paper_trail_whodunnit
+
   # For all responses in this controller, return the CORS access control headers.
 
   def cors_set_access_control_headers
