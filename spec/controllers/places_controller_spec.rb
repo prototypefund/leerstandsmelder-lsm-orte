@@ -89,7 +89,7 @@ RSpec.describe PlacesController, type: :controller do
         end
 
         it 'saves startdate date without time (as seperate date and time strings) correctly' do
-          startdate = '2010-04-29 00:00:00.000000000 +0200'
+          startdate = '2010-04-29 00:00:00.000000000 +0000'
           startdate_date = '2010-04-29'
           startdate_time = ''
           attributes = FactoryBot.attributes_for(:place, :date_and_time, layer_id: @layer.id, startdate_date: startdate_date, startdate_time: startdate_time)
@@ -98,7 +98,7 @@ RSpec.describe PlacesController, type: :controller do
         end
 
         it 'saves startdate date and time (as seperate date and time strings) correctly' do
-          startdate = '2010-04-29 20:30:00.000000000 +0200'
+          startdate = '2010-04-29 20:30:00.000000000 +0000'
           startdate_date = '2010-04-29'
           startdate_time = '20:30'
           # ups, FactoryBot.build did not handle the attr_accessor values startdate_date...
@@ -108,8 +108,8 @@ RSpec.describe PlacesController, type: :controller do
         end
 
         it 'saves startdate and enddate date and time (as seperate date and time strings) correctly' do
-          startdate = '2010-04-29 18:30:00.000000000 +0200'
-          enddate = '2010-04-29 20:30:00.000000000 +0200'
+          startdate = '2010-04-29 18:30:00.000000000 +0000'
+          enddate = '2010-04-29 20:30:00.000000000 +0000'
           startdate_date = '2010-04-29'
           enddate_date = '2010-04-29'
           startdate_time = '18:30'
