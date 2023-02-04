@@ -213,6 +213,7 @@ ActiveRecord::Schema.define(version: 2023_02_01_220547) do
     t.string "organisation_legal", default: ""
     t.string "organisation_meeting", default: ""
     t.string "organisation_intro", default: ""
+    t.string "marker_display_mode", default: "cluster"
     t.index ["group_id"], name: "index_maps_on_group_id"
     t.index ["slug"], name: "index_maps_on_slug", unique: true
   end
@@ -291,6 +292,7 @@ ActiveRecord::Schema.define(version: 2023_02_01_220547) do
     t.boolean "hidden", default: false
     t.boolean "demolished", default: false
     t.string "slug_aliases", default: [], array: true
+    t.string "subtitle"
     t.index ["layer_id"], name: "index_places_on_layer_id"
     t.index ["map_id"], name: "index_places_on_map_id"
     t.index ["user_id"], name: "index_places_on_user_id"
