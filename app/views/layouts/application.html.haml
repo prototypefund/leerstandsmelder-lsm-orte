@@ -5,8 +5,7 @@
     %meta{ name: 'robots', content: 'noindex, nofollow' }
     %meta{ name: "viewport", content: "width=device-width, initial-scale=1.0" }
 
-    - # title = content_for?(:title) ? "#{yield(:title)} — #{Settings.app_name}" : "#{Settings.app_name}"
-    - title = "bla"
+    - title = content_for?(:title) ? "#{yield(:title)} — #{Settings.app_name}" : "#{Settings.app_name}"
     %title= title
 
     %meta{property:"og:type", content:"website"}
@@ -48,10 +47,10 @@
       &nbsp;
     %main{role: "main"}
       .grid-x
-        .cell.medium-12
+        .cell.medium-12#flash_wrapper
           = render 'layouts/messages'
       .grid-x
-        .cell.medium-12
+        .cell.medium-12#nav_wrapper
           = yield
     %footer.footer
       .grid-x
