@@ -102,6 +102,11 @@ RSpec.describe 'Places', type: :request do
         get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/#{p.id}"
         expect(response).to be_successful
       end
+      it 'renders a successful response (for a published place) (short route)' do
+        p = FactoryBot.create(:place, user: @other_user, published: true)
+        get "/api/v1/places/#{p.id}"
+        expect(response).to be_successful
+      end
 
       it 'renders a non-successful response (for a un-published place)' do
         p = FactoryBot.create(:place, user: @other_user, published: false)
@@ -324,6 +329,30 @@ RSpec.describe 'Places', type: :request do
         Place.create! valid_attributes
         get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places"
         expect(response).to be_successful
+      end
+    end
+
+    describe 'GET /show' do
+      before do
+        @p = Place.create! valid_attributes
+        get "/api/v1/places/#{@p.id}"
+      end
+
+      it 'returns a place' do
+        expect(json['id']).to eq(@p.id)
+      end
+    end
+
+    describe 'GET /show with parameter ?versions=true' do
+      before do
+        @p = Place.create! valid_attributes
+        @p.featured = true
+        @p.save!
+        get "/api/v1/places/#{@p.id}?versions=true"
+      end
+
+      it 'returns all maps and layers' do
+        expect(json['versions'].size).to eq(2)
       end
     end
 
