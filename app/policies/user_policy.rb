@@ -32,7 +32,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def index?
-    user.admin? # || record.id == user.id
+    user.admin? || record.id == user.id
   end
 
   def search?
@@ -40,7 +40,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def update?
-    user.admin? # || record.id == user.id
+    user.admin? || record.id == user.id
   end
 
   def edit?
