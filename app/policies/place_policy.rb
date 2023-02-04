@@ -34,7 +34,7 @@ class PlacePolicy < ApplicationPolicy
 
   def sensitive_attributes
     if user&.admin? || record.user == user || user&.has_role?(:moderator, record.layer.map) || !record.sensitive
-      %i[full_address location address road zip city country]
+      %i[full_address location address road house_number zip suburb city country country_code]
     else
       %i[city country]
     end
