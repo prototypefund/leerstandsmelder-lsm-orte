@@ -9,14 +9,13 @@ class Api::V1::VersionsController < Api::V1::ApplicationController
   def index
     sortable_params = params[:sort].present? ? "#{params[:sort]} #{sort_direction}" : 'created_at desc'
     @versions = if params[:query].present?
-              policy_scope(PaperTrail::Version, policy_scope_class: VersionPolicy::Scope).where('lower(object_changes) LIKE :search', search: "%#{params[:query].downcase}%").reorder(Arel.sql(sortable_params))
-             else
-              policy_scope(PaperTrail::Version, policy_scope_class: VersionPolicy::Scope).reorder(Arel.sql(sortable_params))
-             end
-    # puts @versions.inspect         
+                  policy_scope(PaperTrail::Version, policy_scope_class: VersionPolicy::Scope).where('lower(object_changes) LIKE :search', search: "%#{params[:query].downcase}%").reorder(Arel.sql(sortable_params))
+                else
+                  policy_scope(PaperTrail::Version, policy_scope_class: VersionPolicy::Scope).reorder(Arel.sql(sortable_params))
+                end
+    # puts @versions.inspect
     paginated = paginate(@versions)
     @versions.present? ? render_collection(paginated) : :not_found
-
 
     # # @versions = policy_scope(PaperTrail::Version).order(:created_at => :desc).limit(20)
     # @versions = policy_scope(PaperTrail::Version, policy_scope_class: VersionPolicy::Scope).order(created_at: :desc).limit(20)
@@ -71,5 +70,4 @@ class Api::V1::VersionsController < Api::V1::ApplicationController
   def serializer
     VersionSerializer
   end
-
 end
