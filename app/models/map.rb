@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Map < ApplicationRecord
+  has_paper_trail
   resourcify
   belongs_to :group, optional: true
   belongs_to :iconset, optional: true

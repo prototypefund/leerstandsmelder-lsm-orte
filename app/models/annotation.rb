@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Annotation < ApplicationRecord
+  has_paper_trail
+
   belongs_to :place
   belongs_to :user, optional: true
   belongs_to :person, optional: true

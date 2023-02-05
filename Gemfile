@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'dotenv-rails', groups: %i[development test]
+gem 'dotenv-rails'
 
 gem 'puma', '~> 5'
 gem 'rails', '~> 6.1'
@@ -50,6 +50,7 @@ gem 'secure_headers'
 gem 'select2-rails'
 # NOTE: settingslogic != ruby 3
 gem 'paper_trail'
+gem 'paper_trail-association_tracking'
 gem 'settingslogic'
 gem 'simple_form'
 gem 'sprockets', '~> 4'

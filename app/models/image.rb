@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Image < ApplicationRecord
+  has_paper_trail
+
   belongs_to :place
   belongs_to :user, optional: true
 
