@@ -16,8 +16,11 @@ module Paginable
   end
 
   def render_collection(paginated)
+    # puts paginated.meta.to_h.inspect
+    # puts params.inspect
+    # puts pagination_params.inspect
     options = {
-      meta: paginated.meta.to_h.merge(pagination_params), # Will get total pages, total count, etc.
+      meta: paginated.meta.to_h, # Will get total pages, total count, etc.
       # links: paginated.links.to_h
       params: { admin: current_user.admin?, current_user: current_user }
 
