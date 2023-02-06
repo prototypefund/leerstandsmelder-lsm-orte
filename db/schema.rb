@@ -305,6 +305,7 @@ ActiveRecord::Schema.define(version: 2023_02_05_145649) do
     t.string "owner_type", default: ""
     t.string "owner_company", default: ""
     t.string "owner_contact", default: ""
+    t.string "osm_place_id", default: ""
     t.index ["layer_id"], name: "index_places_on_layer_id"
     t.index ["map_id"], name: "index_places_on_map_id"
     t.index ["user_id"], name: "index_places_on_user_id"

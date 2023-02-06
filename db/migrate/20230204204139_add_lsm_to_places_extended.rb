@@ -18,5 +18,7 @@ class AddLsmToPlacesExtended < ActiveRecord::Migration[6.1]
     add_column :places, :owner_company, :string, default: ''
     add_column :places, :owner_contact, :string, default: ''
 
+    add_column :places, :osm_place_id, :string, default: ''
+
   end
 end
