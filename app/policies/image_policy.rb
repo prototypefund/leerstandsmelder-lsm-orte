@@ -10,17 +10,28 @@ class ImagePolicy < ApplicationPolicy
   end
 
   def index?
-    true
+    user&.admin? || !record.hidden? || record.user == user || user&.has_role?(:moderator, record.place.map)
   end
 
   def show?
-    true
-    # scope.where(id: record.id).exists?
+    user&.admin? || !record.hidden? || record.user == user || user&.has_role?(:moderator, record.place.map)
   end
 
   class Scope < Scope
     def resolve
-      scope.all
+      if user&.admin?
+        scope.all
+      elsif user&.has_role?(:moderator, :any)
+        # TODO: get moderator map etc.
+        # scope.where(map: Map.with_role(:moderator, user).map(&:id))
+        scope.all
+      elsif user&.present?
+        scope.where(hidden: false).or(where(user: user).where(hidden: true))
+      elsif user&.blank?
+        scope.where(hidden: false)
+      else
+        scope.where(hidden: false)
+      end
     end
   end
 end

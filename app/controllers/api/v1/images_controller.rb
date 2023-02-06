@@ -6,31 +6,12 @@ class Api::V1::ImagesController < Api::V1::ApplicationController
 
   # GET /images.json
   def index
-    @place = Place.where(id: params[:place_id]).first
-    # authorize @place
-    @images = Image.where(place_id: @place.id)
-
-    # TODO: Is this view needed?
+    @place = policy_scope(Place).where(id: params[:place_id]).first
+    @images = policy_scope(Image).where(place_id: @place.id).order(:created_at)
   end
 
   # GET /images/1.json
   def show; end
-
-  # GET /images/new.json
-  def new
-    @image = Image.new
-    @map = Map.by_user(current_user).friendly.find(params[:map_id]) if params[:map_id]
-    @layer = Layer.friendly.find(params[:layer_id]) if params[:layer_id]
-    @place = Place.find(params[:place_id])
-    authorize @place
-    # redirect_to root_url, notice: 'No place defined for adding an image' unless @place || (@place && @place.layer.map.group == current_user.group)
-  end
-
-  # GET /images/1/edit
-  def edit
-    @place = @image.place
-    redirect_to root_url, notice: 'No valid place defined for editing an mage' unless @place || (@place && @place.layer.map.group == current_user.group)
-  end
 
   # POST /images.json
   def create

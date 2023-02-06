@@ -50,48 +50,6 @@ class Api::V1::PlacesController < Api::V1::ApplicationController
     end
   end
 
-  # GET /places/new
-  def new
-    @place = Place.new
-    @place.location = params[:location]
-    @place.address = params[:address]
-    @place.zip = params[:zip] || params[:postcode]
-    @place.city = params[:city]
-    @place.lat = params[:lat]
-    @place.lon = params[:lon]
-    @place.layer_id = params[:layer_id]
-    @place.user = current_user
-    @map = Map.by_user(current_user).friendly.find(params[:map_id])
-    @layer = Layer.friendly.find(params[:layer_id])
-  end
-
-  # GET /places/1/edit
-  def edit
-    if @place.startdate
-      @place.startdate_date = @place.startdate.to_date
-      @place.startdate_time = @place.startdate.to_time
-    end
-
-    if @place.enddate
-      @place.enddate_date = @place.enddate.to_date
-      @place.enddate_time = @place.enddate.to_time
-    end
-
-    return unless params[:lat].present?
-
-    flash[:notice] = "Re-Map: Got new coordinates and address data. Please check all fields and click 'Update place'"
-    @old_place = @place.dup
-    @place.location = params[:location]
-    @place.address = params[:address]
-    @place.zip = params[:zip] || params[:postcode]
-    @place.city = params[:city]
-    @place.lat = params[:lat]
-    @place.lon = params[:lon]
-    @place.layer_id = params[:layer_id]
-    @map = Map.by_user(current_user).friendly.find(params[:map_id])
-    @layer = Layer.friendly.find(params[:layer_id])
-  end
-
   # POST /places
   # POST /places.json
   def create
@@ -174,6 +132,6 @@ class Api::V1::PlacesController < Api::V1::ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def place_params
-    params.require(:place).permit(:user_id, :title, :teaser, :text, :link, :startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :lat, :lon, :location, :address, :zip, :city, :road, :house_number, :borough, :suburb, :country_code, :country, :published, :featured, :sensitive, :sensitive_radius, :shy, :imagelink, :layer_id, :icon_id, :audio, :relations_tos, :relations_froms, annotations_attributes: %i[title text person_id source], tag_list: [], images: [], videos: [], buildingType: [], owner: [])
+    params.require(:place).permit(:id, :user_id, :title, :teaser, :text, :link, :startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :lat, :lon, :location, :address, :zip, :city, :road, :house_number, :borough, :suburb, :country_code, :country, :published, :featured, :sensitive, :sensitive_radius, :shy, :imagelink, :layer_id, :icon_id, :audio, :relations_tos, :relations_froms, annotations_attributes: %i[title text person_id source], tag_list: [], images: [], videos: [], buildingType: [], owner: [])
   end
 end
