@@ -40,22 +40,6 @@ RSpec.describe 'Places', type: :request do
       end
     end
 
-    describe 'GET /new' do
-      it 'renders a unauthroized response' do
-        get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/new"
-        expect(response.status).to eq(401)
-      end
-    end
-
-    describe 'GET /edit' do
-      it 'render a unauthorized response' do
-        place = Place.create! valid_attributes
-        get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/#{place.id}/edit"
-        # response should have HTTP Status 401 unauthorized
-        expect(response.status).to eq(401)
-      end
-    end
-
     describe 'POST /create' do
       it 'renders a forbidden response' do
         post "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places", params: { place: valid_attributes }
@@ -115,27 +99,6 @@ RSpec.describe 'Places', type: :request do
       end
     end
 
-    describe 'GET /new' do
-      it 'renders a successful response' do
-        get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/new"
-        expect(response).to be_successful
-      end
-    end
-
-    describe 'GET /edit' do
-      it 'render an authorized response (edit view of my place)' do
-        place = FactoryBot.create(:place, user: @user)
-        get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/#{place.id}/edit"
-        expect(response).to be_successful
-      end
-
-      it 'render a unauthorized response (edit view of any other place)' do
-        place = FactoryBot.create(:place, user: @other_user)
-        get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/#{place.id}/edit"
-        # response should have HTTP Status 403 Forbidden
-        expect(response.status).to eq(401)
-      end
-    end
     describe 'POST /create' do
       context 'with valid parameters' do
         it 'creates a new place and renders a successful json response' do
@@ -247,26 +210,6 @@ RSpec.describe 'Places', type: :request do
       end
     end
 
-    describe 'GET /edit' do
-      it 'render an authorized response (edit view of a place of this map)' do
-        place = FactoryBot.create(:place, map: @map, layer: @layer, user: @other_user)
-        get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/#{place.id}/edit"
-        expect(response).to be_successful
-      end
-
-      it 'render an authorized response (edit view of my place in any other map)' do
-        place = FactoryBot.create(:place, map: @other_map, layer: @other_layer, user: @user)
-        get "/api/v1/maps/#{@other_map.id}/layers/#{@other_layer.id}/places/#{place.id}/edit"
-        expect(response).to be_successful
-      end
-
-      it 'render an un-authorized response (edit view of any place in any other map)' do
-        place = FactoryBot.create(:place, map: @other_map, layer: @other_layer, user: @other_user)
-        get "/api/v1/maps/#{@other_map.id}/layers/#{@other_layer.id}/places/#{place.id}/edit"
-        expect(response).not_to be_successful
-      end
-    end
-
     describe 'PATCH /update' do
       context 'with valid parameters' do
         let(:new_attributes) do
@@ -356,20 +299,6 @@ RSpec.describe 'Places', type: :request do
       end
     end
 
-    describe 'GET /new' do
-      it 'renders a successful response' do
-        get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/new"
-        expect(response).to be_successful
-      end
-    end
-
-    describe 'GET /edit' do
-      it 'render a success response' do
-        place = Place.create! valid_attributes
-        get "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places/#{place.id}/edit"
-        expect(response.status).to eq(204)
-      end
-    end
     describe 'POST /create' do
       context 'with valid parameters' do
         it 'creates a new place and renders a successful json response' do

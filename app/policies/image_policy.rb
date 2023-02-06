@@ -26,7 +26,7 @@ class ImagePolicy < ApplicationPolicy
         # scope.where(map: Map.with_role(:moderator, user).map(&:id))
         scope.all
       elsif user&.present?
-        scope.where(hidden: false).or(where(user: user).where(hidden: true))
+        scope.where(hidden: false).or(scope.where(user: user, hidden: true))
       elsif user&.blank?
         scope.where(hidden: false)
       else

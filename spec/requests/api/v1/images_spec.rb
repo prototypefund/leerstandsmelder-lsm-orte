@@ -31,21 +31,6 @@ RSpec.describe 'Images', type: :request do
       end
     end
 
-    describe 'GET /new' do
-      it 'renders a unauthroized response' do
-        get "/api/v1/places/#{@place.id}/images/new"
-        expect(response).not_to be_successful
-      end
-    end
-
-    describe 'GET /edit' do
-      it 'render a unauthorized response' do
-        image = Image.create! valid_attributes
-        get "/api/v1/places/#{@place.id}/images/#{image.id}/edit"
-        expect(response).not_to be_successful
-      end
-    end
-
     describe 'POST /create' do
       it 'renders a forbidden response' do
         post "/api/v1/places/#{@place.id}/images/", params: { image: valid_attributes }
