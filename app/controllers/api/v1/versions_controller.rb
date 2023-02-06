@@ -7,6 +7,7 @@ class Api::V1::VersionsController < Api::V1::ApplicationController
 
   # GET /versions.json
   def index
+    params.with_defaults(size: 5)
     sortable_params = params[:sort].present? ? "#{params[:sort]} #{sort_direction}" : 'created_at desc'
     @versions = if params[:query].present?
                   policy_scope(PaperTrail::Version, policy_scope_class: VersionPolicy::Scope).where('lower(object_changes) LIKE :search', search: "%#{params[:query].downcase}%").reorder(Arel.sql(sortable_params))
@@ -69,5 +70,9 @@ class Api::V1::VersionsController < Api::V1::ApplicationController
 
   def serializer
     VersionSerializer
+  end
+
+  def sort_direction
+    %w[asc desc].include?(params[:sort_dir]) ? params[:sort_dir] : 'asc'
   end
 end

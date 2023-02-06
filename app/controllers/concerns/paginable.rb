@@ -8,7 +8,8 @@ module Paginable
   end
 
   def pagination_params
-    params.permit![:page] # defaults to 20 pages
+    # params.permit![:page] # defaults to 20 pages
+    params.permit(page: %i[number size])[:page]
   end
 
   def paginate(collection)
