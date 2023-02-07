@@ -29,10 +29,12 @@ RUN apk add --update --no-cache \
 ARG DB_HOST=localhost
 ARG POSTGRES_USER=lsm_orte
 ARG POSTGRES_PASSWORD=lsm_orte00
+ARG RAILS_MASTER_KEY=xxx
 
 ENV DB_HOST=${DB_HOST:-localhost}
 ENV POSTGRES_USER=${POSTGRES_USER:-lsm_orte}
 ENV POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-lsm_orte00}
+ENV RAILS_MASTER_KEY=${RAILS_MASTER_KEY:-xyz}
 
 ENV GEM_HOME="/usr/local/bundle"
 ENV PATH $GEM_HOME/bin:$GEM_HOME/gems/bin:$PATH
