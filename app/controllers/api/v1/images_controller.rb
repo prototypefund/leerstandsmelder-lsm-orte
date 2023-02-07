@@ -17,7 +17,7 @@ class Api::V1::ImagesController < Api::V1::ApplicationController
   def create
     authorize Image
     @image = Image.new(item_params)
-    attach_picture(@image) if image_params[:file].present?
+    @image.file.attach(image_params[:file]) if image_params[:file].present?
     @place = Place.find(params[:place_id])
     authorize @place
     respond_to do |format|
@@ -59,10 +59,6 @@ class Api::V1::ImagesController < Api::V1::ApplicationController
     authorize @place
     @image = Image.find(params[:id])
     authorize @image
-  end
-
-  def attach_picture(image)
-    image.file.attach(image_params[:file])
   end
 
   def item_params

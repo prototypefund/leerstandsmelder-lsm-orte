@@ -11,7 +11,7 @@ class Image < ApplicationRecord
 
   before_save :extract_exif_data
 
-  validates :title, presence: true
+  # validates :title, presence: true
   validate :check_file_presence
   validate :check_file_format
 
