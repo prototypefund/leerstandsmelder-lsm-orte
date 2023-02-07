@@ -83,10 +83,10 @@ RSpec.describe Image, type: :model do
       expect(image).to be_valid
       expect(image.errors).to be_empty
     end
-    it 'should be invalid if no title is present' do
+    it 'should be valid if no title is present' do
       image = build(:image, :notitle, place: @p)
-      expect(image).not_to be_valid
-      expect(image.errors[:title]).to eq(['Image description can not be blank'])
+      expect(image).to be_valid
+      # expect(image.errors[:title]).to eq(['Image description can not be blank'])
     end
     xit 'should be invalid if no file is present' do
       image = build(:image, :nofile, place: @p)

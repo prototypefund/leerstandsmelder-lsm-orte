@@ -43,7 +43,6 @@ FactoryBot.define do
       file { [] }
     end
     trait :invalid do
-      title { nil }
       place { nil }
       file { [] }
     end
