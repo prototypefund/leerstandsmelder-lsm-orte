@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
-json.extract! place, :id, :title, :teaser, :text, :link, :startdate, :enddate, :published, :featured, :sensitive, :layer_id, :created_at, :updated_at, :date, :buildingType, :owner
+json.extract! place, :id, :title, :teaser, :text, :link, :startdate, :enddate, :published, :featured, :sensitive, :layer_id, :created_at, :updated_at, :date, :buildingType, :owner, :vacant_since, :degree, :building_usage, :building_part, :building_epoche, :building_floors, :owner_type, :owner_company, :owner_contact
 json.extract! place, *policy(place).sensitive_attributes
 json.lat place.public_lat
 json.lon place.public_lon
-json.user do
-  if place.user.present?
-    policy_scope(place.user) do |user|
-      json.extract! user, :id, :nickname unless user.nil?
-    end
+if place.user.present?
+  json.user do
+    json.extract! place.user, *policy(place.user).permitted_attributes
   end
 end
 json.images do

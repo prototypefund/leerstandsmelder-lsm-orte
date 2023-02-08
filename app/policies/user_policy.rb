@@ -27,7 +27,7 @@ class UserPolicy < ApplicationPolicy
     elsif record&.id == user&.id
       %i[id email nickname role_keys created_at updated_at message_me notify share_email]
     else
-      %i[id nickname role_keys]
+      %i[id nickname]
     end
   end
 
