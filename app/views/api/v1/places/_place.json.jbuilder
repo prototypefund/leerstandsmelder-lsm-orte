@@ -9,16 +9,22 @@ if place.user.present?
     json.extract! place.user, *policy(place.user).permitted_attributes
   end
 end
+json.pict place.images.count
 json.images do
   json.array! policy_scope(place.images).order('sorting ASC') do |image|
     json.call(image, :id, :title, :source, :creator, :alt, :sorting, :image_linktag, :image_url, :image_path, :image_filename)
   end
 end
 json.comments policy_scope(place.annotations) do |annotation|
-  json.extract! annotation, :id, :created_at, :updated_at, :title, :text, :person_name, :audiolink, :published
+  json.extract! annotation, :id, :created_at, :updated_at, :title, :text, :person_name, :audiolink, :published, :status
   if annotation.user.present?
     json.user do
       json.extract! annotation.user, :id, :nickname
+    end
+  end
+  json.images do
+    json.array! policy_scope(annotation.images).order('sorting ASC') do |image|
+      json.call(image, :id, :title, :source, :creator, :alt, :sorting, :image_linktag, :image_url, :image_path, :image_filename)
     end
   end
 end

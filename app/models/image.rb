@@ -3,7 +3,12 @@
 class Image < ApplicationRecord
   has_paper_trail
 
-  belongs_to :place
+  # belongs_to :place
+  belongs_to :imageable, polymorphic: true
+
+  # belongs_to :annotation, -> { where(images: { imageable_type: 'Annotation' }) }, foreign_key: 'imageable_id'
+  # belongs_to :place, -> { where(images: { imageable_type: 'Place'})  }, foreign_key: 'imageable_id'
+
   belongs_to :user, optional: true
 
   has_one_attached :file
@@ -60,6 +65,8 @@ class Image < ApplicationRecord
   private
 
   def extract_exif_data
+    place = Place.find(place_id)
+
     return unless file.attached?
     return unless place.layer.exif_remove
     return unless attachment_changes['file']

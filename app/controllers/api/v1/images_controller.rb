@@ -4,6 +4,8 @@ class Api::V1::ImagesController < Api::V1::ApplicationController
   before_action :set_image, only: %i[show edit update destroy]
   before_action :authenticate_user!, except: %i[index show]
 
+  before_action :find_imageable, except: %i[index show]
+
   # GET /images.json
   def index
     @place = policy_scope(Place).where(id: params[:place_id]).first
@@ -16,10 +18,17 @@ class Api::V1::ImagesController < Api::V1::ApplicationController
   # POST /images.json
   def create
     authorize Image
-    @image = Image.new(item_params)
+
+    authorize @imageable
+    @image = @imageable.images.new(item_params)
+
+    # if params[:place_id]
+    #   @place = Place.find(params[:place_id])
+    # elsif params[:annotation_id]
+    #   @place = Annotation.find(params[:annotation_id]).place
+    # end
     @image.file.attach(image_params[:file]) if image_params[:file].present?
-    @place = Place.find(params[:place_id])
-    authorize @place
+    @image.user = current_user
     respond_to do |format|
       if @image.save
         format.json { render :show, status: :created, image: @image }
@@ -50,6 +59,13 @@ class Api::V1::ImagesController < Api::V1::ApplicationController
   end
 
   private
+
+  def find_imageable
+    imageable_type = 'Place'
+    imageable_type = params[:imageable_type] if %w[Place Annotation].include? params[:imageable_type]
+    @klass = imageable_type.capitalize.constantize
+    @imageable = @klass.find(params[:imageable_id])
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_image

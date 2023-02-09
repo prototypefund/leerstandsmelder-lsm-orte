@@ -10,8 +10,10 @@ class Annotation < ApplicationRecord
   acts_as_taggable_on :tags
 
   has_one_attached :audio, dependent: :destroy
+  has_many :images, as: :imageable, dependent: :destroy
 
-  validates :text, presence: true
+  # validates :text, presence: true
+  validates :status, presence: true
   validate :check_audio_format
 
   scope :published, -> { where(published: true) }

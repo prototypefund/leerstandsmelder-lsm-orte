@@ -25,7 +25,8 @@ class Place < ApplicationRecord
   accepts_nested_attributes_for :relations_tos, allow_destroy: true
   accepts_nested_attributes_for :relations_froms, allow_destroy: true
 
-  has_many :images, dependent: :destroy
+  has_many :images, as: :imageable, dependent: :destroy
+  # has_many :images, dependent: :destroy
   has_many :videos, dependent: :destroy
   has_many :submissions, dependent: :destroy
   has_many :annotations
@@ -58,6 +59,16 @@ class Place < ApplicationRecord
     end
     self.sensitive_radius = 1000 if sensitive_radius.blank? || sensitive_radius == 100
   end
+
+  # def images
+  # puts 'in images'
+
+  # temp = super.where(place_id: self.id)
+  # puts Image.select('"images"."id", "annotations".*').where(place_id: self.id).left_outer_joins(:annotation).to_sql
+  # puts Image.select('"images".*, "annotations"."published" as a_published, "places"."published" as p_published').where('"images"."place_id" = ? AND ( a_published = true OR p_published = true)', self.id).left_joins(:annotation, :place).to_sql
+  # Image.where(place_id: self.id).left_joins(:annotation, :place)
+  # Image.where(place_id: self.id)
+  # end
 
   def title_and_location
     if !location.blank?

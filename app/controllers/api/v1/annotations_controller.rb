@@ -9,15 +9,6 @@ class Api::V1::AnnotationsController < Api::V1::ApplicationController
     @annotations = policy_scope(Annotations)
   end
 
-  def new
-    authorize Annotation
-    @annotation = Annotation.new
-    @annotation.place_id = params[:place_id]
-    @annotation.user = current_user
-  end
-
-  def edit; end
-
   def create
     authorize Annotation
     @annotation = Annotation.new(annotation_params)
@@ -57,6 +48,6 @@ class Api::V1::AnnotationsController < Api::V1::ApplicationController
   end
 
   def annotation_params
-    params.require(:annotation).permit(:title, :text, :annotation_id, :source, :audio, :place_id, :person_id, tag_list: [])
+    params.require(:annotation).permit(:title, :status, :text, :annotation_id, :source, :audio, :place_id, :person_id, tag_list: [], images: [])
   end
 end
