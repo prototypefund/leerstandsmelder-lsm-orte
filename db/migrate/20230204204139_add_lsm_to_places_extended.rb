@@ -4,9 +4,9 @@ class AddLsmToPlacesExtended < ActiveRecord::Migration[6.1]
     # teilweise / vollständig
     add_column :places, :degree, :string, default: ''
     # Wohnfläche, Gewerbefläche, Andere 
-    add_column :places, :building_usage, :string, default: ''
+    add_column :places, :building_usage, :string, array:true, default: []
     # Vorderhaus, Quergebäude/HInterhaus/Gartenhaus, Seitenflügel, Etage 
-    add_column :places, :building_part, :string, default: ''
+    add_column :places, :building_part, :string, array:true, default: []
     # Altbau / Neubau
     add_column :places, :building_epoche, :string, default: ''
     

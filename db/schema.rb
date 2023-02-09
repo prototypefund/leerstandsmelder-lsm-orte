@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_05_145649) do
+ActiveRecord::Schema.define(version: 2023_02_08_121406) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -134,6 +134,9 @@ ActiveRecord::Schema.define(version: 2023_02_05_145649) do
     t.string "filehash", default: ""
     t.string "size", default: ""
     t.boolean "hidden", default: false
+    t.string "imageable_type"
+    t.uuid "imageable_id"
+    t.index ["imageable_type", "imageable_id"], name: "index_images_on_imageable"
     t.index ["place_id"], name: "index_images_on_place_id"
     t.index ["user_id"], name: "index_images_on_user_id"
   end
@@ -298,8 +301,8 @@ ActiveRecord::Schema.define(version: 2023_02_05_145649) do
     t.string "subtitle"
     t.date "vacant_since"
     t.string "degree", default: ""
-    t.string "building_usage", default: ""
-    t.string "building_part", default: ""
+    t.string "building_usage", default: [], array: true
+    t.string "building_part", default: [], array: true
     t.string "building_epoche", default: ""
     t.integer "building_floors"
     t.string "owner_type", default: ""
