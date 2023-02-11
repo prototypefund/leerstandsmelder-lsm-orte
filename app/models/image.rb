@@ -3,7 +3,7 @@
 class Image < ApplicationRecord
   has_paper_trail
 
-  # belongs_to :place
+  belongs_to :place
   belongs_to :imageable, polymorphic: true
 
   # belongs_to :annotation, -> { where(images: { imageable_type: 'Annotation' }) }, foreign_key: 'imageable_id'
@@ -15,6 +15,7 @@ class Image < ApplicationRecord
   delegate_missing_to :file
 
   before_save :extract_exif_data
+  before_create :set_default_type
 
   # validates :title, presence: true
   validate :check_file_presence
@@ -23,6 +24,15 @@ class Image < ApplicationRecord
   scope :sorted, -> { order(sorting: :asc) }
   scope :sorted_by_place, ->(place_id) { where('place_id': place_id).order(sorting: :asc) }
   scope :preview, ->(place_id) { where('place_id': place_id, 'preview': true) }
+
+  def set_default_type
+    return unless imageable_id.empty?
+
+    imageable_id = place_id
+    return unless imageable_type.empty?
+
+    imageable_type = 'Place'
+  end
 
   def image_filename
     file.filename if file&.attached?

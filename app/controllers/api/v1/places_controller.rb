@@ -75,11 +75,10 @@ class Api::V1::PlacesController < Api::V1::ApplicationController
     @layer = @place.layer
     @map = @place.layer.map
 
-    # TODO: render this at generating the form
     params[:place][:published] = default_checkbox(params[:place][:published])
     params[:place][:featured] = default_checkbox(params[:place][:featured])
     params[:place][:sensitive] = default_checkbox(params[:place][:sensitive])
-
+    # authorize @place
     respond_to do |format|
       if @place.update(place_params)
         format.json { render :show, status: :ok, place: @place }
@@ -92,6 +91,7 @@ class Api::V1::PlacesController < Api::V1::ApplicationController
   # DELETE /places/1
   # DELETE /places/1.json
   def destroy
+    # authorize @place
     @place.destroy
     respond_to do |format|
       format.json { head :no_content }
