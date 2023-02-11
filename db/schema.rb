@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_08_121406) do
+ActiveRecord::Schema.define(version: 2023_02_10_181711) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -74,6 +74,12 @@ ActiveRecord::Schema.define(version: 2023_02_08_121406) do
     t.datetime "updated_at", null: false
     t.index ["layer_id"], name: "index_build_logs_on_layer_id"
     t.index ["map_id"], name: "index_build_logs_on_map_id"
+  end
+
+  create_table "controllers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "News"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -247,6 +253,25 @@ ActiveRecord::Schema.define(version: 2023_02_08_121406) do
     t.datetime "updated_at", null: false
     t.index ["translatable_id", "translatable_type", "key"], name: "index_mobility_text_translations_on_translatable_attribute"
     t.index ["translatable_id", "translatable_type", "locale", "key"], name: "index_mobility_text_translations_on_keys", unique: true
+  end
+
+  create_table "news", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.text "body"
+    t.boolean "published", default: false
+    t.uuid "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_news_on_user_id"
+  end
+
+  create_table "news_maps", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "news_id"
+    t.uuid "map_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["map_id"], name: "index_news_maps_on_map_id"
+    t.index ["news_id"], name: "index_news_maps_on_news_id"
   end
 
   create_table "people", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -487,6 +512,7 @@ ActiveRecord::Schema.define(version: 2023_02_08_121406) do
   add_foreign_key "images", "places"
   add_foreign_key "layers", "maps"
   add_foreign_key "maps", "groups"
+  add_foreign_key "news", "users"
   add_foreign_key "people", "maps"
   add_foreign_key "places", "layers"
   add_foreign_key "places", "maps"

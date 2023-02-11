@@ -1,0 +1,22 @@
+#form-wrapper
+  %p#notice= notice
+
+  %p
+    %b Title:
+    = @news.title
+  %p
+    %b Body:
+    = @news.body
+  %p
+    %b Published:
+    = @news.published
+  %p
+    %b Map:
+    = @news.maps
+  %p
+    %b User:
+    = @news.user.nickname
+
+  = link_to 'Edit', edit_news_path(@news)
+  \|
+  = link_to 'Back', news_index_path

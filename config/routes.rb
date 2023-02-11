@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :news
   resources :build_logs
   resources :annotations
   resources :submission_configs
@@ -14,6 +15,8 @@ Rails.application.routes.draw do
       }
     end
     namespace :v1 do
+      get '/' => 'dashboard#index', :defaults => { :format => :json }
+      resources :news, controller: 'news', only: [:show, :index], :defaults => { :format => :json }
       resources :versions, controller: 'versions', only: [:show, :index], :defaults => { :format => :json }
       get :places, controller: 'places', action: :user_places, :defaults => { :format => :json }
       get 'me', controller: 'users/informations', action: :me, :defaults => { :format => :json }
