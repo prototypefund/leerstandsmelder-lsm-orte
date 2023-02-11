@@ -3,6 +3,7 @@
 FactoryBot.define do
   factory :annotation do
     title { 'MyString' }
+    status { 'MyStatus' }
     text { 'MyText' }
     published { '' }
     sorting { 1 }

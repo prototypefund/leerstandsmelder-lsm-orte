@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Images', type: :request do
   let(:valid_attributes) do
-    FactoryBot.build(:image, place: @place).attributes
+    FactoryBot.build(:image, place: @place, imageable_type: 'Place', imageable_id: @place.id).attributes
   end
 
   describe 'No user logged in' do
@@ -39,7 +39,7 @@ RSpec.describe 'Images', type: :request do
     end
 
     describe 'DELETE /destroy' do
-      it 'is not allowed to destroy the requested place' do
+      it 'is not allowed to destroy the requested image' do
         image = Image.create! valid_attributes
         expect do
           delete "/api/v1/places/#{@place.id}/images/#{image.id}"
