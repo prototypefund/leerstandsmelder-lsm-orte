@@ -65,6 +65,10 @@ class Map < ApplicationRecord
     layer.save!
   end
 
+  def map_status
+    Status.where(basic: true)
+  end
+
   # call me: Map.by_user(current_user).find(params[:id])
   scope :by_user, lambda { |user|
     if user.group && user.group.active

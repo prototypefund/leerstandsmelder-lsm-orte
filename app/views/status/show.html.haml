@@ -1,0 +1,23 @@
+#table-wrapper
+  %p#notice= notice
+
+  %p
+    %b Title:
+    = @status.title
+  %p
+    %b Description:
+    = @status.description
+  %p
+    %b Basic:
+    = @status.basic
+  %p
+    %b Map:
+    = @status.map
+  %p
+    %b Locale:
+    = @status.locales
+  
+
+  = link_to 'Edit', edit_status_path(@status)
+  \|
+  = link_to 'Back', status_path
