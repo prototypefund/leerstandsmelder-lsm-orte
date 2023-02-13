@@ -13,6 +13,7 @@ class Api::V1::AnnotationsController < Api::V1::ApplicationController
     authorize Annotation
     @annotation = Annotation.new(annotation_params)
     @annotation.user = current_user
+    @annotation.published = true
     respond_to do |format|
       if @annotation.save
         format.json { render :show, status: :created, annotation: @annotation }
