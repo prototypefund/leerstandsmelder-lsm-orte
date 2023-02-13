@@ -7,6 +7,9 @@ class Place < ApplicationRecord
   resourcify
   has_paper_trail ignore: %i[public_lat public_lon]
 
+  extend FriendlyId
+  friendly_id :slug_candidates, use: :history
+
   belongs_to :layer
   belongs_to :user, optional: true
   belongs_to :map, optional: true
@@ -58,6 +61,15 @@ class Place < ApplicationRecord
       self.enddate = "#{enddate_date} 00:00:00"
     end
     self.sensitive_radius = 1000 if sensitive_radius.blank? || sensitive_radius == 100
+  end
+
+  def slug_candidates
+    [
+      :title,
+      %i[title city],
+      %i[title road city],
+      %i[title house_number road city]
+    ]
   end
 
   def all_images

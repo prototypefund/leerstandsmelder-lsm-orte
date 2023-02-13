@@ -3,6 +3,9 @@
 class Map < ApplicationRecord
   has_paper_trail
   resourcify
+  extend Mobility
+  translates :organisation, type: :string
+
   belongs_to :group, optional: true
   belongs_to :iconset, optional: true
   has_many :layers, dependent: :destroy

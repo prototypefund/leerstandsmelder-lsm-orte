@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :status
   resources :news
   resources :build_logs
   resources :annotations
@@ -18,6 +19,7 @@ Rails.application.routes.draw do
       get '/' => 'dashboard#index', :defaults => { :format => :json }
       resources :news, controller: 'news', only: [:show, :index], :defaults => { :format => :json }
       resources :versions, controller: 'versions', only: [:show, :index], :defaults => { :format => :json }
+      resources :status, controller: 'status', only: [:index], :defaults => { :format => :json }
       get :places, controller: 'places', action: :user_places, :defaults => { :format => :json }
       get 'me', controller: 'users/informations', action: :me, :defaults => { :format => :json }
       resources :users, controller: 'users/users', :defaults => { :format => :json } do

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_10_181711) do
+ActiveRecord::Schema.define(version: 2023_02_12_233259) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -84,7 +84,7 @@ ActiveRecord::Schema.define(version: 2023_02_10_181711) do
 
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string "slug", null: false
-    t.integer "sluggable_id", null: false
+    t.uuid "sluggable_id", null: false
     t.string "sluggable_type", limit: 50
     t.string "scope"
     t.datetime "created_at"
@@ -235,7 +235,7 @@ ActiveRecord::Schema.define(version: 2023_02_10_181711) do
     t.string "key", null: false
     t.string "value"
     t.string "translatable_type"
-    t.bigint "translatable_id"
+    t.uuid "translatable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["translatable_id", "translatable_type", "key"], name: "index_mobility_string_translations_on_translatable_attribute"
@@ -248,7 +248,7 @@ ActiveRecord::Schema.define(version: 2023_02_10_181711) do
     t.string "key", null: false
     t.text "value"
     t.string "translatable_type"
-    t.bigint "translatable_id"
+    t.uuid "translatable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["translatable_id", "translatable_type", "key"], name: "index_mobility_text_translations_on_translatable_attribute"
@@ -262,6 +262,9 @@ ActiveRecord::Schema.define(version: 2023_02_10_181711) do
     t.uuid "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "locales"
+    t.string "slug"
+    t.index ["slug"], name: "index_news_on_slug", unique: true
     t.index ["user_id"], name: "index_news_on_user_id"
   end
 
@@ -356,6 +359,18 @@ ActiveRecord::Schema.define(version: 2023_02_10_181711) do
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["name"], name: "index_roles_on_name"
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource"
+  end
+
+  create_table "status", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.boolean "basic"
+    t.boolean "published", default: true
+    t.uuid "map_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "locales"
+    t.index ["map_id"], name: "index_status_on_map_id"
   end
 
   create_table "submission_configs", force: :cascade do |t|
@@ -516,6 +531,7 @@ ActiveRecord::Schema.define(version: 2023_02_10_181711) do
   add_foreign_key "people", "maps"
   add_foreign_key "places", "layers"
   add_foreign_key "places", "maps"
+  add_foreign_key "status", "maps"
   add_foreign_key "submission_configs", "layers"
   add_foreign_key "submissions", "places"
   add_foreign_key "taggings", "tags"

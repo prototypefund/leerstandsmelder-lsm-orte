@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # FriendlyId Global Configuration
 #
 # Use this to set up shared configuration options for your entire application.
@@ -19,7 +17,7 @@ FriendlyId.defaults do |config|
   config.use :reserved
 
   config.reserved_words = %w[new edit index session login logout users admin
-                             stylesheets assets javascripts images]
+    stylesheets assets javascripts images]
 
   # This adds an option to treat reserved words as conflicts rather than exceptions.
   # When there is no good candidate, a UUID will be appended, matching the existing
@@ -39,7 +37,7 @@ FriendlyId.defaults do |config|
   #    MyModel.find('foo')
   #
   # This is significantly more convenient but may not be appropriate for
-  # all applications, so you must explicity opt-in to this behavior. You can
+  # all applications, so you must explicitly opt-in to this behavior. You can
   # always also configure it on a per-model basis if you prefer.
   #
   # Something else to consider is that using the :finders addon boosts

@@ -9,7 +9,7 @@ class NewsPolicy < ApplicationPolicy
   end
 
   def index?
-    true
+    user&.admin? || news.published?
   end
 
   def new?

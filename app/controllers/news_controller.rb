@@ -14,6 +14,7 @@ class NewsController < ApplicationController
   # GET /news/new
   def new
     @news = News.new
+    authorize @news
   end
 
   # GET /news/1/edit
@@ -21,14 +22,10 @@ class NewsController < ApplicationController
 
   # POST /news or /news.json
   def create
-    puts 'OOOOOOOO'
-    puts news_params.inspect
-
+    authorize News
     @news = News.new(news_params)
-
     @news.user = current_user
-    puts @news.inspect
-
+    authorize @news
     respond_to do |format|
       if @news.save
         format.html { redirect_to news_url(@news), notice: 'News was successfully created.' }
@@ -42,9 +39,6 @@ class NewsController < ApplicationController
 
   # PATCH/PUT /news/1 or /news/1.json
   def update
-    puts 'xxx'
-    puts news_params.inspect
-
     respond_to do |format|
       if @news.update(news_params)
         format.html { redirect_to news_url(@news), notice: 'News was successfully updated.' }
@@ -70,14 +64,12 @@ class NewsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_news
-    @news = News.find(params[:id])
+    @news = News.friendly.find(params[:id])
+    authorize @news
   end
 
   # Only allow a list of trusted parameters through.
   def news_params
-    puts 'parammmmmmmmmmmmmms'
-    puts params
-
     params.require(:news).permit(:title, :body, :published, map_ids: [])
   end
 end
