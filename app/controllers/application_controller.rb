@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   # after_action :verify_authorized, unless: :devise_controller?
 
   before_action :authenticate_user!, except: %i[new create]
+  before_action :require_admin, except: %i[new create]
 
   protect_from_forgery unless: -> { request.format.json? }
 
@@ -16,6 +17,13 @@ class ApplicationController < ActionController::Base
 
   before_action :set_paper_trail_whodunnit
 
+  def require_admin
+    return if current_user&.admin?
+
+    sign_out
+    flash[:error] = 'You are not an admin'
+    redirect_to new_user_session_path
+  end
   # For all responses in this controller, return the CORS access control headers.
 
   def cors_set_access_control_headers
@@ -49,8 +57,8 @@ class ApplicationController < ActionController::Base
     I18n.available_locales.map(&:to_s).include?(parsed_locale) ? parsed_locale : nil
   end
 
-  def default_url_options(options = {})
-    logger.debug "default_url_options is passed options: #{options.inspect}\n"
+  def default_url_options(_options = {})
+    # logger.debug "default_url_options is passed options: #{options.inspect}\n"
     # { locale: I18n.locale }
     {}
   end
