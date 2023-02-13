@@ -16,6 +16,8 @@ namespace :migration do
     log('#################################')
     Rake::Task['migration:images'].invoke
     log('#################################')
+    Rake::Task['migration:news'].invoke
+    log('#################################')
   end
 
   desc 'migrate regions'
@@ -282,6 +284,62 @@ namespace :migration do
     end
     log('====================================')
     log("Number of affected comments #{count}")
+    log("Task completed in #{Time.now - start_time} seconds.")
+  end
+
+  desc 'migrate news'
+  task news: :environment do
+    log('Starting task to migrate news articels from startpage => news')
+
+    start_time = Time.now
+    news = Mongodb::Post.collection.find.to_a
+
+    count = 0
+    article_count = 0
+    content_count = 0
+
+    entries = News.all
+
+    log("News entries befor migration: #{entries.count}")
+
+    news.each do |post|
+      if post['static'] == false
+        log('-----------------------------------')
+        log("#{count} News: #{post['slug']} - #{post['uuid']}")
+        log('-----------------------------------')
+        if News.exists?(post['uuid'])
+          log("#{post['uuid']} News articel exists")
+        else
+          log("Artikel: #{post.inspect}")
+
+          articel = News.new
+          articel.id = post['uuid']
+          articel.title = post['title']
+          articel.body = post['body']
+          articel.created_at = post['created']
+          articel.updated_at = post['updated']
+          articel.slug = post['slug']
+
+          articel.published = true
+          unless ENV['DRY_RUN']
+            begin
+              articel.save!
+            rescue ActiveRecord::RecordInvalid => e
+              puts e.record.errors
+            end
+          end
+        end
+        article_count += 1
+      else
+        content_count += 1
+      end
+
+      count += 1
+    end
+    log('====================================')
+    log("Number of affected rows:  #{count}")
+    log("Number of affected news:  #{article_count}")
+    log("Number of affected pages: #{content_count}")
     log("Task completed in #{Time.now - start_time} seconds.")
   end
 
