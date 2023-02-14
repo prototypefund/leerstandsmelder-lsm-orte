@@ -2,6 +2,7 @@
 
 class Api::V1::NewsController < Api::V1::ApplicationController
   before_action :set_news, only: %i[show edit update destroy]
+  before_action :authenticate_user!, except: %i[index show]
 
   # GET /news or /news.json
   def index
