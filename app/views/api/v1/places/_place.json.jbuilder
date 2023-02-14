@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-json.extract! place, :id, :title, :teaser, :text, :link, :startdate, :enddate, :published, :featured, :sensitive, :layer_id, :created_at, :updated_at, :date, :buildingType, :owner, :vacant_since, :degree, :building_usage, :building_part, :building_epoche, :building_floors, :owner_type, :owner_company, :owner_contact
+json.extract! place, :id, :title, :teaser, :text, :link, :startdate, :enddate, :published, :featured, :sensitive, :layer_id, :created_at, :updated_at, :date, :buildingType, :building_type, :owner, :vacant_since, :degree, :building_usage, :building_part, :building_epoche, :building_floors, :owner_type, :owner_company, :owner_contact
 json.extract! place, *policy(place).sensitive_attributes
 json.lat place.public_lat
 json.lon place.public_lon
@@ -12,11 +12,11 @@ end
 json.pict place.images.count
 json.images do
   json.array! policy_scope(place.images).order('sorting ASC') do |image|
-    json.call(image, :id, :title, :source, :creator, :alt, :sorting, :image_linktag, :image_url, :image_path, :image_filename)
+    json.call(image, :id, :title, :alt, :sorting, :image_url, :image_path, :image_filename)
   end
 end
 json.comments policy_scope(place.annotations) do |annotation|
-  json.extract! annotation, :id, :created_at, :updated_at, :title, :text, :person_name, :audiolink, :published, :status
+  json.extract! annotation, :id, :created_at, :updated_at, :title, :text, :published, :status
   if annotation.user.present?
     json.user do
       json.extract! annotation.user, :id, :nickname
@@ -24,7 +24,7 @@ json.comments policy_scope(place.annotations) do |annotation|
   end
   json.images do
     json.array! policy_scope(annotation.images).order('sorting ASC') do |image|
-      json.call(image, :id, :title, :source, :creator, :alt, :sorting, :image_linktag, :image_url, :image_path, :image_filename)
+      json.call(image, :id, :title, :alt, :sorting,  :image_url, :image_path, :image_filename)
     end
   end
 end

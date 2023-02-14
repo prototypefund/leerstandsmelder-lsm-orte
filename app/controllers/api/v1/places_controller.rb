@@ -132,6 +132,6 @@ class Api::V1::PlacesController < Api::V1::ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def place_params
-    params.require(:place).permit(:id, :title, :teaser, :text, :link, :startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :lat, :lon, :location, :address, :zip, :city, :road, :house_number, :borough, :suburb, :country_code, :country, :published, :featured, :sensitive, :sensitive_radius, :shy, :imagelink, :layer_id, :icon_id, :audio, :vacant_since, :degree, :building_epoche, :building_floors, :owner_type, :owner_company, :owner_contact, :owner, annotations_attributes: %i[title text person_id source], tag_list: [], images: [], videos: [], buildingType: [], building_usage: [], building_part: [])
+    params.require(:place).permit(:id, :title, :teaser, :text, :link, :startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :lat, :lon, :location, :address, :zip, :city, :road, :house_number, :borough, :suburb, :country_code, :country, :published, :featured, :sensitive, :sensitive_radius, :shy, :imagelink, :layer_id, :icon_id, :audio, :vacant_since, :degree, :building_epoche, :building_floors, :owner_type, :owner_company, :owner_contact, :owner, annotations_attributes: %i[title text person_id source], tag_list: [], images: [], videos: [], building_type: [], building_usage: [], building_part: [])
   end
 end

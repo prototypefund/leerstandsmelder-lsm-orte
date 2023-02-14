@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_12_233259) do
+ActiveRecord::Schema.define(version: 2023_02_13_175523) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -337,6 +337,7 @@ ActiveRecord::Schema.define(version: 2023_02_12_233259) do
     t.string "owner_company", default: ""
     t.string "owner_contact", default: ""
     t.string "osm_place_id", default: ""
+    t.string "building_type", default: [], array: true
     t.index ["layer_id"], name: "index_places_on_layer_id"
     t.index ["map_id"], name: "index_places_on_map_id"
     t.index ["user_id"], name: "index_places_on_user_id"

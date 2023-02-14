@@ -222,7 +222,10 @@ namespace :migration do
         place.updated_at = loc['updated']
         place.owner = loc['owner']
         place.emptySince = loc['emptySince']
+        # TODO: date - string
+        # place.vacant_since = loc['created'] - loc['emptySince']
         place.buildingType = loc['buildingType']
+        place.building_type = [loc['buildingType']]
         place.active = loc['active']
         place.hidden = loc['hidden']
         place.road = loc['street']
