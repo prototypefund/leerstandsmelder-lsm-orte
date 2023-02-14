@@ -69,7 +69,10 @@ class Map < ApplicationRecord
   end
 
   def map_status
-    Status.where(basic: true)
+    # all basic map status
+    basic = Status.where(basic: true)
+    map_specific = Status.where(basic: false, map: id)
+    (basic + map_specific)
   end
 
   # call me: Map.by_user(current_user).find(params[:id])

@@ -10,9 +10,10 @@
   %p
     %b Basic:
     = @status.basic
-  %p
-    %b Map:
-    = @status.map
+  - if @status.map
+    %p
+      %b Map:
+      = @status.map.title
   %p
     %b Locale:
     = @status.locales

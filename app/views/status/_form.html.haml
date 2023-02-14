@@ -1,4 +1,4 @@
-= simple_form_for(@status) do |f|
+= simple_form_for(@status, :url=> @form_path, :action => @action) do |f|
   = @errors
   = f.input 'locale_mobility', as: :hidden, :input_html => {:name => 'locale_mobility', :value => @locale_mobility,:id => "locale_mobility" }
   .grid-x

@@ -43,6 +43,14 @@
             %a{:href => iconsets_path, :title => 'Icon sets'}
               %i.fi-marker.fi-21
               Icon sets (#{Iconset.all.count})
+          %li
+            %a{:href => status_index_path, :title => 'Status'}
+              %i.fi-clipboard-notes.fi-21
+              Status (#{Status.all.count})
+          %li
+            %a{:href => news_index_path, :title => 'News'}
+              %i.fi-clipboard-notes.fi-21
+              News (#{News.all.count})    
       - if policy(:start).admin?
         %hr
         %ul.menu

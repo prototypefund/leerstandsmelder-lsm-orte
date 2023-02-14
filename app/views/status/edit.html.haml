@@ -1,8 +1,10 @@
 #table-wrapper
   %h1 Editing status
 
+  - @form_path = status_index_path + '/' + @status.id
+  - @action = 'update'
   = render 'form'
 
   = link_to 'Show', @status
   \|
-  = link_to 'Back', status_path
+  = link_to 'Back', status_index_path
