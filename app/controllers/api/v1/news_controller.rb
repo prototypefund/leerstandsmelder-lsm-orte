@@ -6,7 +6,7 @@ class Api::V1::NewsController < Api::V1::ApplicationController
 
   # GET /news or /news.json
   def index
-    @news = policy_scope(News)
+    @news = policy_scope(News).limit(5)
     respond_to do |format|
       if @news
         format.json { render :index }
