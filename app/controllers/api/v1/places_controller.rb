@@ -126,7 +126,7 @@ class Api::V1::PlacesController < Api::V1::ApplicationController
   def set_place
     @map = policy_scope(Map).friendly.find(params[:map_id]) if params[:map_id]
     @layer = policy_scope(Layer).friendly.find(params[:layer_id]) if params[:layer_id]
-    @place = Place.find(params[:id])
+    @place = Place.friendly.find(params[:id])
     authorize @place
   end
 
