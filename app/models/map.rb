@@ -22,7 +22,7 @@ class Map < ApplicationRecord
   validates :title, presence: true
 
   extend FriendlyId
-  friendly_id :title, use: :slugged
+  friendly_id :title, use: :history
 
   after_create :setup_map_role
   # after_create :setup_map_group

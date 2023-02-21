@@ -61,7 +61,7 @@ class Api::V1::MapsController < Api::V1::ApplicationController
   end
 
   def set_map
-    @map = policy_scope(Map).find_by_slug(params[:id]) || policy_scope(Map).find_by_id(params[:id])
+    @map = policy_scope(Map).friendly.find(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
