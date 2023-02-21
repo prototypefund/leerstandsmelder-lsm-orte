@@ -5,6 +5,15 @@ module ImagesHelper
     [['Image (default)', 'image'], %w[Graphics graphics]]
   end
 
+  def thumb_url(file)
+    return unless file.attached?
+
+    filename = ActiveStorage::Blob.service.path_for(file.key)
+    return unless File.exist?(filename)
+
+    polymorphic_url(file.variant(resize: '100x100').processed)
+  end
+
   def image_url(file)
     return unless file.attached?
 

@@ -42,6 +42,10 @@ class Image < ApplicationRecord
     ApplicationController.helpers.image_url(file)
   end
 
+  def thumb_url
+    ApplicationController.helpers.thumb_url(file)
+  end
+
   def image_path
     ApplicationController.helpers.image_path(file)
   end
