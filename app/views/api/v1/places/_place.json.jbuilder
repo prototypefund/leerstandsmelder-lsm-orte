@@ -15,7 +15,7 @@ json.images do
     json.call(image, :id, :title, :alt, :sorting, :image_url, :image_path, :image_filename)
   end
 end
-json.comments policy_scope(place.annotations) do |annotation|
+json.comments policy_scope(place.annotations).order('created_at DESC') do |annotation|
   json.extract! annotation, :id, :created_at, :updated_at, :title, :text, :published, :status
   if annotation.user.present?
     json.user do
