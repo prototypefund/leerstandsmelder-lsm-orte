@@ -15,7 +15,7 @@ if @layer&.published
       json.coordinates [place.public_lon.to_f, place.public_lat.to_f]
     end
     json.properties do
-      json.call(place, :id, :created_at, :updated_at, :since, :title, :slug, :published, :buildingType,:building_type, :owner, :zip, :startdate, :enddate, :text, :featured, :shy, :layer_id, :user_id)
+      json.call(place, :id, :created_at, :updated_at, :since, :title, :slug, :published, :buildingType, :building_type, :owner, :zip, :startdate, :enddate, :text, :featured, :shy, :layer_id, :user_id)
       json.call(place.images.first, :thumb_url) if place.images.first
     end
   end

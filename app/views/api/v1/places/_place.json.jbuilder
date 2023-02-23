@@ -24,7 +24,7 @@ json.comments policy_scope(place.annotations).order('created_at DESC') do |annot
   end
   json.images do
     json.array! policy_scope(annotation.images).order('sorting ASC') do |image|
-      json.call(image, :id, :title, :alt, :sorting,  :image_url, :image_path, :image_filename)
+      json.call(image, :id, :title, :alt, :sorting, :image_url, :image_path, :image_filename)
     end
   end
 end
