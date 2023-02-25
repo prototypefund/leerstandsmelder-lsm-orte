@@ -28,6 +28,11 @@ class ApplicationController < ActionController::Base
 
   def cors_set_access_control_headers
     headers['Access-Control-Allow-Origin'] = ENV.fetch('API_FRONTEND_ALLOW_ORIGIN')
+
+    headers['Access-Control-Allow-Origin'] = 'https://leerstandsmelder.in' if request.origin == 'https://leerstandsmelder.in'
+    headers['Access-Control-Allow-Origin'] = 'https://dev.leerstandsmeldung.de' if request.origin == 'https://dev.leerstandsmeldung.de'
+    headers['Access-Control-Allow-Origin'] = 'https://leerstandsmelder.de' if request.origin == 'https://leerstandsmelder.de'
+
     headers['Access-Control-Allow-Methods'] = '*'
     headers['Access-Control-Request-Method'] = '*'
     headers['Access-Control-Allow-Credentials'] = true
