@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_13_175523) do
+ActiveRecord::Schema.define(version: 2023_03_08_180217) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -159,8 +159,8 @@ ActiveRecord::Schema.define(version: 2023_02_13_175523) do
     t.boolean "public_submission"
     t.string "slug"
     t.text "credits"
-    t.string "mapcenter_lat"
-    t.string "mapcenter_lon"
+    t.float "mapcenter_lat"
+    t.float "mapcenter_lon"
     t.integer "zoom", default: 12
     t.text "teaser"
     t.text "style"
@@ -205,8 +205,8 @@ ActiveRecord::Schema.define(version: 2023_02_13_175523) do
     t.text "teaser"
     t.text "style"
     t.string "color"
-    t.string "mapcenter_lat"
-    t.string "mapcenter_lon"
+    t.float "mapcenter_lat"
+    t.float "mapcenter_lon"
     t.integer "zoom", default: 12
     t.string "tooltip_display_mode", default: "none"
     t.string "places_sort_order"
@@ -293,8 +293,8 @@ ActiveRecord::Schema.define(version: 2023_02_13_175523) do
     t.string "link"
     t.datetime "startdate"
     t.datetime "enddate"
-    t.string "lat"
-    t.string "lon"
+    t.float "lat"
+    t.float "lon"
     t.string "location"
     t.string "address"
     t.string "zip"
@@ -341,6 +341,61 @@ ActiveRecord::Schema.define(version: 2023_02_13_175523) do
     t.index ["layer_id"], name: "index_places_on_layer_id"
     t.index ["map_id"], name: "index_places_on_map_id"
     t.index ["user_id"], name: "index_places_on_user_id"
+  end
+
+  create_table "places_copy", id: false, force: :cascade do |t|
+    t.uuid "id"
+    t.string "title"
+    t.text "teaser"
+    t.text "text"
+    t.string "link"
+    t.datetime "startdate"
+    t.datetime "enddate"
+    t.float "lat"
+    t.float "lon"
+    t.string "location"
+    t.string "address"
+    t.string "zip"
+    t.string "city"
+    t.string "country"
+    t.boolean "published"
+    t.uuid "layer_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string "imagelink"
+    t.integer "icon_id"
+    t.boolean "featured"
+    t.boolean "shy"
+    t.boolean "sensitive"
+    t.integer "sensitive_radius"
+    t.string "road"
+    t.string "house_number"
+    t.string "borough"
+    t.string "suburb"
+    t.string "country_code"
+    t.uuid "user_id"
+    t.boolean "rumor"
+    t.string "slug"
+    t.string "owner"
+    t.string "emptySince"
+    t.string "buildingType"
+    t.uuid "map_id"
+    t.boolean "active"
+    t.boolean "hidden"
+    t.boolean "demolished"
+    t.string "slug_aliases", array: true
+    t.string "subtitle"
+    t.date "vacant_since"
+    t.string "degree"
+    t.string "building_usage", array: true
+    t.string "building_part", array: true
+    t.string "building_epoche"
+    t.integer "building_floors"
+    t.string "owner_type"
+    t.string "owner_company"
+    t.string "owner_contact"
+    t.string "osm_place_id"
+    t.string "building_type", array: true
   end
 
   create_table "relations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
