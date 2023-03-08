@@ -11,7 +11,11 @@ module ImagesHelper
     filename = ActiveStorage::Blob.service.path_for(file.key)
     return unless File.exist?(filename)
 
-    polymorphic_url(file.variant(resize: '100x100').processed)
+    begin
+      polymorphic_url(file.variant(resize: '100x100').processed)
+    rescue StandardError
+      puts "the file can't be opened or is corrupted: #{filename}"
+    end
   end
 
   def image_url(file)
@@ -20,7 +24,11 @@ module ImagesHelper
     filename = ActiveStorage::Blob.service.path_for(file.key)
     return unless File.exist?(filename)
 
-    polymorphic_url(file.variant(resize: '800x800').processed)
+    begin
+      polymorphic_url(file.variant(resize: '800x800').processed)
+    rescue StandardError
+      puts "the file can't be opened or is corrupted: #{filename}"
+    end
   end
 
   def image_path(file)
@@ -29,7 +37,11 @@ module ImagesHelper
     filename = ActiveStorage::Blob.service.path_for(file.key)
     return unless File.exist?(filename)
 
-    polymorphic_path(file.variant(resize: '800x800').processed)
+    begin
+      polymorphic_url(file.variant(resize: '800x800').processed)
+    rescue StandardError
+      puts "the file can't be opened or is corrupted: #{filename}"
+    end
   end
 
   def image_linktag(file, title = '')
