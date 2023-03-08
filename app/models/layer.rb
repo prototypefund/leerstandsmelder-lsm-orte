@@ -3,6 +3,9 @@
 include ActionView::Helpers::NumberHelper
 class Layer < ApplicationRecord
   resourcify
+  acts_as_mappable lat_column_name: :mapcenter_lat,
+                   lng_column_name: :mapcenter_lon
+
   belongs_to :map
   has_many :places, dependent: :destroy
   has_one :submission_config

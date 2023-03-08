@@ -7,6 +7,9 @@ class Place < ApplicationRecord
   resourcify
   has_paper_trail ignore: %i[public_lat public_lon]
 
+  acts_as_mappable lat_column_name: :lat,
+                   lng_column_name: :lon
+
   extend FriendlyId
   friendly_id :slug_candidates, use: :history
 

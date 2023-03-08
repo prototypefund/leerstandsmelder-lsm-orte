@@ -6,6 +6,9 @@ class Map < ApplicationRecord
   extend Mobility
   translates :organisation, type: :string
 
+  acts_as_mappable lat_column_name: :mapcenter_lat,
+                   lng_column_name: :mapcenter_lon
+
   belongs_to :group, optional: true
   belongs_to :iconset, optional: true
   has_many :layers, dependent: :destroy
