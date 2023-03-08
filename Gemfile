@@ -74,6 +74,7 @@ gem 'net-smtp'
 gem 'webdack-uuid_migration'
 
 gem 'jsom-pagination'
+gem 'geokit-rails'
 
 group :staging, :production do
   # gem 'pg'
