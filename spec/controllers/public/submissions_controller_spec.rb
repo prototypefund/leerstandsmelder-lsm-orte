@@ -223,9 +223,8 @@ RSpec.describe Public::SubmissionsController, type: :controller do
           submission = FactoryBot.create(:submission, place_id: @place.id, status: 'SubmissionName')
           session[:submission_id] = submission.id
           image_attributes = FactoryBot.attributes_for(:image, :with_file)
-          image_attributes[:imageable_type] ='Place'
+          image_attributes[:imageable_type] = 'Place'
           image_attributes[:imageable_id] = @place.id
-          puts image_attributes.inspect
           expect do
             post :create_image, params: { image: image_attributes, image_input: 1, layer_id: @layer.id, place_id: submission.place.id, submission_id: submission.id, locale: 'de' }, session: valid_session
           end.to change(Image, :count).by(1)
