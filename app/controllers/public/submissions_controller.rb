@@ -2,7 +2,7 @@
 
 class Public::SubmissionsController < ApplicationController
   skip_before_action :authenticate_user!, only: %i[index new create edit update new_place create_place edit_place update_place new_image create_image finished]
-
+  before_action :require_admin, except: %i[index new create edit update new_place create_place edit_place update_place new_image create_image finished]
   before_action :load_layer_config
   around_action :switch_locale
 

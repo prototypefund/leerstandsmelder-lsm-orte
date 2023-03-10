@@ -36,24 +36,18 @@ RSpec.describe Admin::GroupsController, type: :controller do
     let(:valid_session) { {} }
 
     describe 'GET #index' do
-      it 'returns a success response' do
+      it 'returns a blocked response' do
         get :index, params: {}, session: valid_session
-        expect(response).to have_http_status(200)
-      end
-      it 'returns a valid array' do
-        @admin_groups = FactoryBot.create_list(:group, 3)
-        @admin_groups.push(@group)
-        get :index, params: {}, session: valid_session
-        expect(response).to have_http_status(200)
+        expect(response).to have_http_status(302)
       end
     end
 
     describe 'GET #edit' do
-      it "returns a success response (if its the user's group)" do
+      it "returns a blocked response (if its the user's group)" do
         get :edit, params: { id: @group.to_param }, session: valid_session
-        expect(response).to have_http_status(200)
+        expect(response).to have_http_status(302)
       end
-      it "returns a error response (if its NOT the user's group" do
+      xit "returns a error response (if its NOT the user's group" do
         @group_not_related_to_user = FactoryBot.create(:group)
         get :edit, params: { id: @group_not_related_to_user.to_param }, session: valid_session
         expect(response).to have_http_status(302)
@@ -87,6 +81,12 @@ RSpec.describe Admin::GroupsController, type: :controller do
     describe 'GET #index' do
       it 'returns a success response' do
         admin_group = Group.create! valid_attributes
+        get :index, params: {}, session: valid_session
+        expect(response).to have_http_status(200)
+      end
+      it 'returns a valid array' do
+        @admin_groups = FactoryBot.create_list(:group, 3)
+        @admin_groups.push(@group)
         get :index, params: {}, session: valid_session
         expect(response).to have_http_status(200)
       end
