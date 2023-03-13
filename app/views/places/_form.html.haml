@@ -36,10 +36,10 @@
         %br
         %span.name Coordinates
         - if @old_place
-          #{@old_place.lat[0..4]}/#{@old_place.lon[0..4]}
+          #{@old_place.lat.round(4)}/#{@old_place.lon.round(4)}
           \-->
         - if @place.lat && @place.lon
-          #{@place.lat[0..4]}/#{@place.lon[0..4]}
+          #{@place.lat.round(4)}/#{@place.lon.round(4)}
           %a{href: '', title: 'Edit coordinates', id: 'edit_coordinates'}
             %i.fi.fi-pencil.fi-13
           %a{href: '', title: 'Edit coordinates', id: 'edit_coordinates_cancel'}
