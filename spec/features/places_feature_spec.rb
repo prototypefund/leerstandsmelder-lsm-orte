@@ -7,10 +7,10 @@ RSpec.feature 'User creates and updates a place ' do
     @group = FactoryBot.create(:group)
     user = FactoryBot.create(:admin_user, group_id: @group.id)
     visit root_path
-    click_link 'Sign in'
+    # click_link 'Sign in'
     fill_in 'user_email', with: user.email
     fill_in 'user_password', with: user.password
-    click_button 'Log in'
+    click_button 'Anmelden'
   end
 
   scenario 'provides lookup interface and proposes possible locations', js: true do

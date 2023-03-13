@@ -17,7 +17,7 @@ require 'rails_helper'
 RSpec.describe '/relations', type: :request do
   before do
     group = FactoryBot.create(:group)
-    @user = FactoryBot.create(:user, group: group)
+    @user = FactoryBot.create(:admin_user, group: group)
     sign_in @user
 
     @map = create(:map, group: group)

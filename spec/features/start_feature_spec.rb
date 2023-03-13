@@ -19,28 +19,28 @@ RSpec.feature 'Login' do
   end
   scenario 'shows login form', js: true do
     visit root_path
-    click_link 'Sign in'
+    # click_link 'Sign in'
     expect(page).to have_current_path '/users/sign_in'
-    expect(page).to have_content 'Log in'
+    expect(page).to have_content 'Anmelden'
   end
 
   scenario 'shows error if login with wrong credentials' do
     visit root_path
-    click_link 'Sign in'
+    # click_link 'Sign in'
     fill_in 'user_email', with: 'nobody@nowhere.com'
     fill_in 'user_password', with: 'abcdefghijklmn'
-    click_button 'Log in'
-    expect(page).to have_content 'Invalid Email or password'
+    click_button 'Anmelden'
+    expect(page).to have_content 'E-Mail-Adresse oder Passwort ungültig.'
   end
 
   scenario 'shows success message if login with credentials worked' do
     group = FactoryBot.create(:group)
     user = FactoryBot.create(:admin_user, group_id: group.id)
     visit root_path
-    click_link 'Sign in'
+    # click_link 'Sign in'
     fill_in 'user_email', with: user.email
     fill_in 'user_password', with: user.password
-    click_button 'Log in'
+    click_button 'Anmelden'
     expect(page).to have_current_path '/maps'
     expect(page).to have_content I18n.t('devise.sessions.signed_in')
   end
@@ -55,12 +55,12 @@ RSpec.feature 'Logout' do
     group = FactoryBot.create(:group)
     user = FactoryBot.create(:admin_user, group_id: group.id)
     visit root_path
-    click_link 'Sign in'
+    # click_link 'Sign in'
     fill_in 'user_email', with: user.email
     fill_in 'user_password', with: user.password
-    click_button 'Log in'
+    click_button 'Anmelden'
     expect(page).to have_current_path '/maps'
     find(:css, '#logout').click
-    expect(page).to have_content I18n.t('devise.sessions.signed_out')
+    expect(page).to have_content 'You are not an admin'
   end
 end
