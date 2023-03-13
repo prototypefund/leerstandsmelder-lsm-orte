@@ -5,7 +5,8 @@ FactoryBot.define do
     title { 'MyString' }
     body { 'MyText' }
     published { false }
-    map { nil }
-    user { nil }
+    # news_map { create(:map) }
+    user { create(:user) }
+    locales { ['de'] }
   end
 end

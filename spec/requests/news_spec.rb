@@ -18,6 +18,13 @@ RSpec.describe '/news', type: :request do
   # This should return the minimal set of attributes required to create a valid
   # News. As you add validations to News, be sure to
   # adjust the attributes here as well.
+
+  before do
+    group = FactoryBot.create(:group)
+    @user = FactoryBot.create(:admin_user, group: group)
+    sign_in @user
+  end
+
   let(:valid_attributes) do
     skip('Add a hash of attributes valid for your model')
   end
