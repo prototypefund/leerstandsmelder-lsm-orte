@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.feature 'User views a map and may create a new one ' do
   before do
+    Layer.delete_all
     Map.delete_all
     @group = FactoryBot.create(:group)
     user = FactoryBot.create(:admin_user, group_id: @group.id)
