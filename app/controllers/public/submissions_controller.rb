@@ -210,7 +210,6 @@ class Public::SubmissionsController < ApplicationController
     @image.place = @place
     @image.place_id = @place.id
     respond_to do |format|
-
       if params[:image_input] && params[:image_input] == '1'
         if @image.save
           @submission.status = SUBMISSION_STATUS_STEP3

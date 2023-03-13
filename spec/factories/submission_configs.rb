@@ -10,6 +10,7 @@ FactoryBot.define do
     start_time { '2021-04-29 12:48:46' }
     end_time { '2021-04-29 12:48:46' }
     use_city_only { false }
+    locales { ['en'] }
     trait :invalid do
       title_intro { nil }
     end

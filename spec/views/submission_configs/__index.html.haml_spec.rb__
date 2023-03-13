@@ -9,26 +9,11 @@ RSpec.describe 'submission_configs/index', type: :view do
     sign_in user
     @map = FactoryBot.create(:map, group_id: group.id)
     @layer = FactoryBot.create(:layer, map_id: @map.id)
-
+    
     assign(:submission_configs, [
-             SubmissionConfig.create!(
-               title_intro: 'Title Intro',
-               subtitle_intro: 'Subtitle Intro',
-               intro: 'MyIntro',
-               title_outro: 'Title Outro',
-               outro: 'MyText',
-               use_city_only: false,
-               layer_id: @layer.id
+      FactoryBot.create(:submission_config
              ),
-             SubmissionConfig.create!(
-               title_intro: 'Title Intro',
-               subtitle_intro: 'Subtitle Intro',
-               intro: 'MyIntro',
-               title_outro: 'Title Outro',
-               outro: 'MyText',
-               use_city_only: false,
-               layer_id: @layer.id
-             )
+             FactoryBot.create(:submission_config)
            ])
   end
 
