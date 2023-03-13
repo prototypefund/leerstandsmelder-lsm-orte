@@ -4,11 +4,12 @@ require 'rails_helper'
 
 RSpec.describe 'status/edit', type: :view do
   let(:status) do
+    @map = FactoryBot.create(:map)
     Status.create!(
       title: 'MyString',
       description: 'MyText',
       basic: false,
-      map: ''
+      map: @map
     )
   end
 
@@ -19,14 +20,12 @@ RSpec.describe 'status/edit', type: :view do
   it 'renders the edit status form' do
     render
 
-    assert_select 'form[action=?][method=?]', status_path(status), 'post' do
+    assert_select 'form[action=?][method=?]', status_path(status.id), 'post' do
       assert_select 'input[name=?]', 'status[title]'
 
       assert_select 'textarea[name=?]', 'status[description]'
 
       assert_select 'input[name=?]', 'status[basic]'
-
-      assert_select 'input[name=?]', 'status[map]'
     end
   end
 end

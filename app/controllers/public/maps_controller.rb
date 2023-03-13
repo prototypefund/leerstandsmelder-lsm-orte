@@ -2,6 +2,7 @@
 
 class Public::MapsController < ActionController::Base
   before_action :cors_set_access_control_headers
+  before_action :require_admin, except: %i[index show]
 
   # For all responses in this controller, return the CORS access control headers.
 

@@ -164,7 +164,7 @@ class PlacesController < ApplicationController
   def set_place
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
     @layer = Layer.friendly.find(params[:layer_id])
-    @place = Place.find(params[:id])
+    @place = Place.friendly.find(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

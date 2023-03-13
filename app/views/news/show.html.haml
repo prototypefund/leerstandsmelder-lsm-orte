@@ -15,7 +15,7 @@
     = @news.maps
   %p
     %b User:
-    = @news.user.nickname
+    = @news.user.nickname if !@news.user.nil?
 
   = link_to 'Edit', edit_news_path(@news)
   \|

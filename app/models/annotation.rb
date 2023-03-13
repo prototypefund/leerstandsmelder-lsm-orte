@@ -13,7 +13,7 @@ class Annotation < ApplicationRecord
   has_many :images, as: :imageable, dependent: :destroy
 
   # validates :text, presence: true
-  validates :status, presence: true
+  # validates :status, presence: true
   validate :check_audio_format
 
   scope :published, -> { where(published: true) }

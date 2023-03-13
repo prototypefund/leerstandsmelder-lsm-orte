@@ -18,6 +18,13 @@ RSpec.describe '/status', type: :request do
   # This should return the minimal set of attributes required to create a valid
   # Status. As you add validations to Status, be sure to
   # adjust the attributes here as well.
+
+  before do
+    group = FactoryBot.create(:group)
+    @user = FactoryBot.create(:admin_user, group: group)
+    sign_in @user
+  end
+
   let(:valid_attributes) do
     skip('Add a hash of attributes valid for your model')
   end
@@ -59,26 +66,26 @@ RSpec.describe '/status', type: :request do
 
   describe 'POST /create' do
     context 'with valid parameters' do
-      it 'creates a new Status' do
+      xit 'creates a new Status' do
         expect do
           post status_url, params: { status: valid_attributes }
         end.to change(Status, :count).by(1)
       end
 
-      it 'redirects to the created status' do
+      xit 'redirects to the created status' do
         post status_url, params: { status: valid_attributes }
         expect(response).to redirect_to(status_url(Status.last))
       end
     end
 
     context 'with invalid parameters' do
-      it 'does not create a new Status' do
+      xit 'does not create a new Status' do
         expect do
           post status_url, params: { status: invalid_attributes }
         end.to change(Status, :count).by(0)
       end
 
-      it "renders a successful response (i.e. to display the 'new' template)" do
+      xit "renders a successful response (i.e. to display the 'new' template)" do
         post status_url, params: { status: invalid_attributes }
         expect(response).to be_successful
       end
@@ -91,14 +98,14 @@ RSpec.describe '/status', type: :request do
         skip('Add a hash of attributes valid for your model')
       end
 
-      it 'updates the requested status' do
+      xit 'updates the requested status' do
         status = Status.create! valid_attributes
         patch status_url(status), params: { status: new_attributes }
         status.reload
         skip('Add assertions for updated state')
       end
 
-      it 'redirects to the status' do
+      xit 'redirects to the status' do
         status = Status.create! valid_attributes
         patch status_url(status), params: { status: new_attributes }
         status.reload
@@ -107,7 +114,7 @@ RSpec.describe '/status', type: :request do
     end
 
     context 'with invalid parameters' do
-      it "renders a successful response (i.e. to display the 'edit' template)" do
+      xit "renders a successful response (i.e. to display the 'edit' template)" do
         status = Status.create! valid_attributes
         patch status_url(status), params: { status: invalid_attributes }
         expect(response).to be_successful
@@ -116,14 +123,14 @@ RSpec.describe '/status', type: :request do
   end
 
   describe 'DELETE /destroy' do
-    it 'destroys the requested status' do
+    xit 'destroys the requested status' do
       status = Status.create! valid_attributes
       expect do
         delete status_url(status)
       end.to change(Status, :count).by(-1)
     end
 
-    it 'redirects to the status list' do
+    xit 'redirects to the status list' do
       status = Status.create! valid_attributes
       delete status_url(status)
       expect(response).to redirect_to(status_url)

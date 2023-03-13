@@ -4,14 +4,15 @@ require 'rails_helper'
 
 RSpec.feature 'User views a map and may create a new one ' do
   before do
+    Layer.delete_all
     Map.delete_all
     @group = FactoryBot.create(:group)
     user = FactoryBot.create(:admin_user, group_id: @group.id)
     visit root_path
-    click_link 'Sign in'
+    # click_link 'Sign in'
     fill_in 'user_email', with: user.email
     fill_in 'user_password', with: user.password
-    click_button 'Log in'
+    click_button 'Anmelden'
   end
 
   describe ' with js', js: true do

@@ -4,7 +4,7 @@ class Image < ApplicationRecord
   has_paper_trail
 
   belongs_to :place
-  belongs_to :imageable, polymorphic: true
+  belongs_to :imageable, polymorphic: true, optional: true
 
   # belongs_to :annotation, -> { where(images: { imageable_type: 'Annotation' }) }, foreign_key: 'imageable_id'
   # belongs_to :place, -> { where(images: { imageable_type: 'Place'})  }, foreign_key: 'imageable_id'
@@ -26,10 +26,10 @@ class Image < ApplicationRecord
   scope :preview, ->(place_id) { where('place_id': place_id, 'preview': true) }
 
   def set_default_type
-    return unless imageable_id.empty?
+    return unless imageable_id.nil? || imageable_id.empty?
 
     imageable_id = place_id
-    return unless imageable_type.empty?
+    return unless imageable_type.nil? || imageable_type.empty?
 
     imageable_type = 'Place'
   end

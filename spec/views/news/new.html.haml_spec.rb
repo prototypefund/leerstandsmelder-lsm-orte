@@ -11,6 +11,7 @@ RSpec.describe 'news/new', type: :view do
     render
 
     assert_select 'form[action=?][method=?]', news_index_path, 'post' do
+      assert_select 'input[name=?]', 'news[title]'
     end
   end
 end

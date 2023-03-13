@@ -3,6 +3,8 @@
 class ImagesController < ApplicationController
   before_action :set_image, only: %i[show edit update destroy]
 
+  before_action :find_imageable, except: %i[index show new edit update destroy]
+
   # GET /images
   # GET /images.json
   def index
@@ -35,7 +37,8 @@ class ImagesController < ApplicationController
   # POST /images
   # POST /images.json
   def create
-    @image = Image.new(image_params)
+    @image = @imageable.images.new(image_params)
+    # @image = Image.new(image_params)
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
     @layer = Layer.friendly.find(params[:layer_id])
     @place = Place.find(params[:place_id])
@@ -74,6 +77,13 @@ class ImagesController < ApplicationController
   end
 
   private
+
+  def find_imageable
+    imageable_type = 'Place'
+    imageable_type = params[:imageable_type] if %w[Place Annotation].include? params[:imageable_type]
+    @klass = imageable_type.capitalize.constantize
+    @imageable = @klass.find(params[:imageable_id] || params[:place_id])
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_image

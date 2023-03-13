@@ -33,6 +33,12 @@ de:
           attributes:
             title:
               blank: Bildbeschreibung erforderlich.
+        mobility/backends/active_record/key_value/text_translation:
+          attributes:
+            key:
+              taken: "Benutzt Model: %{model} Attribute: %{attribute} Value: %{value}"
+      messages:
+        record_invalid: "Datensatz nicht valide - folgende Fehler sind aufgetreten: '%{errors}'"
   errors:
     format: "%{attribute} %{message}"
     messages:

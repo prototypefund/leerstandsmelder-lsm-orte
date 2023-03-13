@@ -7,10 +7,10 @@ RSpec.feature 'User creates layer and works on layer level' do
     @group = FactoryBot.create(:group)
     user = FactoryBot.create(:admin_user, group_id: @group.id)
     visit root_path
-    click_link 'Sign in'
+    # click_link 'Sign in'
     fill_in 'user_email', with: user.email
     fill_in 'user_password', with: user.password
-    click_button 'Log in'
+    click_button 'Anmelden'
   end
 
   scenario 'shows marker on a map layer and opens a popup on click', js: true do

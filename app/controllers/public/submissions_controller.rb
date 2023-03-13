@@ -2,7 +2,7 @@
 
 class Public::SubmissionsController < ApplicationController
   skip_before_action :authenticate_user!, only: %i[index new create edit update new_place create_place edit_place update_place new_image create_image finished]
-
+  before_action :require_admin, except: %i[index new create edit update new_place create_place edit_place update_place new_image create_image finished]
   before_action :load_layer_config
   around_action :switch_locale
 
@@ -205,7 +205,7 @@ class Public::SubmissionsController < ApplicationController
     return unless session[:submission_id] && session[:submission_id] == submission_from_id
 
     @submission = Submission.find(session[:submission_id])
-    @image = Image.new(image_params)
+    @image = find_imageable.images.new(image_params)
     @place = @submission.place
     @image.place = @place
     @image.place_id = @place.id
@@ -239,6 +239,13 @@ class Public::SubmissionsController < ApplicationController
     params[:layer_id]
     # ? direct call via http://127.0.0.1:3000/de/public/submissions/new?layer_id=1 doesn't work anymore
     # 1
+  end
+
+  def find_imageable
+    imageable_type = 'Place'
+    imageable_type = params[:imageable_type] if %w[Place Annotation].include? params[:imageable_type]
+    @klass = imageable_type.capitalize.constantize
+    @imageable = @klass.find(params[:imageable_id] || params[:place_id])
   end
 
   def submission_from_id

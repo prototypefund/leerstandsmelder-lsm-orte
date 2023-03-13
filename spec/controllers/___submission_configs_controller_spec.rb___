@@ -11,9 +11,12 @@ RSpec.describe SubmissionConfigsController, type: :controller do
       group = FactoryBot.create(:group)
       user = FactoryBot.create(:admin_user, group_id: group.id)
       sign_in user
+      I18n.locale = :de
       @map = FactoryBot.create(:map, group_id: group.id)
       @layer = FactoryBot.create(:layer, map: @map)
+      puts 'before'
       @submission_config = FactoryBot.create(:submission_config, layer_id: @layer)
+      puts @submission_config.inspect
     end
 
     let(:submission_config) do
@@ -40,7 +43,13 @@ RSpec.describe SubmissionConfigsController, type: :controller do
 
     describe 'GET #show' do
       it 'returns a success response' do
-        submission_config = SubmissionConfig.create! valid_attributes
+        puts 'show'
+        puts valid_attributes.inspect
+        #submission_config = SubmissionConfig.create valid_attributes
+        submission_config = FactoryBot.create(:submission_config, layer_id: @layer)
+
+        puts submission_config.inspect
+        puts submission_config.errors.inspect
         get :show, params: { id: submission_config.to_param, layer_id: @layer.id }, session: valid_session
         expect(response).to have_http_status(200)
       end

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'news/edit', type: :view do
   let(:news) do
-    News.create!
+    FactoryBot.create(:news, title: 'TitleNews')
   end
 
   before(:each) do

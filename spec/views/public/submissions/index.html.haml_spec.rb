@@ -13,6 +13,6 @@ RSpec.describe 'public/submissions/index', type: :view do
   it 'renders public_submission index (no public submission availabe)' do
     render
 
-    assert_select 'h1', 'Submissions ORTE'
+    assert_select 'h1', 'Einreichung ORTE'
   end
 end
