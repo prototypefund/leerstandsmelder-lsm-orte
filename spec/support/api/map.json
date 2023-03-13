@@ -78,12 +78,9 @@
             "image_link":{
                "$id":"#/properties/map/properties/image_link",
                "pattern":"^(.*)$",
-               "type":"null",
+               "type":"string",
                "title":"The Imagelink Schema",
-               "default":null,
-               "examples":[
-                  null
-               ]
+               "default":""
             },
             "created_at":{
                "$id":"#/properties/map/properties/created_at",
