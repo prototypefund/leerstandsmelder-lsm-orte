@@ -92,7 +92,9 @@ class Map < ApplicationRecord
   scope :published, -> { where(published: true) }
 
   def image_link
-    ApplicationController.helpers.image_url(image) if image&.attached?
+    value = ''
+    value = ApplicationController.helpers.image_url(image) if image&.attached?
+    value
   end
 
   def self.first

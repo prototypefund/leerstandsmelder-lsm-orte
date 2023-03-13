@@ -1,0 +1,137 @@
+{
+  "definitions": {},
+  "title": "Overview of all Maps/Regions",
+  "type": "array",
+  "default": [],
+  "items": {
+    "$id": "#root/items",
+    "title": "Items",
+    "type": "object",
+    "required": [
+      "id",
+      "title",
+      "slug",
+      "published",
+      "group_id",
+      "created_at",
+      "updated_at",
+      "mapcenter_lat",
+      "mapcenter_lon",
+      "zoom",
+      "locations"
+    ],
+    "properties": {
+      "id": {
+        "$id": "#root/items/id",
+        "title": "Id",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "dc237fed-d7a1-4dcb-b5fc-0ea586158c5e"
+        ],
+        "pattern": "^.*$"
+      },
+      "title": {
+        "$id": "#root/items/title",
+        "title": "Title",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "Amsterdam"
+        ],
+        "pattern": "^.*$"
+      },
+      "slug": {
+        "$id": "#root/items/slug",
+        "title": "Slug",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "amsterdam"
+        ],
+        "pattern": "^.*$"
+      },
+      "subtitle": {
+        "$id": "#root/items/subtitle",
+        "title": "Subtitle",
+        "type": "string",
+        "default": ""
+      },
+      "published": {
+        "$id": "#root/items/published",
+        "title": "Published",
+        "type": "boolean",
+        "examples": [
+          true
+        ],
+        "default": true
+      },
+      "group_id": {
+        "$id": "#root/items/group_id",
+        "title": "Group_id",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "82f4aceb-86c6-4e13-a7d2-a35915c7780c"
+        ],
+        "pattern": "^.*$"
+      },
+      "created_at": {
+        "$id": "#root/items/created_at",
+        "title": "Created_at",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "2022-08-17T15:49:08.845Z"
+        ],
+        "pattern": "^.*$"
+      },
+      "updated_at": {
+        "$id": "#root/items/updated_at",
+        "title": "Updated_at",
+        "type": "string",
+        "default": "",
+        "examples": [
+          "2023-02-12T18:36:36.156Z"
+        ],
+        "pattern": "^.*$"
+      },
+      "mapcenter_lat": {
+        "$id": "#root/items/mapcenter_lat",
+        "title": "Mapcenter_lat",
+        "type": "number",
+        "examples": [
+          52.370197222222
+        ],
+        "default": 0.0
+      },
+      "mapcenter_lon": {
+        "$id": "#root/items/mapcenter_lon",
+        "title": "Mapcenter_lon",
+        "type": "number",
+        "examples": [
+          4.8904444444444
+        ],
+        "default": 0.0
+      },
+      "zoom": {
+        "$id": "#root/items/zoom",
+        "title": "Zoom",
+        "type": "integer",
+        "examples": [
+          10
+        ],
+        "default": 0
+      },
+      "locations": {
+        "$id": "#root/items/locations",
+        "title": "Locations",
+        "type": "integer",
+        "examples": [
+          47
+        ],
+        "default": 0
+      }
+    }
+  }
+}
