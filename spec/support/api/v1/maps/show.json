@@ -1,0 +1,533 @@
+{
+  "definitions": {},
+  "title": "Details of one map/region",
+  "type": "object",
+  "required": [
+    "map"
+  ],
+  "properties": {
+    "map": {
+      "$id": "#root/map",
+      "title": "Map",
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "slug",
+        "created_at",
+        "updated_at",
+        "published",
+        "mapcenter_lat",
+        "mapcenter_lon",
+        "zoom",
+        "hide",
+        "moderate",
+        "owner",
+        "status",
+        "default_layer",
+        "places"
+      ],
+      "properties": {
+        "id": {
+          "$id": "#root/map/id",
+          "title": "Id",
+          "type": "string",
+          "default": "",
+          "examples": [
+            "dc237fed-d7a1-4dcb-b5fc-0ea586158c5e"
+          ],
+          "pattern": "^.*$"
+        },
+        "title": {
+          "$id": "#root/map/title",
+          "title": "Title",
+          "type": "string",
+          "default": "",
+          "examples": [
+            "Amsterdam"
+          ],
+          "pattern": "^.*$"
+        },
+        "slug": {
+          "$id": "#root/map/slug",
+          "title": "Slug",
+          "type": "string",
+          "default": "",
+          "examples": [
+            "amsterdam"
+          ],
+          "pattern": "^.*$"
+        },
+        "subtitle": {
+          "$id": "#root/map/subtitle",
+          "title": "Subtitle",
+          "type": "string",
+          "default": ""
+        },
+        "created_at": {
+          "$id": "#root/map/created_at",
+          "title": "Created_at",
+          "type": "string",
+          "default": "",
+          "examples": [
+            "2022-08-17T15:49:08.845Z"
+          ],
+          "pattern": "^.*$"
+        },
+        "updated_at": {
+          "$id": "#root/map/updated_at",
+          "title": "Updated_at",
+          "type": "string",
+          "default": "",
+          "examples": [
+            "2023-02-12T18:36:36.156Z"
+          ],
+          "pattern": "^.*$"
+        },
+        "published": {
+          "$id": "#root/map/published",
+          "title": "Published",
+          "type": "boolean",
+          "examples": [
+            true
+          ],
+          "default": true
+        },
+        "mapcenter_lat": {
+          "$id": "#root/map/mapcenter_lat",
+          "title": "Mapcenter_lat",
+          "type": "number",
+          "examples": [
+            52.370197222222
+          ],
+          "default": 0.0
+        },
+        "mapcenter_lon": {
+          "$id": "#root/map/mapcenter_lon",
+          "title": "Mapcenter_lon",
+          "type": "number",
+          "examples": [
+            4.8904444444444
+          ],
+          "default": 0.0
+        },
+        "zoom": {
+          "$id": "#root/map/zoom",
+          "title": "Zoom",
+          "type": "integer",
+          "examples": [
+            10
+          ],
+          "default": 0
+        },
+        "hide": {
+          "$id": "#root/map/hide",
+          "title": "Hide",
+          "type": "boolean",
+          "examples": [
+            false
+          ],
+          "default": true
+        },
+        "hide_message": {
+          "$id": "#root/map/hide_message",
+          "title": "Hide_message",
+          "type": "string",
+          "default": "",
+          "examples": [
+            ""
+          ],
+          "pattern": "^.*$"
+        },
+        "moderate": {
+          "$id": "#root/map/moderate",
+          "title": "Moderate",
+          "type": "boolean",
+          "examples": [
+            false
+          ],
+          "default": true
+        },
+        "moderate_message": {
+          "$id": "#root/map/moderate_message",
+          "title": "Moderate_message",
+          "type": "string",
+          "default": "",
+          "examples": [
+            ""
+          ],
+          "pattern": "^.*$"
+        },
+        "organisation": {
+          "$id": "#root/map/organisation",
+          "title": "Organisation",
+          "type": "string",
+          "default": ""
+        },
+        "organisation_address": {
+          "$id": "#root/map/organisation_address",
+          "title": "Organisation_address",
+          "type": "string",
+          "default": "",
+          "examples": [
+            ""
+          ],
+          "pattern": "^.*$"
+        },
+        "organisation_email": {
+          "$id": "#root/map/organisation_email",
+          "title": "Organisation_email",
+          "type": "string",
+          "default": "",
+          "examples": [
+            ""
+          ],
+          "pattern": "^.*$"
+        },
+        "organisation_url": {
+          "$id": "#root/map/organisation_url",
+          "title": "Organisation_url",
+          "type": "string",
+          "default": "",
+          "examples": [
+            ""
+          ],
+          "pattern": "^.*$"
+        },
+        "organisation_legal": {
+          "$id": "#root/map/organisation_legal",
+          "title": "Organisation_legal",
+          "type": "string",
+          "default": "",
+          "examples": [
+            ""
+          ],
+          "pattern": "^.*$"
+        },
+        "organisation_meeting": {
+          "$id": "#root/map/organisation_meeting",
+          "title": "Organisation_meeting",
+          "type": "string",
+          "default": "",
+          "examples": [
+            ""
+          ],
+          "pattern": "^.*$"
+        },
+        "organisation_intro": {
+          "$id": "#root/map/organisation_intro",
+          "title": "Organisation_intro",
+          "type": "string",
+          "default": "",
+          "examples": [
+            ""
+          ],
+          "pattern": "^.*$"
+        },
+        "owner": {
+          "$id": "#root/map/owner",
+          "title": "Owner",
+          "type": "string",
+          "default": "",
+          "examples": [
+            "Amsterdam"
+          ],
+          "pattern": "^.*$"
+        },
+        "status": {
+          "$id": "#root/map/status",
+          "title": "Status",
+          "type": "array",
+          "default": [],
+          "items": {
+            "$id": "#root/map/status/items",
+            "title": "Items",
+            "type": "object",
+            "required": [
+              "id",
+              "title",
+              "description",
+              "basic",
+              "published",
+              "map_id",
+              "created_at",
+              "updated_at",
+              "locales"
+            ],
+            "properties": {
+              "id": {
+                "$id": "#root/map/status/items/id",
+                "title": "Id",
+                "type": "string",
+                "default": "",
+                "examples": [
+                  "c5099bbd-0128-486a-9734-0cd5293a921e"
+                ],
+                "pattern": "^.*$"
+              },
+              "title": {
+                "$id": "#root/map/status/items/title",
+                "title": "Title",
+                "type": "string",
+                "default": "",
+                "examples": [
+                  "Test1DE"
+                ],
+                "pattern": "^.*$"
+              },
+              "description": {
+                "$id": "#root/map/status/items/description",
+                "title": "Description",
+                "type": "string",
+                "default": ""
+              },
+              "basic": {
+                "$id": "#root/map/status/items/basic",
+                "title": "Basic",
+                "type": "boolean",
+                "examples": [
+                  true
+                ],
+                "default": true
+              },
+              "published": {
+                "$id": "#root/map/status/items/published",
+                "title": "Published",
+                "type": "boolean",
+                "examples": [
+                  true
+                ],
+                "default": true
+              },
+              "map_id": {
+                "$id": "#root/map/status/items/map_id",
+                "title": "Map_id",
+                "type": "string",
+                "default": ""
+              },
+              "created_at": {
+                "$id": "#root/map/status/items/created_at",
+                "title": "Created_at",
+                "type": "string",
+                "default": "",
+                "examples": [
+                  "2023-02-12T18:22:45.896Z"
+                ],
+                "pattern": "^.*$"
+              },
+              "updated_at": {
+                "$id": "#root/map/status/items/updated_at",
+                "title": "Updated_at",
+                "type": "string",
+                "default": "",
+                "examples": [
+                  "2023-02-13T14:22:54.034Z"
+                ],
+                "pattern": "^.*$"
+              },
+              "locales": {
+                "$id": "#root/map/status/items/locales",
+                "title": "Locales",
+                "type": "array",
+                "default": [],
+                "items": {
+                  "$id": "#root/map/status/items/locales/items",
+                  "title": "Items",
+                  "type": "string",
+                  "default": "",
+                  "examples": [
+                    "en"
+                  ],
+                  "pattern": "^.*$"
+                }
+              }
+            }
+          }
+        },
+        "default_layer": {
+          "$id": "#root/map/default_layer",
+          "title": "Default_layer",
+          "type": "string",
+          "default": "",
+          "examples": [
+            "85deb3fe-2916-41f1-b480-73963d147c80"
+          ],
+          "pattern": "^.*$"
+        },
+        "places": {
+          "$id": "#root/map/places",
+          "title": "Places",
+          "type": "array",
+          "default": [],
+          "items": {
+            "$id": "#root/map/places/items",
+            "title": "Items",
+            "type": "object",
+            "required": [
+              "id",
+              "created_at",
+              "updated_at",
+              "title",
+              "published",
+              "startdate",
+              "enddate",
+              "featured",
+              "shy",
+              "layer_id",
+              "user_id",
+              "lat",
+              "lon"
+            ],
+            "properties": {
+              "id": {
+                "$id": "#root/map/places/items/id",
+                "title": "Id",
+                "type": "string",
+                "default": "",
+                "examples": [
+                  "cee86fa4-6631-4326-bc9f-e7c7cafe5e2c"
+                ],
+                "pattern": "^.*$"
+              },
+              "created_at": {
+                "$id": "#root/map/places/items/created_at",
+                "title": "Created_at",
+                "type": "string",
+                "default": "",
+                "examples": [
+                  "2022-08-17T15:55:04.275Z"
+                ],
+                "pattern": "^.*$"
+              },
+              "updated_at": {
+                "$id": "#root/map/places/items/updated_at",
+                "title": "Updated_at",
+                "type": "string",
+                "default": "",
+                "examples": [
+                  "2023-02-10T12:53:27.931Z"
+                ],
+                "pattern": "^.*$"
+              },
+              "title": {
+                "$id": "#root/map/places/items/title",
+                "title": "Title",
+                "type": "string",
+                "default": "",
+                "examples": [
+                  "Koninklijk Paleis"
+                ],
+                "pattern": "^.*$"
+              },
+              "teaser": {
+                "$id": "#root/map/places/items/teaser",
+                "title": "Teaser",
+                "type": "string",
+                "default": ""
+              },
+              "published": {
+                "$id": "#root/map/places/items/published",
+                "title": "Published",
+                "type": "boolean",
+                "examples": [
+                  true
+                ],
+                "default": true
+              },
+              "buildingType": {
+                "$id": "#root/map/places/items/buildingType",
+                "title": "Buildingtype",
+                "type": "string",
+                "default": ""
+              },
+              "owner": {
+                "$id": "#root/map/places/items/owner",
+                "title": "Owner",
+                "type": "string",
+                "default": ""
+              },
+              "startdate": {
+                "$id": "#root/map/places/items/startdate",
+                "title": "Startdate",
+                "type": "string",
+                "default": ""
+              },
+              "enddate": {
+                "$id": "#root/map/places/items/enddate",
+                "title": "Enddate",
+                "type": "string",
+                "default": ""
+              },
+              "text": {
+                "$id": "#root/map/places/items/text",
+                "title": "Text",
+                "type": "string",
+                "default": "",
+                "examples": [
+                  ""
+                ],
+                "pattern": "^.*$"
+              },
+              "featured": {
+                "$id": "#root/map/places/items/featured",
+                "title": "Featured",
+                "type": "boolean",
+                "examples": [
+                  false
+                ],
+                "default": true
+              },
+              "shy": {
+                "$id": "#root/map/places/items/shy",
+                "title": "Shy",
+                "type": "boolean",
+                "examples": [
+                  false
+                ],
+                "default": true
+              },
+              "layer_id": {
+                "$id": "#root/map/places/items/layer_id",
+                "title": "Layer_id",
+                "type": "string",
+                "default": "",
+                "examples": [
+                  "85deb3fe-2916-41f1-b480-73963d147c80"
+                ],
+                "pattern": "^.*$"
+              },
+              "user_id": {
+                "$id": "#root/map/places/items/user_id",
+                "title": "User_id",
+                "type": "string",
+                "default": "",
+                "examples": [
+                  "21e28d17-c873-4f2c-919d-9e0a2c4439b6"
+                ],
+                "pattern": "^.*$"
+              },
+              "lat": {
+                "$id": "#root/map/places/items/lat",
+                "title": "Lat",
+                "type": "number",
+                "examples": [
+                  52.3429721
+                ],
+                "default": 0.0
+              },
+              "lon": {
+                "$id": "#root/map/places/items/lon",
+                "title": "Lon",
+                "type": "number",
+                "examples": [
+                  4.947584
+                ],
+                "default": 0.0
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
