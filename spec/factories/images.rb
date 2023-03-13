@@ -7,16 +7,21 @@ FactoryBot.define do
     source { 'Source' }
     creator { 'Creator' }
     place
-    association :imageable, factory: :place
     user { create(:user) }
     alt { 'Alt' }
     caption { 'Caption' }
     sorting { 2 }
     preview { false }
     itype { 'image' }
-    factory :image_for_place do
-      association :imageable, factory: :place
-    end
+
+    # for_place
+
+    # trait :for_place do
+    #   association(:imageable, factory: :place, strategy: :build)
+    # end
+    # trait :for_annotation do
+    #   association(:imageable, factory: :annotation, strategy: :build)
+    # end
 
     trait :with_file do
       # file { Rack::Test::UploadedFile.new('spec/support/files/test.jpg', 'image/jpeg') }
