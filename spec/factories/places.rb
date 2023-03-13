@@ -9,8 +9,8 @@ FactoryBot.define do
     link { 'http://domain.com' }
     startdate { '2018-04-27 19:48:51' }
     enddate { '2018-04-27 19:48:51' }
-    lat { '0' }
-    lon { '0' }
+    lat { 0 }
+    lon { 0 }
     location { 'Location' }
     address { 'Address' }
     zip { 'Zip' }

@@ -13,13 +13,14 @@ FactoryBot.define do
     basemap_attribution { 'Basemap made by' }
     color { '#0000cc' }
     background_color { '#151515' }
-    mapcenter_lat { '0.1' }
-    mapcenter_lon { '10' }
+    mapcenter_lat { 0.1 }
+    mapcenter_lon { 10 }
     zoom { 12 }
     popup_display_mode { 'click' }
     tooltip_display_mode { 'false' }
     places_sort_order { 'startdate' }
     group
+    organisation { 'ORGA' }
     trait :invalid do
       title { nil }
     end

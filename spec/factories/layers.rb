@@ -14,8 +14,8 @@ FactoryBot.define do
     basemap_url { 'MyLayerBasemapUrl' }
     basemap_attribution { 'Basemap made by' }
     background_color { '#454545' }
-    mapcenter_lat { '0.1' }
-    mapcenter_lon { '10' }
+    mapcenter_lat { 0.1 }
+    mapcenter_lon { 10 }
     zoom { 12 }
     tooltip_display_mode { 'false' }
     places_sort_order { false }

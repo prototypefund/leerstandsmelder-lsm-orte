@@ -389,21 +389,21 @@
                               },
                               "lat":{
                                  "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/lat",
-                                 "type":"string",
+                                 "type":"number",
                                  "title":"The Lat Schema",
                                  "default":"",
                                  "examples":[
-                                    "53.532969"
+                                    53.532969
                                  ],
                                  "pattern":"^(.*)$"
                               },
                               "lon":{
                                  "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/lon",
-                                 "type":"string",
+                                 "type":"number",
                                  "title":"The Lon Schema",
                                  "default":"",
                                  "examples":[
-                                    "10.0367449"
+                                    10.0367449
                                  ],
                                  "pattern":"^(.*)$"
                               },
