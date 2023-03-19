@@ -106,9 +106,30 @@ RSpec.describe 'Places', type: :request do
             post "/api/v1/maps/#{@map.id}/layers/#{@layer.id}/places", params: { place: valid_attributes }
           end.to change(Place, :count).by(1)
           expect(response).to be_successful
+          expect(response).to have_http_status(201)
           p = Place.all.last
           expect(json['id']).to eq(p.id)
-          # expect(json['places'].size).to eq(1)
+          expect(response).to match_response_schema('v1/places/create', 'json')
+        end
+      end
+      let(:different_location_attributes) do
+        FactoryBot.build(:place, map: @map, layer: @layer, published: true, lat: 0.2, lon: 10.2).attributes
+      end
+      context 'with valid parameters but different region' do
+        it 'creates a new place and renders a message explaingin not region found' do
+          group_off = FactoryBot.create(:group)
+          map_off = create(:map, group: group_off, published: true, mapcenter_lat: 3.5, mapcenter_lon: 3.5)
+          layer_off = create(:layer, map: map_off, published: true)
+          expect do
+            post "/api/v1/maps/#{map_off.id}/layers/#{layer_off.id}/places", params: { place: different_location_attributes }
+          end.to change(Place, :count).by(1)
+          expect(response).to be_successful
+          expect(response).to have_http_status(201)
+          p = Place.all.last
+          puts json.inspect
+          expect(json['id']).to eq(p.id)
+          expect(json['layer_id']).not_to eq(layer_off.id)
+          expect(response).to match_response_schema('v1/places/create_missing_region', 'json')
         end
       end
 

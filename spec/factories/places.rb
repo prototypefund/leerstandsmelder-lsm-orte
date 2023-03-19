@@ -15,8 +15,15 @@ FactoryBot.define do
     address { 'Address' }
     zip { 'Zip' }
     city { 'City' }
-    country { 'Country' }
     published { false }
+    featured { false }
+    vacant_since { '2023-03-23 23:23:23' } # TODO: implement vacant_since (see since)
+    building_floors { 2 }
+    road { 'Ruby Lane' }
+    house_number { '23' }
+    suburb { 'Veddel' }
+    country { 'Flavia' }
+    country_code { 'flv' }
     layer
     user { create(:user) }
     map
