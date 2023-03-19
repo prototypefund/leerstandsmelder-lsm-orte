@@ -60,6 +60,14 @@ class Api::V1::PlacesController < Api::V1::ApplicationController
     authorize @layer
     @map = @layer.map
 
+    closest_map = Map.by_distance(origin: [@place.lat, @place.lon]).first
+
+    if closest_map != @map
+      puts closest_map.inspect
+      puts 'layer missing'
+      @place.layer = 'missing_map'
+    end
+
     respond_to do |format|
       if @place.save
         format.json { render :show, status: :created, place: @place }
